@@ -381,7 +381,7 @@ SerializerPlayerStdv1::serializeInit( std::ostream & strm,
                                       const PlayMode & mode ) const
 {
     strm << "(init " << side << ' ' << unum << ' '
-         << playmode_strings[ mode ] << ')';
+         << playmode_strings[ static_cast<int>(mode) ] << ')';
 }
 
 void
@@ -390,7 +390,7 @@ SerializerPlayerStdv1::serializeReconnect( std::ostream & strm,
                                            const PlayMode & mode ) const
 {
     strm << "(reconnect " << side << ' '
-         << playmode_strings[ mode ] << ')';
+         << playmode_strings[ static_cast<int>(mode) ] << ')';
 }
 
 void

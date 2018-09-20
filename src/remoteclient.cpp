@@ -35,6 +35,9 @@
 #include <cstring>
 
 
+#include "streambufferwrapper.h"
+
+
 RemoteClient::RemoteClient()
     : M_socket()
     , M_socket_buf( NULL )
@@ -128,6 +131,7 @@ RemoteClient::open()
     }
 
     M_socket_buf = new rcss::net::SocketStreamBuf( M_socket );
+    M_buffer_wrapper = new StreamBufferWrapper();
     M_transport = new std::ostream( M_socket_buf );
     //M_transport->setLevel( M_comp_level );
     return 0;
@@ -137,6 +141,7 @@ int
 RemoteClient::send( const char * msg,
                     const size_t & len )
 {
+    printf("RemoteClient::send - %s\n", msg);
     if ( M_socket.isConnected() )
     {
         M_transport->write( msg, len );
@@ -167,6 +172,7 @@ RemoteClient::recv()
         std::memset( &buffer, 0, sizeof( char ) * MaxMesg );
 
         size_t len = MaxMesg;
+        // Add here 
         int ret = M_socket.recv( buffer, len );
 
         if ( ret == -1 && errno != EWOULDBLOCK )

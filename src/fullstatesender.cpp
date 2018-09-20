@@ -146,13 +146,13 @@ FullStateSenderPlayerV5::sendFullState()
     // send begining of FS
     serializer().serializeFSBegin( transport(), stadium().time() );
 
-    if ( stadium().playmode() == PM_FreeKick_Left
+    if ( stadium().playmode() == PlayMode::PM_FreeKick_Left
          && stadium().ballCatcher() )
     {
         serializer().serializeFSPlayMode( transport(),
                                           "goalie_catch_ball_l" );
     }
-    else if ( stadium().playmode() == PM_FreeKick_Right
+    else if ( stadium().playmode() == PlayMode::PM_FreeKick_Right
               && stadium().ballCatcher() )
     {
         serializer().serializeFSPlayMode( transport(),
@@ -161,7 +161,7 @@ FullStateSenderPlayerV5::sendFullState()
     else
     {
         serializer().serializeFSPlayMode( transport(),
-                                          playmode_string[stadium().playmode()] );
+                                          playmode_string[static_cast<int>(stadium().playmode())] );
     }
 
     serializer().serializeFSViewMode( transport(),

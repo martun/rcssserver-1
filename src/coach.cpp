@@ -55,14 +55,14 @@ play_mode_id( const char * mode )
 {
     static const char * playmode_strings[] = PLAYMODE_STRINGS;
 
-    for ( int n = 0; n < PM_MAX; ++n )
+    for ( int n = 0; n < static_cast<int>(PlayMode::PM_MAX); ++n )
     {
         if ( ! std::strcmp( playmode_strings[n], mode ) )
         {
             return static_cast< PlayMode >( n );
         }
     }
-    return PM_Null;
+    return PlayMode::PM_Null;
 }
 
 void
@@ -216,6 +216,7 @@ Coach::sendOKEye()
 void
 Coach::send( const char * msg )
 {
+
     if ( RemoteClient::send( msg, std::strlen( msg ) + 1 ) != -1 )
     {
         M_stadium.logger().writeCoachLog( msg, SEND );
@@ -445,7 +446,7 @@ Coach::change_mode( std::string mode )
 {
     PlayMode mode_id = play_mode_id( mode.c_str() );
 
-    if ( mode_id == PM_Null )
+    if ( mode_id == PlayMode::PM_Null )
     {
         send( "(error illegal_mode)" );
         return;
@@ -1164,7 +1165,7 @@ OnlineCoach::parse_command( const char * command )
 
                 switch ( msg->getType() ) {
                 case rcss::clang::Msg::META:
-                    if ( M_stadium.playmode() != PM_PlayOn )
+                    if ( M_stadium.playmode() != PlayMode::PM_PlayOn )
                     {
                         should_queue = true;
                     }
@@ -1180,7 +1181,7 @@ OnlineCoach::parse_command( const char * command )
                     }
                     break;
                 case rcss::clang::Msg::FREEFORM:
-                    //if ( M_stadium.playmode() != PM_PlayOn
+                    //if ( M_stadium.playmode() != PlayMode::PM_PlayOn
                     //     || M_stadium.canSendFreeform() )
                     if ( canSendFreeform() )
                     {
@@ -1201,7 +1202,7 @@ OnlineCoach::parse_command( const char * command )
                     }
                     break;
                 case rcss::clang::Msg::INFO:
-                    if ( M_stadium.playmode() != PM_PlayOn )
+                    if ( M_stadium.playmode() != PlayMode::PM_PlayOn )
                     {
                         should_queue = true;
                     }
@@ -1217,7 +1218,7 @@ OnlineCoach::parse_command( const char * command )
                     }
                     break;
                 case rcss::clang::Msg::ADVICE:
-                    if( M_stadium.playmode() != PM_PlayOn )
+                    if( M_stadium.playmode() != PlayMode::PM_PlayOn )
                     {
                         should_queue = true;
                     }
@@ -1233,7 +1234,7 @@ OnlineCoach::parse_command( const char * command )
                     }
                     break;
                 case rcss::clang::Msg::DEFINE:
-                    if ( M_stadium.playmode() != PM_PlayOn )
+                    if ( M_stadium.playmode() != PlayMode::PM_PlayOn )
                     {
                         should_queue = true;
                     }
@@ -1249,7 +1250,7 @@ OnlineCoach::parse_command( const char * command )
                     }
                     break;
                 case rcss::clang::Msg::DEL:
-                    if( M_stadium.playmode() != PM_PlayOn )
+                    if( M_stadium.playmode() != PlayMode::PM_PlayOn )
                     {
                         should_queue = true;
                     }
@@ -1265,7 +1266,7 @@ OnlineCoach::parse_command( const char * command )
                     }
                     break;
                 case rcss::clang::Msg::RULE:
-                    if( M_stadium.playmode() != PM_PlayOn )
+                    if( M_stadium.playmode() != PlayMode::PM_PlayOn )
                     {
                         should_queue = true;
                     }
@@ -1301,7 +1302,7 @@ OnlineCoach::parse_command( const char * command )
         else
         {
             //pre v7.0
-            if ( M_stadium.playmode() != PM_PlayOn )
+            if ( M_stadium.playmode() != PlayMode::PM_PlayOn )
             {
                 if ( M_freeform_messages_said < M_freeform_messages_allowed
                      || M_freeform_messages_allowed < 0 )
@@ -1412,7 +1413,7 @@ OnlineCoach::awardFreeformMessageCount()
 bool
 OnlineCoach::canSendFreeform() const
 {
-    if ( M_stadium.playmode() != PM_PlayOn )
+    if ( M_stadium.playmode() != PlayMode::PM_PlayOn )
     {
         return true;
     }
@@ -1455,7 +1456,7 @@ OnlineCoach::check_message_queue( int time )
     {
         std::shared_ptr< rcss::clang::Msg > msg =  M_message_queue.front();
 
-        if ( M_stadium.playmode() != PM_PlayOn
+        if ( M_stadium.playmode() != PlayMode::PM_PlayOn
              || time - msg->getTimeRecv() >= ServerParam::instance().clangMessDelay() )
         {
             msg->setTimeSend( M_stadium.time() );
@@ -1491,7 +1492,7 @@ void
 OnlineCoach::change_player_type( int unum,
                                  int player_type )
 {
-    if ( M_stadium.playmode() == PM_PlayOn )
+    if ( M_stadium.playmode() == PlayMode::PM_PlayOn )
     {
         send( "(warning cannot_sub_while_playon)" );
         return;
@@ -1793,7 +1794,7 @@ OnlineCoach::change_player_types( const char * command )
 void
 OnlineCoach::team_graphic( const char * command )
 {
-    if ( M_stadium.playmode() != PM_BeforeKickOff )
+    if ( M_stadium.playmode() != PlayMode::PM_BeforeKickOff )
     {
         send( "(warning only_before_kick_off)" );
         return;
@@ -1839,16 +1840,16 @@ void
 OnlineCoach::change_player_type_goalie( int unum )
 {
     const PlayMode pm = M_stadium.playmode();
-    if ( pm == PM_PlayOn )
+    if ( pm == PlayMode::PM_PlayOn )
     {
         send( "(warning cannot_change_goalie_while_playon)" );
         return;
     }
 
-    if ( pm == PM_PenaltyReady_Left
-         || pm == PM_PenaltyReady_Right
-         || pm == PM_PenaltyTaken_Left
-         || pm == PM_PenaltyTaken_Right )
+    if ( pm == PlayMode::PM_PenaltyReady_Left
+         || pm == PlayMode::PM_PenaltyReady_Right
+         || pm == PlayMode::PM_PenaltyTaken_Left
+         || pm == PlayMode::PM_PenaltyTaken_Right )
     {
         send( "(warning cannot_change_goalie_while_penalty_taken)" );
         return;

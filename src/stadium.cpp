@@ -79,7 +79,7 @@ Stadium::Stadium()
       M_olcoaches( 2, static_cast< OnlineCoach * >( 0 ) ),
       M_team_l( NULL ),
       M_team_r( NULL ),
-      M_playmode( PM_BeforeKickOff ),
+      M_playmode( PlayMode::PM_BeforeKickOff ),
       M_time( 0 ),
       M_stoppage_time( 0 ),
       M_ball_catcher( static_cast< const Player * >( 0 ) ),
@@ -330,7 +330,7 @@ Stadium::init()
 
     createObjects();
 
-    changePlayMode( PM_BeforeKickOff );
+    changePlayMode( PlayMode::PM_BeforeKickOff );
 
     M_kick_off_wait = std::max( 0, ServerParam::instance().kickOffWait() );
     M_connect_wait = std::max( 0, ServerParam::instance().connectWait() );
@@ -356,7 +356,7 @@ Stadium::checkAutoMode()
     //
     // check kick off for the auto mode
     //
-    if ( playmode() == PM_BeforeKickOff
+    if ( playmode() == PlayMode::PM_BeforeKickOff
          && time() < ( ( ServerParam::instance().halfTime()
                          * ServerParam::instance().nrNormalHalfs() )
                        + ( ServerParam::instance().extraHalfTime()
@@ -404,7 +404,7 @@ Stadium::checkAutoMode()
     //
     if ( ServerParam::instance().autoMode() )
     {
-        if ( playmode() == PM_TimeOver )
+        if ( playmode() == PlayMode::PM_TimeOver )
         {
             if( M_game_over_wait == ServerParam::instance().gameOverWait() )
             {
@@ -433,7 +433,7 @@ Stadium::checkAutoMode()
 void
 Stadium::startTeams()
 {
-    if ( playmode() != PM_PlayOn )
+    if ( playmode() != PlayMode::PM_PlayOn )
     {
         if ( M_left_child == 0
              && ! ServerParam::instance().teamLeftStart().empty() )
@@ -606,7 +606,7 @@ Stadium::initPlayer( const char * teamname,
                      const rcss::net::Addr & addr )
 {
     Team * team = static_cast< Team * >( 0 );
-
+    std::cout << "AAAAAAAAAAAAAAAAAAAAAAAA = (" << teamname << ", " << version << ", " << goalie << ")\n"; 
     if ( M_team_l->name().empty() )
     {
         team = M_team_l;
@@ -771,6 +771,7 @@ Stadium::initOnlineCoach( const char * teamname,
     }
     else
     {
+        std::cout << "(error no_such_team) = " << M_team_r->name() << std::endl;
         sendToOnlineCoach( "(error no_such_team)", addr );
         return static_cast< OnlineCoach * >( 0 );
     }
@@ -847,26 +848,26 @@ Stadium::step()
     //
     // update objects & referees analyze state
     //
-    if ( playmode() == PM_BeforeKickOff )
+    if ( playmode() == PlayMode::PM_BeforeKickOff )
     {
         turnMovableObjects();
         ++M_stoppage_time;
         for_each( M_referees.begin(), M_referees.end(), &Referee::doAnalyse );
     }
-    else if ( playmode() == PM_AfterGoal_Right
-              || playmode() == PM_AfterGoal_Left
-              || playmode() == PM_OffSide_Right
-              || playmode() == PM_OffSide_Left
-              || playmode() == PM_Foul_Charge_Right
-              || playmode() == PM_Foul_Charge_Left
-              || playmode() == PM_Foul_Push_Right
-              || playmode() == PM_Foul_Push_Left
-              || playmode() == PM_Back_Pass_Right
-              || playmode() == PM_Back_Pass_Left
-              || playmode() == PM_Free_Kick_Fault_Right
-              || playmode() == PM_Free_Kick_Fault_Left
-              || playmode() == PM_CatchFault_Right
-              || playmode() == PM_CatchFault_Left )
+    else if ( playmode() == PlayMode::PM_AfterGoal_Right
+              || playmode() == PlayMode::PM_AfterGoal_Left
+              || playmode() == PlayMode::PM_OffSide_Right
+              || playmode() == PlayMode::PM_OffSide_Left
+              || playmode() == PlayMode::PM_Foul_Charge_Right
+              || playmode() == PlayMode::PM_Foul_Charge_Left
+              || playmode() == PlayMode::PM_Foul_Push_Right
+              || playmode() == PlayMode::PM_Foul_Push_Left
+              || playmode() == PlayMode::PM_Back_Pass_Right
+              || playmode() == PlayMode::PM_Back_Pass_Left
+              || playmode() == PlayMode::PM_Free_Kick_Fault_Right
+              || playmode() == PlayMode::PM_Free_Kick_Fault_Left
+              || playmode() == PlayMode::PM_CatchFault_Right
+              || playmode() == PlayMode::PM_CatchFault_Left )
     {
         PlayMode pm = playmode();
         clearBallCatcher();
@@ -879,7 +880,7 @@ Stadium::step()
             M_stoppage_time = 0;
         }
     }
-    else if ( playmode() != PM_BeforeKickOff && playmode() != PM_TimeOver )
+    else if ( playmode() != PlayMode::PM_BeforeKickOff && playmode() != PlayMode::PM_TimeOver )
     {
         incMovableObjects();
         ++M_time;
@@ -887,7 +888,7 @@ Stadium::step()
         for_each( M_referees.begin(), M_referees.end(), &Referee::doAnalyse );
         //for_each( M_referees.begin(), M_referees.end(), std::mem_fun( &Referee::analyse ) );
     }
-    else if ( playmode() == PM_TimeOver )
+    else if ( playmode() == PlayMode::PM_TimeOver )
     {
         ++M_stoppage_time;
     }
@@ -1110,7 +1111,7 @@ Stadium::kickOff()
 
     if ( SP.keepAwayMode() )
     {
-        changePlayMode( PM_PlayOn );
+        changePlayMode( PlayMode::PM_PlayOn );
         return;
     }
 
@@ -1148,7 +1149,7 @@ Stadium::kickOff()
                 assignPlayerTypes();
             }
 
-            changePlayMode( PM_KickOff_Left );
+            changePlayMode( PlayMode::PM_KickOff_Left );
             std::cout << "Kick_off_left" << std::endl;
         }
         else // if ( ( time / half_time ) % 2 == 1 )
@@ -1160,7 +1161,7 @@ Stadium::kickOff()
             }
 
             placeBall( RIGHT, PVector( 0.0, 0.0 ) );
-            changePlayMode( PM_KickOff_Right );
+            changePlayMode( PlayMode::PM_KickOff_Right );
             std::cout << "Kick_off_right" << std::endl;
         }
     }
@@ -1176,7 +1177,7 @@ Stadium::callHalfTime( const Side kick_off_side,
 
     M_ball_catcher = static_cast< const Player * >( 0 );
     placeBall( kick_off_side, PVector( 0.0, 0.0 ) );
-    changePlayMode( PM_BeforeKickOff );
+    changePlayMode( PlayMode::PM_BeforeKickOff );
 
     if ( half_time_count < ServerParam::instance().nrNormalHalfs() )
     {
@@ -1227,11 +1228,11 @@ Stadium::callFoul( const Side side,
 
     if( side == LEFT )
     {
-        placeBall( PM_FreeKick_Left, LEFT, pos );
+        placeBall( PlayMode::PM_FreeKick_Left, LEFT, pos );
     }
     else
     {
-        placeBall( PM_FreeKick_Right, RIGHT, pos );
+        placeBall( PlayMode::PM_FreeKick_Right, RIGHT, pos );
     }
 
     placePlayersInField();
@@ -1246,12 +1247,12 @@ Stadium::dropBall( PVector pos )
 
     pos = Referee::truncateToPitch( pos );
 
-    placeBall( PM_Drop_Ball, NEUTRAL, pos );
+    placeBall( PlayMode::PM_Drop_Ball, NEUTRAL, pos );
     placePlayersInField();
 
     if ( ! Referee::isPenaltyShootOut( playmode() ) )
     {
-        changePlayMode( PM_PlayOn );
+        changePlayMode( PlayMode::PM_PlayOn );
     }
 }
 
@@ -1421,7 +1422,7 @@ Stadium::placeBall( const PlayMode pm,
     placeBall( kick_off_side, pos );
 
     if ( Referee::isPenaltyShootOut( playmode() )
-         && ( pm == PM_PlayOn || pm ==  PM_Drop_Ball ) )
+         && ( pm == PlayMode::PM_PlayOn || pm ==  PlayMode::PM_Drop_Ball ) )
     {
         ; // never change pm to play_on in penalty mode
     }
@@ -1496,38 +1497,38 @@ Stadium::changePlayMode( const PlayMode pm )
     for_each( M_referees.begin(), M_referees.end(),
               Referee::doPlayModeChange( pm ) );
 
-    if ( pm == PM_KickOff_Left
-         || pm == PM_KickIn_Left
-         || pm == PM_FreeKick_Left
-         || pm == PM_IndFreeKick_Left
-         || pm == PM_CornerKick_Left
-         || pm == PM_GoalKick_Left )
+    if ( pm == PlayMode::PM_KickOff_Left
+         || pm == PlayMode::PM_KickIn_Left
+         || pm == PlayMode::PM_FreeKick_Left
+         || pm == PlayMode::PM_IndFreeKick_Left
+         || pm == PlayMode::PM_CornerKick_Left
+         || pm == PlayMode::PM_GoalKick_Left )
     {
         M_kick_off_side = LEFT;
     }
-    else if ( pm == PM_KickOff_Right
-              || pm == PM_KickIn_Right
-              || pm == PM_FreeKick_Right
-              || pm == PM_IndFreeKick_Right
-              || pm == PM_CornerKick_Right
-              || pm == PM_GoalKick_Right )
+    else if ( pm == PlayMode::PM_KickOff_Right
+              || pm == PlayMode::PM_KickIn_Right
+              || pm == PlayMode::PM_FreeKick_Right
+              || pm == PlayMode::PM_IndFreeKick_Right
+              || pm == PlayMode::PM_CornerKick_Right
+              || pm == PlayMode::PM_GoalKick_Right )
     {
         M_kick_off_side = RIGHT;
     }
-    else if ( pm == PM_Drop_Ball )
+    else if ( pm == PlayMode::PM_Drop_Ball )
     {
         M_kick_off_side = NEUTRAL;
     }
 
-    if ( pm == PM_PlayOn )
+    if ( pm == PlayMode::PM_PlayOn )
     {
         M_last_playon_start = time();
     }
 
-    if ( pm != PM_AfterGoal_Left
-         && pm != PM_AfterGoal_Right )
+    if ( pm != PlayMode::PM_AfterGoal_Left
+         && pm != PlayMode::PM_AfterGoal_Right )
     {
-        sendRefereeAudio( playmode_strings[pm] );
+        sendRefereeAudio( playmode_strings[static_cast<int>(pm)] );
     }
 }
 
@@ -1788,7 +1789,7 @@ Stadium::collisions()
 void
 Stadium::calcBallCollisionPos( Player * p )
 {
-    if ( playmode() == PM_PlayOn )
+    if ( playmode() == PlayMode::PM_PlayOn )
     {
         calcCollisionPos( M_ball, p );
         return;
@@ -1982,8 +1983,8 @@ Stadium::ballCaught( const Player & catcher )
     for_each( M_referees.begin(), M_referees.end(),
               Referee::doCaughtBall( catcher ) );
 
-    if ( playmode() == PM_FreeKick_Left
-         || playmode() == PM_FreeKick_Right )
+    if ( playmode() == PlayMode::PM_FreeKick_Left
+         || playmode() == PlayMode::PM_FreeKick_Right )
     {
         M_ball_catcher = &catcher;
     }
@@ -2688,6 +2689,7 @@ recv_from_clients( std::vector< T > & clients )
     for ( typename std::vector< T >::iterator i = clients.begin();
           i != clients.end(); )
     {
+        // Add here
         if ( (*i)->recv() == -1 )
         {
             ++i;
@@ -2709,11 +2711,12 @@ Stadium::udp_recv_message()
         std::memset( &message, 0, sizeof( char ) * MaxMesg );
 
         rcss::net::Addr cli_addr;
-
+        // Add here
         int len = M_player_socket.recv( message, MaxMesg, cli_addr );
 
         if ( len > 0 )
         {
+            printf("udp_recv_message - %s\n", message);
             //              std::cerr << "Got: ";
             //              std::cerr.write( message, iMsgLength );
             //              std::cerr << std::endl;
@@ -2866,7 +2869,7 @@ Stadium::parsePlayerInit( const char * message,
     //
     if ( ! std::strncmp( message, "(reconnect ", std::strlen( "(reconnect " ) ) )
     {
-        if ( playmode() == PM_PlayOn )
+        if ( playmode() == PlayMode::PM_PlayOn )
         {
             sendToPlayer( "(error cannot_reconnect_while_playon)", cli_addr );
             return;
@@ -2958,11 +2961,12 @@ Stadium::udp_recv_from_coach()
         std::memset( &message, 0, sizeof( char ) * MaxMesg );
 
         rcss::net::Addr cli_addr;
-
+        // Add here
         int len = M_offline_coach_socket.recv( message, MaxMesg,  cli_addr );
 
         if ( len > 0 )
         {
+            printf("udp_recv_from_coach - %s\n", message);
             if ( ! allow_coach )
             {
                 sendToCoach( "(error connected_offline_coach_without_coach_mode)", cli_addr );
@@ -3072,10 +3076,11 @@ Stadium::udp_recv_from_online_coach()
 
         rcss::net::Addr cli_addr;
 
+        // Add here
         int len = M_online_coach_socket.recv( message, MaxMesg, cli_addr );
-
         if ( len > 0 )
         {
+            printf("udp_recv_from_online_coach - %s\n", message);
             bool found = false;
             for ( OnlineCoachCont::iterator i = M_remote_online_coaches.begin();
                   i != M_remote_online_coaches.end();
@@ -3218,6 +3223,8 @@ void
 Stadium::sendToPlayer( const char * msg,
                        const rcss::net::Addr & cli_addr )
 {
+    // Add here
+    printf("Stadium::sendToPlayer - %s\n", msg);
     if ( M_player_socket.send( msg, std::strlen( msg ) + 1, cli_addr ) == -1 )
     {
         std::cerr << __FILE__ ": " << __LINE__
@@ -3230,6 +3237,8 @@ void
 Stadium::sendToCoach( const char * msg,
                       const rcss::net::Addr & cli_addr )
 {
+    // Add here
+    printf("Stadium::sendToCoach - %s\n", msg);
     if ( M_offline_coach_socket.send( msg, std::strlen( msg ) + 1, cli_addr ) == -1 )
     {
         std::cerr << __FILE__ ": " << __LINE__
@@ -3242,6 +3251,8 @@ void
 Stadium::sendToOnlineCoach( const char * msg,
                             const rcss::net::Addr & cli_addr )
 {
+    // Add here
+    printf("Stadium::sendToCoach - %s\n", msg);
     if ( M_online_coach_socket.send( msg, std::strlen( msg ) + 1, cli_addr ) == -1 )
     {
         std::cerr << __FILE__ ": " << __LINE__

@@ -56,14 +56,14 @@ play_mode_id( const char * mode )
 {
     static const char * playmode_strings[] = PLAYMODE_STRINGS;
 
-    for ( int n = 0; n < PM_MAX; ++n )
+    for ( int n = 0; n < static_cast<int>(PlayMode::PM_MAX); ++n )
     {
         if ( ! std::strcmp( playmode_strings[n], mode ) )
         {
             return static_cast< PlayMode >( n );
         }
     }
-    return PM_Null;
+    return PlayMode::PM_Null;
 }
 
 }
@@ -75,7 +75,7 @@ Monitor::Monitor( Stadium & stadium,
       M_observer( new rcss::ObserverMonitor ),
       M_stadium( stadium ),
       M_version ( version ),
-      M_playmode( PM_Null ),
+      M_playmode( PlayMode::PM_Null ),
       M_team_l_name( "" ),
       M_team_r_name( "" ),
       M_team_l_score( 0 ),
@@ -228,7 +228,7 @@ Monitor::sendScore()
 void
 Monitor::sendTeamGraphics()
 {
-    const int MAX_SEND = ( M_stadium.playmode() == PM_BeforeKickOff
+    const int MAX_SEND = ( M_stadium.playmode() == PlayMode::PM_BeforeKickOff
                            ? 32
                            : 8 );
 
@@ -570,7 +570,7 @@ Monitor::coach_change_mode( const char * command )
 
     PlayMode mode_id = play_mode_id( new_mode );
 
-    if ( mode_id == PM_Null )
+    if ( mode_id == PlayMode::PM_Null )
     {
         sendMsg( MSG_BOARD, "(error illegal_mode)" );
         return false;
