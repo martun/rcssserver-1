@@ -96,7 +96,7 @@ Logger::Logger( Stadium & stadium )
     , M_stadium( stadium )
     , M_game_log( static_cast< std::ostream * >( 0 ) )
     , M_text_log( static_cast< std::ostream * >( 0 ) )
-    , M_playmode( PlayMode::PM_Null )
+    , M_playmode( PM_Null )
     , M_team_l_score( 0 )
     , M_team_r_score( 0 )
     , M_team_l_pen_taken( 0 )
@@ -220,7 +220,7 @@ Logger::open()
 void
 Logger::close()
 {
-    // renameLogs(); // HERE I COMMENTED  MAYBE IMPORTANY LINE IDK
+    renameLogs();
 
     closeGameLog();
     closeTextLog();
@@ -500,23 +500,11 @@ Logger::renameLogs()
     {
         return;
     }
-    std::cout << "Logger::renameLogs start" << std::endl;
+
     // add penalty to logfile when penalties are score or was draw and one team won
-    std::cout << "Logger::renameLogs in-1" << std::endl;
-    auto right = M_stadium.teamRight();
-    std::cout << "Logger::renameLogs in-1" << std::endl;
-    auto right_point = right.point();
-    std::cout << "Logger::renameLogs in0" << std::endl;
-    auto left = M_stadium.teamLeft();
-    std::cout << "Logger::renameLogs in1" << std::endl;
-    auto left_point = left.point();
-    std::cout << "Logger::renameLogs in2" << std::endl;
-    bool bAddPenaltyScore = ( right_point == left_point );
-    std::cout << "Logger::renameLogs in3" << std::endl;
-    bAddPenaltyScore &= M_stadium.teamLeft().penaltyTaken() > 0;
-    std::cout << "Logger::renameLogs process" << std::endl;
-    bAddPenaltyScore &= M_stadium.teamRight().penaltyTaken() > 0 ;
-    std::cout << "Logger::renameLogs end" << std::endl;
+    bool bAddPenaltyScore = ( M_stadium.teamRight().point() == M_stadium.teamLeft().point()
+                              && M_stadium.teamLeft().penaltyTaken() > 0
+                              && M_stadium.teamRight().penaltyTaken() > 0 );
 
     char time_str[32];
     std::strftime( time_str, 32,
@@ -772,8 +760,8 @@ Logger::writeGameLog()
     }
 
 
-    if ( M_stadium.playmode() != PlayMode::PM_BeforeKickOff
-         && M_stadium.playmode() != PlayMode::PM_TimeOver )
+    if ( M_stadium.playmode() != PM_BeforeKickOff
+         && M_stadium.playmode() != PM_TimeOver )
     {
         writeGameLogImpl();
 //         switch ( ServerParam::instance().gameLogVersion() ) {
@@ -793,7 +781,7 @@ Logger::writeGameLog()
 //             break;
 //         }
     }
-    else if ( M_stadium.playmode() == PlayMode::PM_TimeOver
+    else if ( M_stadium.playmode() == PM_TimeOver
               && ! wrote_final_cycle )
     {
         writeGameLogImpl();
@@ -820,7 +808,7 @@ Logger::writeGameLog()
 void
 Logger::writeGameLogImpl()
 {
-    static PlayMode pm = PlayMode::PM_Null;
+    static PlayMode pm = PM_Null;
     static std::string team_l_name, team_r_name;
     static int team_l_score = 0, team_r_score = 0;
     static int team_l_pen_taken = 0, team_r_pen_taken = 0;
@@ -981,7 +969,7 @@ Logger::writeGameLogV2()
 void
 Logger::writeGameLogV3()
 {
-    static PlayMode pmode = PlayMode::PM_Null;
+    static PlayMode pmode = PM_Null;
     static team_t teams[2] = { { "", 0 },
                                { "", 0 } };
     static int score_l = 0;
@@ -996,7 +984,7 @@ Logger::writeGameLogV3()
 
         char pm = static_cast< char >( pmode );
 
-        mode = htons( PlayMode::PM_MODE );
+        mode = htons( PM_MODE );
         writeToGameLog( reinterpret_cast< const char * >( &mode ),
                         sizeof( mode ) );
         writeToGameLog( reinterpret_cast< const char * >( &pm ),
@@ -1082,7 +1070,7 @@ Logger::writeGameLogV4()
 {
     static const char * playmode_strings[] = PLAYMODE_STRINGS;
 
-    static PlayMode pm = PlayMode::PM_Null;
+    static PlayMode pm = PM_Null;
     static std::string team_l_name, team_r_name;
     static int team_l_score = 0, team_r_score = 0;
     static int team_l_pen_taken = 0, team_r_pen_taken = 0;
@@ -1273,7 +1261,7 @@ Logger::writeTextLog( const char * message,
     if ( ( flag == RECV || flag == SUBS )
          && isGameLogOpen()
          && ServerParam::instance().recordMessages()
-         && M_stadium.playmode() != PlayMode::PM_TimeOver )
+         && M_stadium.playmode() != PM_TimeOver )
     {
         char buf[max_message_length_for_display];
         std::strncpy( buf, message, std::min( max_message_length_for_display,
@@ -1362,8 +1350,8 @@ Logger::writeRefereeAudio( const char * msg )
 {
     if ( isTextLogOpen()
          || ( isGameLogOpen()
-              && M_stadium.playmode() != PlayMode::PM_BeforeKickOff
-              && M_stadium.playmode() != PlayMode::PM_TimeOver ) )
+              && M_stadium.playmode() != PM_BeforeKickOff
+              && M_stadium.playmode() != PM_TimeOver ) )
     {
         char buf[max_message_length_for_display];
         snprintf( buf,
@@ -1390,8 +1378,8 @@ Logger::writePlayerAudio( const Player & player,
 
     if ( isGameLogOpen()
          && ServerParam::instance().recordMessages()
-         && M_stadium.playmode() != PlayMode::PM_BeforeKickOff
-         && M_stadium.playmode() != PlayMode::PM_TimeOver )
+         && M_stadium.playmode() != PM_BeforeKickOff
+         && M_stadium.playmode() != PM_TimeOver )
     {
         char buf[max_message_length_for_display];
         snprintf( buf,
@@ -1409,8 +1397,8 @@ Logger::writeCoachAudio( const Coach & coach,
 {
     if ( isGameLogOpen()
          && ServerParam::instance().recordMessages()
-         && M_stadium.playmode() != PlayMode::PM_BeforeKickOff
-         && M_stadium.playmode() != PlayMode::PM_TimeOver )
+         && M_stadium.playmode() != PM_BeforeKickOff
+         && M_stadium.playmode() != PM_TimeOver )
     {
         char buf[max_message_length_for_display];
         char format[40];
@@ -1436,8 +1424,8 @@ Logger::writeCoachStdAudio( const OnlineCoach & coach,
 {
     if ( isGameLogOpen()
          && ServerParam::instance().recordMessages()
-         && M_stadium.playmode() != PlayMode::PM_BeforeKickOff
-         && M_stadium.playmode() != PlayMode::PM_TimeOver )
+         && M_stadium.playmode() != PM_BeforeKickOff
+         && M_stadium.playmode() != PM_TimeOver )
     {
         std::ostringstream coach_mess;
 

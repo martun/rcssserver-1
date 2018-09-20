@@ -126,7 +126,7 @@ enum Side {
             "penalty_score_r"                   \
             }
 
-enum class PlayMode {
+enum PlayMode {
     PM_Null,
     PM_BeforeKickOff,
     PM_TimeOver,

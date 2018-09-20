@@ -211,11 +211,11 @@ Referee::awardFreeKick( const Side side,
 
     if( side == LEFT )
     {
-        M_stadium.placeBall( PlayMode::PM_FreeKick_Left, LEFT, pos );
+        M_stadium.placeBall( PM_FreeKick_Left, LEFT, pos );
     }
     else if( side == RIGHT )
     {
-        M_stadium.placeBall( PlayMode::PM_FreeKick_Right, RIGHT, pos );
+        M_stadium.placeBall( PM_FreeKick_Right, RIGHT, pos );
     }
 }
 
@@ -236,12 +236,12 @@ Referee::awardGoalKick( const Side side,
     if ( side == LEFT )
     {
         pos.x = - ServerParam::PITCH_LENGTH * 0.5 + ServerParam::GOAL_AREA_LENGTH;
-        M_stadium.placeBall( PlayMode::PM_GoalKick_Left, LEFT, pos );
+        M_stadium.placeBall( PM_GoalKick_Left, LEFT, pos );
     }
     else
     {
         pos.x = ServerParam::PITCH_LENGTH * 0.5 - ServerParam::GOAL_AREA_LENGTH;
-        M_stadium.placeBall( PlayMode::PM_GoalKick_Right, RIGHT, pos );
+        M_stadium.placeBall( PM_GoalKick_Right, RIGHT, pos );
     }
 }
 
@@ -253,12 +253,12 @@ Referee::awardDropBall( PVector pos )
     pos = truncateToPitch( pos );
     pos = moveOutOfPenalty( NEUTRAL, pos );
 
-    M_stadium.placeBall( PlayMode::PM_Drop_Ball, NEUTRAL, pos );
+    M_stadium.placeBall( PM_Drop_Ball, NEUTRAL, pos );
     M_stadium.placePlayersInField();
 
     if( ! isPenaltyShootOut( M_stadium.playmode() ) )
     {
-        M_stadium.changePlayMode( PlayMode::PM_PlayOn );
+        M_stadium.changePlayMode( PM_PlayOn );
     }
 }
 
@@ -272,11 +272,11 @@ Referee::awardKickIn( const Side side,
 
     if ( side == LEFT )
     {
-        M_stadium.placeBall( PlayMode::PM_KickIn_Left, LEFT, pos );
+        M_stadium.placeBall( PM_KickIn_Left, LEFT, pos );
     }
     else
     {
-        M_stadium.placeBall( PlayMode::PM_KickIn_Right, RIGHT, pos );
+        M_stadium.placeBall( PM_KickIn_Right, RIGHT, pos );
     }
 }
 
@@ -305,14 +305,14 @@ Referee::awardCornerKick( const Side side,
         pos.x
             = ServerParam::PITCH_LENGTH * 0.5
             - ServerParam::instance().cornerKickMargin();
-        M_stadium.placeBall( PlayMode::PM_CornerKick_Left, LEFT, pos );
+        M_stadium.placeBall( PM_CornerKick_Left, LEFT, pos );
     }
     else
     {
         pos.x
             = -ServerParam::PITCH_LENGTH * 0.5
             + ServerParam::instance().cornerKickMargin();
-        M_stadium.placeBall( PlayMode::PM_CornerKick_Right, RIGHT, pos );
+        M_stadium.placeBall( PM_CornerKick_Right, RIGHT, pos );
     }
 }
 
@@ -365,18 +365,18 @@ Referee::isPenaltyShootOut( const PlayMode pm,
 {
     bool bLeft = false, bRight = true;
     switch( pm ) {
-    case PlayMode::PM_PenaltySetup_Left:
-    case PlayMode::PM_PenaltyReady_Left:
-    case PlayMode::PM_PenaltyTaken_Left:
-    case PlayMode::PM_PenaltyMiss_Left:
-    case PlayMode::PM_PenaltyScore_Left:
+    case PM_PenaltySetup_Left:
+    case PM_PenaltyReady_Left:
+    case PM_PenaltyTaken_Left:
+    case PM_PenaltyMiss_Left:
+    case PM_PenaltyScore_Left:
         bLeft = true;
         break;
-    case PlayMode::PM_PenaltySetup_Right:
-    case PlayMode::PM_PenaltyReady_Right:
-    case PlayMode::PM_PenaltyTaken_Right:
-    case PlayMode::PM_PenaltyMiss_Right:
-    case PlayMode::PM_PenaltyScore_Right:
+    case PM_PenaltySetup_Right:
+    case PM_PenaltyReady_Right:
+    case PM_PenaltyTaken_Right:
+    case PM_PenaltyMiss_Right:
+    case PM_PenaltyScore_Right:
         bRight = true;
         break;
     default:
@@ -483,22 +483,22 @@ TimeRef::analyse()
     static int s_half_time_count = 0;
 
     const PlayMode pm = M_stadium.playmode();
-    if ( pm == PlayMode::PM_BeforeKickOff
-         || pm == PlayMode::PM_TimeOver
-         || pm == PlayMode::PM_AfterGoal_Right
-         || pm == PlayMode::PM_AfterGoal_Left
-         || pm == PlayMode::PM_OffSide_Right
-         || pm == PlayMode::PM_OffSide_Left
-         || pm == PlayMode::PM_Foul_Charge_Right
-         || pm == PlayMode::PM_Foul_Charge_Left
-         || pm == PlayMode::PM_Foul_Push_Right
-         || pm == PlayMode::PM_Foul_Push_Left
-         || pm == PlayMode::PM_Back_Pass_Right
-         || pm == PlayMode::PM_Back_Pass_Left
-         || pm == PlayMode::PM_Free_Kick_Fault_Right
-         || pm == PlayMode::PM_Free_Kick_Fault_Left
-         || pm == PlayMode::PM_CatchFault_Right
-         || pm == PlayMode::PM_CatchFault_Left )
+    if ( pm == PM_BeforeKickOff
+         || pm == PM_TimeOver
+         || pm == PM_AfterGoal_Right
+         || pm == PM_AfterGoal_Left
+         || pm == PM_OffSide_Right
+         || pm == PM_OffSide_Left
+         || pm == PM_Foul_Charge_Right
+         || pm == PM_Foul_Charge_Left
+         || pm == PM_Foul_Push_Right
+         || pm == PM_Foul_Push_Left
+         || pm == PM_Back_Pass_Right
+         || pm == PM_Back_Pass_Left
+         || pm == PM_Free_Kick_Fault_Right
+         || pm == PM_Free_Kick_Fault_Left
+         || pm == PM_CatchFault_Right
+         || pm == PM_CatchFault_Left )
     {
         return;
     }
@@ -524,7 +524,7 @@ TimeRef::analyse()
             else
             {
                 M_stadium.sendRefereeAudio( "time_up" );
-                M_stadium.changePlayMode( PlayMode::PM_TimeOver );
+                M_stadium.changePlayMode( PM_TimeOver );
                 return;
             }
         }
@@ -537,7 +537,7 @@ TimeRef::analyse()
                  || ! M_stadium.teamRight().enabled() )
             {
                 M_stadium.sendRefereeAudio( "time_up_without_a_team" );
-                M_stadium.changePlayMode( PlayMode::PM_TimeOver );
+                M_stadium.changePlayMode( PM_TimeOver );
                 return;
             }
             // when golden_goal is on,
@@ -547,7 +547,7 @@ TimeRef::analyse()
                       && M_stadium.teamLeft().point() != M_stadium.teamRight().point() )
             {
                 M_stadium.sendRefereeAudio( "time_up" );
-                M_stadium.changePlayMode( PlayMode::PM_TimeOver );
+                M_stadium.changePlayMode( PM_TimeOver );
                 return;
             }
             // check half time in overtime
@@ -560,7 +560,7 @@ TimeRef::analyse()
                      && M_stadium.teamLeft().point() != M_stadium.teamRight().point() )
                 {
                     M_stadium.sendRefereeAudio( "time_up" );
-                    M_stadium.changePlayMode( PlayMode::PM_TimeOver );
+                    M_stadium.changePlayMode( PM_TimeOver );
                 }
                 // otherwise, the game is go into the overtime.
                 else
@@ -613,8 +613,8 @@ Referee::placePlayersInTheirField()
                                        ServerParam::PITCH_WIDTH ) );
 
     const bool kick_off_offside ( ServerParam::instance().kickOffOffside()
-                                  && ( M_stadium.playmode() == PlayMode::PM_KickOff_Left
-                                       || M_stadium.playmode() == PlayMode::PM_KickOff_Right ) );
+                                  && ( M_stadium.playmode() == PM_KickOff_Left
+                                       || M_stadium.playmode() == PM_KickOff_Right ) );
 
     const Stadium::PlayerCont::iterator end = M_stadium.remotePlayers().end();
     for ( Stadium::PlayerCont::iterator it = M_stadium.remotePlayers().begin();
@@ -679,24 +679,24 @@ Referee::clearPlayersFromBall( const Side side )
 
     const PlayMode pm = M_stadium.playmode();
 
-    const double clear_dist = ( ( pm == PlayMode::PM_Back_Pass_Left
-                                  || pm == PlayMode::PM_Back_Pass_Right
-                                  || ( ( pm == PlayMode::PM_Foul_Charge_Left
-                                         || pm == PlayMode::PM_Foul_Push_Left )
+    const double clear_dist = ( ( pm == PM_Back_Pass_Left
+                                  || pm == PM_Back_Pass_Right
+                                  || ( ( pm == PM_Foul_Charge_Left
+                                         || pm == PM_Foul_Push_Left )
                                        && inPenaltyArea( LEFT, M_stadium.ball().pos() ) )
-                                  || ( ( pm == PlayMode::PM_Foul_Charge_Right
-                                         || pm == PlayMode::PM_Foul_Push_Right )
+                                  || ( ( pm == PM_Foul_Charge_Right
+                                         || pm == PM_Foul_Push_Right )
                                        && inPenaltyArea( RIGHT, M_stadium.ball().pos() ) ) )
                                 ? ServerParam::GOAL_AREA_LENGTH
                                 : ServerParam::KICK_OFF_CLEAR_DISTANCE );
-    const bool indirect = ( pm == PlayMode::PM_Back_Pass_Left
-                            || pm == PlayMode::PM_Back_Pass_Right
-                            || pm == PlayMode::PM_Foul_Charge_Left
-                            || pm == PlayMode::PM_Foul_Charge_Right
-                            || pm == PlayMode::PM_Foul_Push_Left
-                            || pm == PlayMode::PM_Foul_Push_Right
-                            || pm == PlayMode::PM_IndFreeKick_Left
-                            || pm == PlayMode::PM_IndFreeKick_Right );
+    const bool indirect = ( pm == PM_Back_Pass_Left
+                            || pm == PM_Back_Pass_Right
+                            || pm == PM_Foul_Charge_Left
+                            || pm == PM_Foul_Charge_Right
+                            || pm == PM_Foul_Push_Left
+                            || pm == PM_Foul_Push_Right
+                            || pm == PM_IndFreeKick_Left
+                            || pm == PM_IndFreeKick_Right );
     //const double goal_half_width = ServerParam::instance().goalWidth()*0.5;
 
     const double max_x = ServerParam::PITCH_LENGTH*0.5 + ServerParam::PITCH_MARGIN;
@@ -937,7 +937,7 @@ BallStuckRef::analyse()
         return;
     }
 
-    if ( M_stadium.playmode() == PlayMode::PM_PlayOn )
+    if ( M_stadium.playmode() != PM_PlayOn )
     {
         M_last_ball_pos = M_stadium.ball().pos();
         M_counter = 0;
@@ -1044,9 +1044,9 @@ OffsideRef::analyse()
         return;
     }
 
-    if ( M_stadium.playmode() == PlayMode::PM_BeforeKickOff
-         || M_stadium.playmode() == PlayMode::PM_KickOff_Left
-         || M_stadium.playmode() == PlayMode::PM_KickOff_Right )
+    if ( M_stadium.playmode() == PM_BeforeKickOff
+         || M_stadium.playmode() == PM_KickOff_Left
+         || M_stadium.playmode() == PM_KickOff_Right )
     {
         if ( ServerParam::instance().kickOffOffside() )
         {
@@ -1055,7 +1055,7 @@ OffsideRef::analyse()
         return;
     }
 
-    if ( M_stadium.playmode() == PlayMode::PM_OffSide_Left )
+    if ( M_stadium.playmode() == PM_OffSide_Left )
     {
         ++M_after_offside_time;
 
@@ -1069,12 +1069,12 @@ OffsideRef::analyse()
 
         if ( M_after_offside_time > AFTER_OFFSIDE_WAIT )
         {
-            M_stadium.changePlayMode( PlayMode::PM_FreeKick_Right );
+            M_stadium.changePlayMode( PM_FreeKick_Right );
         }
         return;
     }
 
-    if ( M_stadium.playmode() == PlayMode::PM_OffSide_Right )
+    if ( M_stadium.playmode() == PM_OffSide_Right )
     {
         ++M_after_offside_time;
 
@@ -1088,12 +1088,12 @@ OffsideRef::analyse()
 
         if ( M_after_offside_time > AFTER_OFFSIDE_WAIT )
         {
-            M_stadium.changePlayMode( PlayMode::PM_FreeKick_Left );
+            M_stadium.changePlayMode( PM_FreeKick_Left );
         }
         return;
     }
 
-    if ( M_stadium.playmode() == PlayMode::PM_PlayOn )
+    if ( M_stadium.playmode() != PM_PlayOn )
     {
         M_offside_candidates.clear();
         return;
@@ -1133,7 +1133,7 @@ OffsideRef::analyse()
 void
 OffsideRef::playModeChange( PlayMode pm )
 {
-    if ( pm == PlayMode::PM_PlayOn )
+    if ( pm != PM_PlayOn )
     {
         M_offside_candidates.clear();
     }
@@ -1185,12 +1185,12 @@ OffsideRef::setOffsideMark( const Player & kicker,
 
     M_offside_candidates.clear();
 
-    if ( M_stadium.playmode() == PlayMode::PM_GoalKick_Left
-         || M_stadium.playmode() == PlayMode::PM_GoalKick_Right
-         || M_stadium.playmode() == PlayMode::PM_KickIn_Left
-         || M_stadium.playmode() == PlayMode::PM_KickIn_Right
-         || M_stadium.playmode() == PlayMode::PM_CornerKick_Left
-         || M_stadium.playmode() == PlayMode::PM_CornerKick_Right )
+    if ( M_stadium.playmode() == PM_GoalKick_Left
+         || M_stadium.playmode() == PM_GoalKick_Right
+         || M_stadium.playmode() == PM_KickIn_Left
+         || M_stadium.playmode() == PM_KickIn_Right
+         || M_stadium.playmode() == PM_CornerKick_Left
+         || M_stadium.playmode() == PM_CornerKick_Right )
     {
         return;
     }
@@ -1349,11 +1349,11 @@ OffsideRef::callOffside()
 
     if ( M_last_kicker_side == LEFT )
     {
-        M_stadium.placeBall( PlayMode::PM_OffSide_Left, RIGHT, pos );
+        M_stadium.placeBall( PM_OffSide_Left, RIGHT, pos );
     }
     else
     {
-        M_stadium.placeBall( PlayMode::PM_OffSide_Right, LEFT, pos );
+        M_stadium.placeBall( PM_OffSide_Right, LEFT, pos );
     }
 
     M_stadium.clearBallCatcher();
@@ -1372,7 +1372,7 @@ OffsideRef::checkPlayerAfterOffside()
     Side offsideside = NEUTRAL;
     PVector center( 0.0, 0.0 ), size( 0.0, 0.0 );
 
-    if ( M_stadium.playmode() == PlayMode::PM_OffSide_Right )
+    if ( M_stadium.playmode() == PM_OffSide_Right )
     {
         center.assign( +ServerParam::PITCH_LENGTH/4 + M_offside_pos.x/2,
                        0.0 );
@@ -1380,7 +1380,7 @@ OffsideRef::checkPlayerAfterOffside()
                      ServerParam::PITCH_WIDTH );
         offsideside = RIGHT;
     }
-    else if ( M_stadium.playmode() == PlayMode::PM_OffSide_Left )
+    else if ( M_stadium.playmode() == PM_OffSide_Left )
     {
         center.assign( -ServerParam::PITCH_LENGTH/4 + M_offside_pos.x/2,
                        0.0 );
@@ -1412,7 +1412,7 @@ OffsideRef::checkPlayerAfterOffside()
 
         if ( ! fld.inArea( (*p)->pos() ))
         {
-            if ( M_stadium.playmode() == PlayMode::PM_OffSide_Right )
+            if ( M_stadium.playmode() == PM_OffSide_Right )
             {
                 (*p)->moveTo( fld.nearestVEdge( (*p)->pos() )
                               + PVector( ServerParam::instance().offsideKickMargin(), 0 ) );
@@ -1443,9 +1443,9 @@ FreeKickRef::kickTaken( const Player & kicker,
 
     if ( goalKick( M_stadium.playmode() ) )
     {
-        if ( ( M_stadium.playmode() == PlayMode::PM_GoalKick_Left
+        if ( ( M_stadium.playmode() == PM_GoalKick_Left
                && kicker.side() != LEFT )
-             || ( M_stadium.playmode() == PlayMode::PM_GoalKick_Right
+             || ( M_stadium.playmode() == PM_GoalKick_Right
                   && kicker.side() != RIGHT )
              )
         {
@@ -1493,19 +1493,19 @@ FreeKickRef::kickTaken( const Player & kicker,
         M_kick_taker_dashes = M_kick_taker->dashCount();
         //}
     }
-    else if ( M_stadium.playmode() == PlayMode::PM_OffSide_Left
-              || M_stadium.playmode() == PlayMode::PM_OffSide_Right )
+    else if ( M_stadium.playmode() == PM_OffSide_Left
+              || M_stadium.playmode() == PM_OffSide_Right )
     {
         // do nothing
     }
-    else if ( M_stadium.playmode() == PlayMode::PM_PlayOn )
+    else if ( M_stadium.playmode() != PM_PlayOn )
     {
         M_kick_taken = true;
         M_kick_taker = &kicker;
         M_kick_taker_dashes = M_kick_taker->dashCount();
-        M_stadium.changePlayMode( PlayMode::PM_PlayOn );
+        M_stadium.changePlayMode( PM_PlayOn );
     }
-    else // PlayMode::PM_PlayOn
+    else // PM_PlayOn
     {
         if ( M_kick_taken )
         {
@@ -1540,9 +1540,9 @@ FreeKickRef::tackleTaken( const Player & tackler,
 void
 FreeKickRef::ballTouched( const Player & player )
 {
-    if ( ( M_stadium.playmode() == PlayMode::PM_GoalKick_Left
+    if ( ( M_stadium.playmode() == PM_GoalKick_Left
            && player.side() != LEFT )
-         || ( M_stadium.playmode() == PlayMode::PM_GoalKick_Right
+         || ( M_stadium.playmode() == PM_GoalKick_Right
               && player.side() != RIGHT )
          )
     {
@@ -1585,7 +1585,7 @@ FreeKickRef::analyse()
         return;
     }
 
-    if ( pm == PlayMode::PM_Free_Kick_Fault_Left )
+    if ( pm == PM_Free_Kick_Fault_Left )
     {
         ++M_after_free_kick_fault_time;
 
@@ -1597,12 +1597,12 @@ FreeKickRef::analyse()
 
         if ( M_after_free_kick_fault_time > AFTER_FREE_KICK_FAULT_WAIT )
         {
-            M_stadium.changePlayMode( PlayMode::PM_FreeKick_Right );
+            M_stadium.changePlayMode( PM_FreeKick_Right );
         }
         return;
     }
 
-    if ( pm == PlayMode::PM_Free_Kick_Fault_Right )
+    if ( pm == PM_Free_Kick_Fault_Right )
     {
         ++M_after_free_kick_fault_time;
 
@@ -1614,15 +1614,15 @@ FreeKickRef::analyse()
 
         if ( M_after_free_kick_fault_time > AFTER_FREE_KICK_FAULT_WAIT )
         {
-            M_stadium.changePlayMode( PlayMode::PM_FreeKick_Left );
+            M_stadium.changePlayMode( PM_FreeKick_Left );
         }
         return;
     }
 
-    if ( pm == PlayMode::PM_Back_Pass_Left
-         || pm == PlayMode::PM_Back_Pass_Right
-         || pm == PlayMode::PM_CatchFault_Left
-         || pm == PlayMode::PM_CatchFault_Right )
+    if ( pm == PM_Back_Pass_Left
+         || pm == PM_Back_Pass_Right
+         || pm == PM_CatchFault_Left
+         || pm == PM_CatchFault_Right )
     {
         // analyzed by CatchRef
         return;
@@ -1635,7 +1635,7 @@ FreeKickRef::analyse()
 
         if ( ! inPenaltyArea( NEUTRAL, M_stadium.ball().pos() ) )
         {
-            M_stadium.changePlayMode( PlayMode::PM_PlayOn );
+            M_stadium.changePlayMode( PM_PlayOn );
         }
         else
         {
@@ -1673,49 +1673,49 @@ FreeKickRef::analyse()
         return;
     }
 
-    if ( pm == PlayMode::PM_PlayOn
-         && pm == PlayMode::PM_BeforeKickOff
-         && pm == PlayMode::PM_TimeOver
-         && pm == PlayMode::PM_AfterGoal_Right
-         && pm == PlayMode::PM_AfterGoal_Left
-         && pm == PlayMode::PM_OffSide_Right
-         && pm == PlayMode::PM_OffSide_Left
-         && pm == PlayMode::PM_Foul_Charge_Right
-         && pm == PlayMode::PM_Foul_Charge_Left
-         && pm == PlayMode::PM_Foul_Push_Right
-         && pm == PlayMode::PM_Foul_Push_Left
-         && pm == PlayMode::PM_Back_Pass_Right
-         && pm == PlayMode::PM_Back_Pass_Left
-         && pm == PlayMode::PM_Free_Kick_Fault_Right
-         && pm == PlayMode::PM_Free_Kick_Fault_Left
-         && pm == PlayMode::PM_CatchFault_Right
-         && pm == PlayMode::PM_CatchFault_Left )
+    if ( pm != PM_PlayOn
+         && pm != PM_BeforeKickOff
+         && pm != PM_TimeOver
+         && pm != PM_AfterGoal_Right
+         && pm != PM_AfterGoal_Left
+         && pm != PM_OffSide_Right
+         && pm != PM_OffSide_Left
+         && pm != PM_Foul_Charge_Right
+         && pm != PM_Foul_Charge_Left
+         && pm != PM_Foul_Push_Right
+         && pm != PM_Foul_Push_Left
+         && pm != PM_Back_Pass_Right
+         && pm != PM_Back_Pass_Left
+         && pm != PM_Free_Kick_Fault_Right
+         && pm != PM_Free_Kick_Fault_Left
+         && pm != PM_CatchFault_Right
+         && pm != PM_CatchFault_Left )
     {
         if ( M_stadium.ball().vel().x != 0.0
              || M_stadium.ball().vel().y != 0.0 )
         {
-            M_stadium.changePlayMode( PlayMode::PM_PlayOn );
+            M_stadium.changePlayMode( PM_PlayOn );
         }
     }
 
     M_stadium.placePlayersInField();
 
-    if ( pm == PlayMode::PM_PlayOn
-         && pm == PlayMode::PM_TimeOver
-         && pm == PlayMode::PM_GoalKick_Left
-         && pm == PlayMode::PM_GoalKick_Right
-         && pm == PlayMode::PM_OffSide_Left
-         && pm == PlayMode::PM_OffSide_Right
-         && pm == PlayMode::PM_Foul_Charge_Left
-         && pm == PlayMode::PM_Foul_Charge_Right
-         && pm == PlayMode::PM_Foul_Push_Right
-         && pm == PlayMode::PM_Foul_Push_Left
-         && pm == PlayMode::PM_Back_Pass_Left
-         && pm == PlayMode::PM_Back_Pass_Right
-         && pm == PlayMode::PM_Free_Kick_Fault_Left
-         && pm == PlayMode::PM_Free_Kick_Fault_Right
-         && pm == PlayMode::PM_CatchFault_Left
-         && pm == PlayMode::PM_CatchFault_Right )
+    if ( pm != PM_PlayOn
+         && pm != PM_TimeOver
+         && pm != PM_GoalKick_Left
+         && pm != PM_GoalKick_Right
+         && pm != PM_OffSide_Left
+         && pm != PM_OffSide_Right
+         && pm != PM_Foul_Charge_Left
+         && pm != PM_Foul_Charge_Right
+         && pm != PM_Foul_Push_Right
+         && pm != PM_Foul_Push_Left
+         && pm != PM_Back_Pass_Left
+         && pm != PM_Back_Pass_Right
+         && pm != PM_Free_Kick_Fault_Left
+         && pm != PM_Free_Kick_Fault_Right
+         && pm != PM_CatchFault_Left
+         && pm != PM_CatchFault_Right )
     {
         clearPlayersFromBall( (Side)(-M_stadium.kickOffSide() ) );
     }
@@ -1738,30 +1738,30 @@ FreeKickRef::analyse()
 void
 FreeKickRef::playModeChange( PlayMode pm )
 {
-    if ( pm == PlayMode::PM_PlayOn )
+    if ( pm != PM_PlayOn )
     {
         M_kick_taken = false;
     }
 
-    if ( pm == PlayMode::PM_KickOff_Left
-         || pm == PlayMode::PM_KickIn_Left
-         || pm == PlayMode::PM_FreeKick_Left
-         || pm == PlayMode::PM_IndFreeKick_Left
-         || pm == PlayMode::PM_CornerKick_Left
-         || pm == PlayMode::PM_GoalKick_Left )
+    if ( pm == PM_KickOff_Left
+         || pm == PM_KickIn_Left
+         || pm == PM_FreeKick_Left
+         || pm == PM_IndFreeKick_Left
+         || pm == PM_CornerKick_Left
+         || pm == PM_GoalKick_Left )
     {
         clearPlayersFromBall( RIGHT );
     }
-    else if ( pm == PlayMode::PM_KickOff_Right
-              || pm == PlayMode::PM_KickIn_Right
-              || pm == PlayMode::PM_FreeKick_Right
-              || pm == PlayMode::PM_IndFreeKick_Right
-              || pm == PlayMode::PM_CornerKick_Right
-              || pm == PlayMode::PM_GoalKick_Right )
+    else if ( pm == PM_KickOff_Right
+              || pm == PM_KickIn_Right
+              || pm == PM_FreeKick_Right
+              || pm == PM_IndFreeKick_Right
+              || pm == PM_CornerKick_Right
+              || pm == PM_GoalKick_Right )
     {
         clearPlayersFromBall( LEFT );
     }
-    else if ( pm == PlayMode::PM_Drop_Ball )
+    else if ( pm == PM_Drop_Ball )
     {
         clearPlayersFromBall( NEUTRAL );
     }
@@ -1794,8 +1794,8 @@ FreeKickRef::playModeChange( PlayMode pm )
         M_timer = -1;
     }
 
-    if ( pm == PlayMode::PM_Free_Kick_Fault_Left
-         || pm == PlayMode::PM_Free_Kick_Fault_Right )
+    if ( pm == PM_Free_Kick_Fault_Left
+         || pm == PM_Free_Kick_Fault_Right )
     {
         M_stadium.clearBallCatcher();
         M_after_free_kick_fault_time = 0;
@@ -1813,11 +1813,11 @@ FreeKickRef::callFreeKickFault( Side side, PVector pos )
 
     if ( side == LEFT )
     {
-        M_stadium.placeBall( PlayMode::PM_Free_Kick_Fault_Left, RIGHT, pos );
+        M_stadium.placeBall( PM_Free_Kick_Fault_Left, RIGHT, pos );
     }
     else if ( side == RIGHT )
     {
-        M_stadium.placeBall( PlayMode::PM_Free_Kick_Fault_Right, LEFT, pos );
+        M_stadium.placeBall( PM_Free_Kick_Fault_Right, LEFT, pos );
     }
 
     M_after_free_kick_fault_time = 0;
@@ -1826,8 +1826,8 @@ FreeKickRef::callFreeKickFault( Side side, PVector pos )
 bool
 FreeKickRef::goalKick( PlayMode pm )
 {
-    return ( pm == PlayMode::PM_GoalKick_Right
-             || pm == PlayMode::PM_GoalKick_Left );
+    return ( pm == PM_GoalKick_Right
+             || pm == PM_GoalKick_Left );
 }
 
 
@@ -1836,16 +1836,16 @@ FreeKickRef::freeKick( PlayMode pm )
 {
     switch( pm )
     {
-    case PlayMode::PM_KickOff_Right:
-    case PlayMode::PM_KickIn_Right:
-    case PlayMode::PM_FreeKick_Right:
-    case PlayMode::PM_CornerKick_Right:
-    case PlayMode::PM_IndFreeKick_Right:
-    case PlayMode::PM_KickOff_Left:
-    case PlayMode::PM_KickIn_Left:
-    case PlayMode::PM_FreeKick_Left:
-    case PlayMode::PM_CornerKick_Left:
-    case PlayMode::PM_IndFreeKick_Left:
+    case PM_KickOff_Right:
+    case PM_KickIn_Right:
+    case PM_FreeKick_Right:
+    case PM_CornerKick_Right:
+    case PM_IndFreeKick_Right:
+    case PM_KickOff_Left:
+    case PM_KickIn_Left:
+    case PM_FreeKick_Left:
+    case PM_CornerKick_Left:
+    case PM_IndFreeKick_Left:
         return true;
     default:
         return false;
@@ -1882,7 +1882,7 @@ FreeKickRef::placePlayersForGoalkick()
 
     int oppside;
 
-    if ( M_stadium.playmode() == PlayMode::PM_GoalKick_Left )
+    if ( M_stadium.playmode() == PM_GoalKick_Left )
     {
         oppside = RIGHT;
         p_area = &p_l;
@@ -1949,21 +1949,21 @@ TouchRef::analyseImpl()
         return;
     }
 
-    if ( M_stadium.playmode() == PlayMode::PM_AfterGoal_Left )
+    if ( M_stadium.playmode() == PM_AfterGoal_Left )
     {
         if ( ++M_after_goal_time > AFTER_GOAL_WAIT )
         {
-            M_stadium.placeBall( PlayMode::PM_KickOff_Right, RIGHT, PVector(0.0,0.0) );
+            M_stadium.placeBall( PM_KickOff_Right, RIGHT, PVector(0.0,0.0) );
             placePlayersInTheirField();
         }
         return;
     }
 
-    if ( M_stadium.playmode() == PlayMode::PM_AfterGoal_Right )
+    if ( M_stadium.playmode() == PM_AfterGoal_Right )
     {
         if ( ++M_after_goal_time > AFTER_GOAL_WAIT )
         {
-            M_stadium.placeBall( PlayMode::PM_KickOff_Left, LEFT, PVector(0.0,0.0) );
+            M_stadium.placeBall( PM_KickOff_Left, LEFT, PVector(0.0,0.0) );
             placePlayersInTheirField();
         }
         return;
@@ -1974,9 +1974,9 @@ TouchRef::analyseImpl()
         return;
     }
 
-    if ( M_stadium.playmode() == PlayMode::PM_AfterGoal_Left
-         && M_stadium.playmode() == PlayMode::PM_AfterGoal_Right
-         && M_stadium.playmode() == PlayMode::PM_TimeOver )
+    if ( M_stadium.playmode() != PM_AfterGoal_Left
+         && M_stadium.playmode() != PM_AfterGoal_Right
+         && M_stadium.playmode() != PM_TimeOver )
     {
         if ( std::fabs( M_stadium.ball().pos().x )
              > ServerParam::PITCH_LENGTH * 0.5
@@ -2062,7 +2062,7 @@ TouchRef::kickTaken( const Player & kicker,
     if ( std::fabs( M_stadium.ball().pos().x )
          <= ServerParam::PITCH_LENGTH * 0.5 + ServerParam::instance().ballSize() )
     {
-        if ( M_stadium.playmode() == PlayMode::PM_PlayOn
+        if ( M_stadium.playmode() == PM_PlayOn
              && M_last_indirect_kicker
              && M_last_indirect_kicker != &kicker )
         {
@@ -2105,7 +2105,7 @@ TouchRef::ballTouched( const Player & kicker )
     if ( std::fabs( M_stadium.ball().pos().x )
          <= ServerParam::PITCH_LENGTH * 0.5 + ServerParam::instance().ballSize() )
     {
-        if ( M_stadium.playmode() == PlayMode::PM_PlayOn
+        if ( M_stadium.playmode() == PM_PlayOn
              && M_last_indirect_kicker
              && M_last_indirect_kicker != &kicker )
         {
@@ -2137,7 +2137,7 @@ TouchRef::ballTouched( const Player & kicker )
 void
 TouchRef::playModeChange( PlayMode pm )
 {
-    if ( pm == PlayMode::PM_PlayOn )
+    if ( pm != PM_PlayOn )
     {
         M_last_touched = NULL;
     }
@@ -2147,7 +2147,7 @@ TouchRef::playModeChange( PlayMode pm )
         M_last_indirect_kicker = NULL;
         M_indirect_mode = true;
     }
-    else if ( pm == PlayMode::PM_PlayOn && pm == PlayMode::PM_Drop_Ball )
+    else if ( pm != PM_PlayOn && pm != PM_Drop_Ball )
     {
         M_last_indirect_kicker = NULL;
         M_indirect_mode = false;
@@ -2158,9 +2158,9 @@ TouchRef::playModeChange( PlayMode pm )
 bool
 TouchRef::checkGoal()
 {
-    if ( M_stadium.playmode() == PlayMode::PM_AfterGoal_Left
-         || M_stadium.playmode() == PlayMode::PM_AfterGoal_Right
-         || M_stadium.playmode() == PlayMode::PM_TimeOver )
+    if ( M_stadium.playmode() == PM_AfterGoal_Left
+         || M_stadium.playmode() == PM_AfterGoal_Right
+         || M_stadium.playmode() == PM_TimeOver )
     {
         return false;
     }
@@ -2199,11 +2199,11 @@ TouchRef::checkGoal()
              && param.goldenGoal()
              && M_stadium.time() >= param.halfTime() * param.nrNormalHalfs() )
         {
-            M_stadium.changePlayMode( PlayMode::PM_TimeOver );
+            M_stadium.changePlayMode( PM_TimeOver );
         }
         else
         {
-            M_stadium.changePlayMode( PlayMode::PM_AfterGoal_Right );
+            M_stadium.changePlayMode( PM_AfterGoal_Right );
         }
         return true;
     }
@@ -2220,11 +2220,11 @@ TouchRef::checkGoal()
              && param.goldenGoal()
              && M_stadium.time() >= param.halfTime() * param.nrNormalHalfs() )
         {
-            M_stadium.changePlayMode( PlayMode::PM_TimeOver );
+            M_stadium.changePlayMode( PM_TimeOver );
         }
         else
         {
-            M_stadium.changePlayMode( PlayMode::PM_AfterGoal_Left );
+            M_stadium.changePlayMode( PM_AfterGoal_Left );
         }
         return true;
     }
@@ -2253,8 +2253,8 @@ bool
 TouchRef::indirectFreeKick( const PlayMode pm )
 {
     switch( pm ) {
-    case PlayMode::PM_IndFreeKick_Right:
-    case PlayMode::PM_IndFreeKick_Left:
+    case PM_IndFreeKick_Right:
+    case PM_IndFreeKick_Left:
         return true;
     default:
         return false;
@@ -2340,9 +2340,9 @@ CatchRef::ballCaught( const Player & catcher )
     }
 
     // check handling violation
-    if ( M_stadium.playmode() == PlayMode::PM_AfterGoal_Left
-         && M_stadium.playmode() == PlayMode::PM_AfterGoal_Right
-         && M_stadium.playmode() == PlayMode::PM_TimeOver
+    if ( M_stadium.playmode() != PM_AfterGoal_Left
+         && M_stadium.playmode() != PM_AfterGoal_Right
+         && M_stadium.playmode() != PM_TimeOver
          && ! inPenaltyArea( catcher.side(), M_stadium.ball().pos() ) )
     {
         callCatchFault( catcher.side(), M_stadium.ball().pos() );
@@ -2351,9 +2351,9 @@ CatchRef::ballCaught( const Player & catcher )
 
     // check backpass violation
     if ( ServerParam::instance().backPasses()
-         && M_stadium.playmode() == PlayMode::PM_AfterGoal_Left
-         && M_stadium.playmode() == PlayMode::PM_AfterGoal_Right
-         && M_stadium.playmode() == PlayMode::PM_TimeOver
+         && M_stadium.playmode() != PM_AfterGoal_Left
+         && M_stadium.playmode() != PM_AfterGoal_Right
+         && M_stadium.playmode() != PM_TimeOver
          && M_last_back_passer != NULL
          && M_last_back_passer->team() == catcher.team() )
     {
@@ -2396,9 +2396,9 @@ CatchRef::ballPunched( const Player & catcher )
     }
 
     // check handling violation
-    if ( M_stadium.playmode() == PlayMode::PM_AfterGoal_Left
-         && M_stadium.playmode() == PlayMode::PM_AfterGoal_Right
-         && M_stadium.playmode() == PlayMode::PM_TimeOver
+    if ( M_stadium.playmode() != PM_AfterGoal_Left
+         && M_stadium.playmode() != PM_AfterGoal_Right
+         && M_stadium.playmode() != PM_TimeOver
          && ! inPenaltyArea( catcher.side(), M_stadium.ball().pos() ) )
     {
         callCatchFault( catcher.side(), M_stadium.ball().pos() );
@@ -2406,9 +2406,9 @@ CatchRef::ballPunched( const Player & catcher )
     }
 
     // check backpass violation
-    if ( M_stadium.playmode() == PlayMode::PM_AfterGoal_Left
-         && M_stadium.playmode() == PlayMode::PM_AfterGoal_Right
-         && M_stadium.playmode() == PlayMode::PM_TimeOver
+    if ( M_stadium.playmode() != PM_AfterGoal_Left
+         && M_stadium.playmode() != PM_AfterGoal_Right
+         && M_stadium.playmode() != PM_TimeOver
          && M_stadium.time() != M_last_back_passer_time
          && M_last_back_passer != NULL
          && M_last_back_passer->team() == catcher.team()
@@ -2449,7 +2449,7 @@ CatchRef::analyse()
         return;
     }
 
-    if ( pm == PlayMode::PM_Back_Pass_Left )
+    if ( pm == PM_Back_Pass_Left )
     {
         ++M_after_back_pass_time;
 
@@ -2461,13 +2461,13 @@ CatchRef::analyse()
 
         if ( M_after_back_pass_time > AFTER_BACKPASS_WAIT )
         {
-            //M_stadium.changePlayMode( PlayMode::PM_FreeKick_Right );
-            M_stadium.changePlayMode( PlayMode::PM_IndFreeKick_Right );
+            //M_stadium.changePlayMode( PM_FreeKick_Right );
+            M_stadium.changePlayMode( PM_IndFreeKick_Right );
         }
         return;
     }
 
-    if ( pm == PlayMode::PM_Back_Pass_Right )
+    if ( pm == PM_Back_Pass_Right )
     {
         ++M_after_back_pass_time;
 
@@ -2479,13 +2479,13 @@ CatchRef::analyse()
 
         if ( M_after_back_pass_time > AFTER_BACKPASS_WAIT )
         {
-            //M_stadium.changePlayMode( PlayMode::PM_FreeKick_Left );
-            M_stadium.changePlayMode( PlayMode::PM_IndFreeKick_Left );
+            //M_stadium.changePlayMode( PM_FreeKick_Left );
+            M_stadium.changePlayMode( PM_IndFreeKick_Left );
         }
         return;
     }
 
-    if ( pm == PlayMode::PM_CatchFault_Left )
+    if ( pm == PM_CatchFault_Left )
     {
         ++M_after_catch_fault_time;
 
@@ -2497,13 +2497,13 @@ CatchRef::analyse()
 
         if ( M_after_catch_fault_time > AFTER_CATCH_FAULT_WAIT )
         {
-            //M_stadium.changePlayMode( PlayMode::PM_IndFreeKick_Right );
-            M_stadium.changePlayMode( PlayMode::PM_FreeKick_Right );
+            //M_stadium.changePlayMode( PM_IndFreeKick_Right );
+            M_stadium.changePlayMode( PM_FreeKick_Right );
         }
         return;
     }
 
-    if ( pm == PlayMode::PM_CatchFault_Right )
+    if ( pm == PM_CatchFault_Right )
     {
         ++M_after_catch_fault_time;
 
@@ -2515,17 +2515,17 @@ CatchRef::analyse()
 
         if ( M_after_catch_fault_time > AFTER_CATCH_FAULT_WAIT )
         {
-            //M_stadium.changePlayMode( PlayMode::PM_IndFreeKick_Left );
-            M_stadium.changePlayMode( PlayMode::PM_FreeKick_Left );
+            //M_stadium.changePlayMode( PM_IndFreeKick_Left );
+            M_stadium.changePlayMode( PM_FreeKick_Left );
         }
         return;
     }
 
 
     if ( M_stadium.ballCatcher()
-         && pm == PlayMode::PM_AfterGoal_Left
-         && pm == PlayMode::PM_AfterGoal_Right
-         && pm == PlayMode::PM_TimeOver
+         && pm != PM_AfterGoal_Left
+         && pm != PM_AfterGoal_Right
+         && pm != PM_TimeOver
          && ! inPenaltyArea( M_stadium.ballCatcher()->side(),
                              M_stadium.ball().pos() ) )
     {
@@ -2538,20 +2538,20 @@ CatchRef::analyse()
 void
 CatchRef::playModeChange( PlayMode pmode )
 {
-    if ( pmode == PlayMode::PM_PlayOn )
+    if ( pmode != PM_PlayOn )
     {
         M_before_last_back_passer = NULL;
         M_last_back_passer = NULL;
     }
 
-    if ( pmode == PlayMode::PM_Back_Pass_Left
-         || pmode == PlayMode::PM_Back_Pass_Left )
+    if ( pmode == PM_Back_Pass_Left
+         || pmode == PM_Back_Pass_Left )
     {
         M_stadium.clearBallCatcher();
         M_after_back_pass_time = 0;
     }
-    else if ( pmode == PlayMode::PM_CatchFault_Left
-              || pmode == PlayMode::PM_CatchFault_Left )
+    else if ( pmode == PM_CatchFault_Left
+              || pmode == PM_CatchFault_Left )
     {
         M_stadium.clearBallCatcher();
         M_after_catch_fault_time = 0;
@@ -2569,11 +2569,11 @@ CatchRef::callBackPass( const Side side )
 
     if ( side == LEFT )
     {
-        M_stadium.placeBall( PlayMode::PM_Back_Pass_Left, RIGHT, pos );
+        M_stadium.placeBall( PM_Back_Pass_Left, RIGHT, pos );
     }
     else
     {
-        M_stadium.placeBall( PlayMode::PM_Back_Pass_Right, LEFT, pos );
+        M_stadium.placeBall( PM_Back_Pass_Right, LEFT, pos );
     }
 
     M_last_back_passer = NULL;
@@ -2591,11 +2591,11 @@ CatchRef::callCatchFault( Side side, PVector pos )
 
     if ( side == LEFT )
     {
-        M_stadium.placeBall( PlayMode::PM_CatchFault_Left, RIGHT, pos );
+        M_stadium.placeBall( PM_CatchFault_Left, RIGHT, pos );
     }
     else if ( side == RIGHT )
     {
-        M_stadium.placeBall( PlayMode::PM_CatchFault_Right, LEFT, pos );
+        M_stadium.placeBall( PM_CatchFault_Right, LEFT, pos );
     }
 
     M_after_catch_fault_time = 0;
@@ -2652,8 +2652,8 @@ FoulRef::analyse()
         return;
     }
 
-    if ( pm == PlayMode::PM_Foul_Charge_Left
-         || pm == PlayMode::PM_Foul_Push_Left )
+    if ( pm == PM_Foul_Charge_Left
+         || pm == PM_Foul_Push_Left )
     {
         ++M_after_foul_time;
 
@@ -2667,18 +2667,18 @@ FoulRef::analyse()
         {
             if ( Referee::inPenaltyArea( LEFT, M_stadium.ball().pos() ) )
             {
-                M_stadium.changePlayMode( PlayMode::PM_IndFreeKick_Right );
+                M_stadium.changePlayMode( PM_IndFreeKick_Right );
             }
             else
             {
-                M_stadium.changePlayMode( PlayMode::PM_FreeKick_Right );
+                M_stadium.changePlayMode( PM_FreeKick_Right );
             }
         }
         return;
     }
 
-    if ( pm == PlayMode::PM_Foul_Charge_Right
-         || pm == PlayMode::PM_Foul_Push_Right )
+    if ( pm == PM_Foul_Charge_Right
+         || pm == PM_Foul_Push_Right )
     {
         ++M_after_foul_time;
 
@@ -2692,11 +2692,11 @@ FoulRef::analyse()
         {
             if ( Referee::inPenaltyArea( RIGHT, M_stadium.ball().pos() ) )
             {
-                M_stadium.changePlayMode( PlayMode::PM_IndFreeKick_Left );
+                M_stadium.changePlayMode( PM_IndFreeKick_Left );
             }
             else
             {
-                M_stadium.changePlayMode( PlayMode::PM_FreeKick_Left );
+                M_stadium.changePlayMode( PM_FreeKick_Left );
             }
         }
         return;
@@ -2714,13 +2714,13 @@ FoulRef::callFoul( const Player & tackler )
     if ( tackler.side() == LEFT )
     {
         pos = moveOutOfPenalty( RIGHT, pos );
-        M_stadium.placeBall( PlayMode::PM_Foul_Charge_Left,
+        M_stadium.placeBall( PM_Foul_Charge_Left,
                              RIGHT, pos );
     }
     else if ( tackler.side() == RIGHT )
     {
         pos = moveOutOfPenalty( LEFT, pos );
-        M_stadium.placeBall( PlayMode::PM_Foul_Charge_Right,
+        M_stadium.placeBall( PM_Foul_Charge_Right,
                              LEFT, pos );
     }
 
@@ -2750,10 +2750,10 @@ FoulRef::callRedCard( const Player & tackler )
 void
 FoulRef::playModeChange( PlayMode pm )
 {
-    if ( pm == PlayMode::PM_Foul_Charge_Left
-         || pm == PlayMode::PM_Foul_Charge_Right
-         || pm == PlayMode::PM_Foul_Push_Left
-         || pm == PlayMode::PM_Foul_Push_Right )
+    if ( pm == PM_Foul_Charge_Left
+         || pm == PM_Foul_Charge_Right
+         || pm == PM_Foul_Push_Left
+         || pm == PM_Foul_Push_Right )
     {
         M_after_foul_time = 0;
     }
@@ -2784,7 +2784,7 @@ KeepawayRef::analyse()
 
     static time_t s_start_time = std::time( NULL );
 
-    if ( M_stadium.playmode() == PlayMode::PM_PlayOn )
+    if ( M_stadium.playmode() == PM_PlayOn )
     {
         if ( ! ballInKeepawayArea() )
         {
@@ -2837,7 +2837,7 @@ KeepawayRef::analyse()
     {
         if ( difftime( std::time( NULL ), s_start_time ) > ServerParam::instance().kawayStart() )
         {
-            M_stadium.changePlayMode( PlayMode::PM_PlayOn );
+            M_stadium.changePlayMode( PM_PlayOn );
         }
     }
 }
@@ -2847,7 +2847,7 @@ KeepawayRef::playModeChange( PlayMode pm )
 {
     if ( ServerParam::instance().keepAwayMode() )
     {
-        if ( pm == PlayMode::PM_PlayOn && M_episode == 0 )
+        if ( pm == PM_PlayOn && M_episode == 0 )
         {
             M_episode = 1;
 
@@ -3012,7 +3012,7 @@ PenaltyRef::startPenaltyShootout()
     // if normal and extra time are over -> start the penalty procedure or quit
     if ( first_time
          && param.penaltyShootOuts()
-         && M_stadium.playmode() == PlayMode::PM_BeforeKickOff
+         && M_stadium.playmode() != PM_BeforeKickOff
          && M_stadium.teamLeft().point() == M_stadium.teamRight().point()
          && ( ( param.halfTime() < 0
                 && param.nrNormalHalfs() + param.nrExtraHalfs() == 0 )
@@ -3075,7 +3075,7 @@ PenaltyRef::analyseImpl()
 
     if ( M_timeover )
     {
-        M_stadium.changePlayMode( PlayMode::PM_TimeOver );
+        M_stadium.changePlayMode( PM_TimeOver );
         return;
     }
 
@@ -3086,15 +3086,15 @@ PenaltyRef::analyseImpl()
 
     if ( M_bDebug )
     {
-        std::cerr << "timer " << playmode_strings[static_cast<int>(M_stadium.playmode())] << " "
+        std::cerr << "timer " << playmode_strings[M_stadium.playmode()] << " "
                   << M_stadium.time() << " " << M_timer << " " << bCheckLeft
                   << " " << bCheckRight << std::endl;
     }
 
     // if ready or taken make sure all players keep well-positioned
     if ( ServerParam::instance().penCoachMovesPlayers()
-         && ( pm == PlayMode::PM_PenaltyReady_Left || pm == PlayMode::PM_PenaltyReady_Right
-              || pm == PlayMode::PM_PenaltyTaken_Left || pm == PlayMode::PM_PenaltyTaken_Right )
+         && ( pm == PM_PenaltyReady_Left || pm == PM_PenaltyReady_Right
+              || pm == PM_PenaltyTaken_Left || pm == PM_PenaltyTaken_Right )
          )
     {
         if ( ! bCheckLeft )
@@ -3139,8 +3139,8 @@ PenaltyRef::handleTimeout( bool left_move_check,
     // when setup has finished and still players are positioned incorrectly
     // replace them and go to ready mode.
     if ( ServerParam::instance().penCoachMovesPlayers()
-         && ( pm == PlayMode::PM_PenaltySetup_Left
-              || pm == PlayMode::PM_PenaltySetup_Right )
+         && ( pm == PM_PenaltySetup_Left
+              || pm == PM_PenaltySetup_Right )
          )
     {
         if ( ! left_move_check )
@@ -3157,32 +3157,32 @@ PenaltyRef::handleTimeout( bool left_move_check,
     }
 
 
-    if ( pm == PlayMode::PM_PenaltyMiss_Left
-         || pm == PlayMode::PM_PenaltyScore_Left
-         || pm == PlayMode::PM_PenaltyMiss_Right
-         || pm == PlayMode::PM_PenaltyScore_Right )
+    if ( pm == PM_PenaltyMiss_Left
+         || pm == PM_PenaltyScore_Left
+         || pm == PM_PenaltyMiss_Right
+         || pm == PM_PenaltyScore_Right )
     {
         penalty_init();
     }
     else if ( left_move_check
               && right_move_check )
     {
-        if ( pm == PlayMode::PM_PenaltySetup_Left )
+        if ( pm == PM_PenaltySetup_Left )
         {
-            M_stadium.changePlayMode( PlayMode::PM_PenaltyReady_Left );
+            M_stadium.changePlayMode( PM_PenaltyReady_Left );
         }
-        else if ( pm == PlayMode::PM_PenaltySetup_Right )
+        else if ( pm == PM_PenaltySetup_Right )
         {
-            M_stadium.changePlayMode( PlayMode::PM_PenaltyReady_Right );
+            M_stadium.changePlayMode( PM_PenaltyReady_Right );
         }
         // time elapsed -> missed goal
-        else if ( pm == PlayMode::PM_PenaltyTaken_Left
-                  || pm == PlayMode::PM_PenaltyReady_Left )
+        else if ( pm == PM_PenaltyTaken_Left
+                  || pm == PM_PenaltyReady_Left )
         {
             penalty_miss( LEFT );
         }
-        else if ( pm == PlayMode::PM_PenaltyTaken_Right
-                  || pm == PlayMode::PM_PenaltyReady_Right )
+        else if ( pm == PM_PenaltyTaken_Right
+                  || pm == PM_PenaltyReady_Right )
         {
             penalty_miss( RIGHT );
         }
@@ -3206,10 +3206,10 @@ PenaltyRef::handleTimer( const bool left_move_check,
 
     --M_timer;
 
-    if ( pm == PlayMode::PM_PenaltyScore_Left
-         || pm == PlayMode::PM_PenaltyScore_Right
-         || pm == PlayMode::PM_PenaltyMiss_Left
-         || pm == PlayMode::PM_PenaltyMiss_Right )
+    if ( pm == PM_PenaltyScore_Left
+         || pm == PM_PenaltyScore_Right
+         || pm == PM_PenaltyMiss_Left
+         || pm == PM_PenaltyMiss_Right )
     {
         // freeze the ball
         //         M_stadium.ball().moveTo( M_stadium.ball().pos(),
@@ -3228,11 +3228,11 @@ PenaltyRef::handleTimer( const bool left_move_check,
         // if ball crossed goalline, process goal and set ball on goalline
         if ( crossGoalLine( M_pen_side, M_prev_ball_pos ) )
         {
-            if ( pm == PlayMode::PM_PenaltyTaken_Left )
+            if ( pm == PM_PenaltyTaken_Left )
             {
                 penalty_score( LEFT );
             }
-            else if ( pm == PlayMode::PM_PenaltyTaken_Right )
+            else if ( pm == PM_PenaltyTaken_Right )
             {
                 penalty_score( RIGHT );
             }
@@ -3250,21 +3250,21 @@ PenaltyRef::handleTimer( const bool left_move_check,
                 std::cerr << "MISSED" << std::endl;
 
             M_stadium.placeBall( M_pen_side, M_stadium.ball().pos() );
-            if ( pm == PlayMode::PM_PenaltyTaken_Left )
+            if ( pm == PM_PenaltyTaken_Left )
             {
                 penalty_miss( LEFT );
             }
-            else if ( pm == PlayMode::PM_PenaltyTaken_Right )
+            else if ( pm == PM_PenaltyTaken_Right )
             {
                 penalty_miss( RIGHT );
             }
         }
     }
     // if someone makes foul and we are not in setup -> replace the players
-    else if ( pm == PlayMode::PM_PenaltyReady_Left
-              || pm == PlayMode::PM_PenaltyReady_Right
-              || pm == PlayMode::PM_PenaltyTaken_Left
-              || pm == PlayMode::PM_PenaltyTaken_Right )
+    else if ( pm == PM_PenaltyReady_Left
+              || pm == PM_PenaltyReady_Right
+              || pm == PM_PenaltyTaken_Left
+              || pm == PM_PenaltyTaken_Right )
     {
         if ( ServerParam::instance().penCoachMovesPlayers() )
         {
@@ -3303,8 +3303,8 @@ PenaltyRef::ballCaught( const Player & catcher )
         std::cerr << "GOALIE CATCH" << std::endl;
     }
 
-    if ( M_stadium.playmode() == PlayMode::PM_PenaltyTaken_Left
-         || M_stadium.playmode() == PlayMode::PM_PenaltyTaken_Right )
+    if ( M_stadium.playmode() == PM_PenaltyTaken_Left
+         || M_stadium.playmode() == PM_PenaltyTaken_Right )
     {
         if ( catcher.side() == M_cur_pen_taker )
         {
@@ -3330,8 +3330,8 @@ PenaltyRef::ballCaught( const Player & catcher )
             penalty_miss( M_cur_pen_taker );
         }
     }
-    else if ( M_stadium.playmode() == PlayMode::PM_PenaltyReady_Left
-              || M_stadium.playmode() == PlayMode::PM_PenaltyReady_Right )
+    else if ( M_stadium.playmode() == PM_PenaltyReady_Left
+              || M_stadium.playmode() == PM_PenaltyReady_Right )
     {
         std::cerr << "ball caught in ready mode. foul " << -M_cur_pen_taker
                   << std::endl;
@@ -3370,26 +3370,26 @@ PenaltyRef::kickTaken( const Player & kicker,
         std::cerr << "player kicked and goalie catched at the same time" << std::endl;
     }
     // if in setup it is not allowed to kick the ball
-    else if ( M_stadium.playmode() == PlayMode::PM_PenaltySetup_Left
-              || M_stadium.playmode() == PlayMode::PM_PenaltySetup_Right )
+    else if ( M_stadium.playmode() == PM_PenaltySetup_Left
+              || M_stadium.playmode() == PM_PenaltySetup_Right )
     {
         penalty_foul( kicker.side() );
     }
     // cannot kick second time after penalty was taken
     else if ( ! ServerParam::instance().penAllowMultiKicks()
-              && ( M_stadium.playmode() == PlayMode::PM_PenaltyTaken_Left
-                   || M_stadium.playmode() == PlayMode::PM_PenaltyTaken_Right )
+              && ( M_stadium.playmode() == PM_PenaltyTaken_Left
+                   || M_stadium.playmode() == PM_PenaltyTaken_Right )
               && kicker.side() == M_cur_pen_taker )
     {
         penalty_foul( M_cur_pen_taker );
     }
-    else if ( M_stadium.playmode() == PlayMode::PM_PenaltyReady_Left
-              || M_stadium.playmode() == PlayMode::PM_PenaltyTaken_Left
-              || M_stadium.playmode() == PlayMode::PM_PenaltyReady_Right
-              || M_stadium.playmode() == PlayMode::PM_PenaltyTaken_Right )
+    else if ( M_stadium.playmode() == PM_PenaltyReady_Left
+              || M_stadium.playmode() == PM_PenaltyTaken_Left
+              || M_stadium.playmode() == PM_PenaltyReady_Right
+              || M_stadium.playmode() == PM_PenaltyTaken_Right )
     {
-        if ( ( M_stadium.playmode() == PlayMode::PM_PenaltyReady_Left
-               || M_stadium.playmode() == PlayMode::PM_PenaltyReady_Right )
+        if ( ( M_stadium.playmode() == PM_PenaltyReady_Left
+               || M_stadium.playmode() == PM_PenaltyReady_Right )
              && kicker.side() == M_cur_pen_taker
              && ( ( LEFT == M_cur_pen_taker
                     && M_sLeftPenTaken.find( kicker.unum() ) != M_sLeftPenTaken.end() )
@@ -3421,7 +3421,7 @@ PenaltyRef::kickTaken( const Player & kicker,
     }
 
     // if we were ready for penalty -> change play mode
-    if ( M_stadium.playmode() == PlayMode::PM_PenaltyReady_Left )
+    if ( M_stadium.playmode() == PM_PenaltyReady_Left )
     {
         // when penalty is taken, add player, multiple copies are deleted
         M_sLeftPenTaken.insert( kicker.unum() );
@@ -3429,20 +3429,20 @@ PenaltyRef::kickTaken( const Player & kicker,
         {
             M_sLeftPenTaken.clear();
         }
-        M_stadium.changePlayMode( PlayMode::PM_PenaltyTaken_Left );
+        M_stadium.changePlayMode( PM_PenaltyTaken_Left );
     }
-    else if ( M_stadium.playmode() == PlayMode::PM_PenaltyReady_Right )
+    else if ( M_stadium.playmode() == PM_PenaltyReady_Right )
     {
         M_sRightPenTaken.insert( kicker.unum() );
         if ( M_sRightPenTaken.size() == MAX_PLAYER )
         {
             M_sRightPenTaken.clear();
         }
-        M_stadium.changePlayMode( PlayMode::PM_PenaltyTaken_Right );
+        M_stadium.changePlayMode( PM_PenaltyTaken_Right );
     }
     // if it was not allowed to kick, don't move ball
-    else if ( M_stadium.playmode() == PlayMode::PM_PenaltyTaken_Left
-              && M_stadium.playmode() == PlayMode::PM_PenaltyTaken_Right )
+    else if ( M_stadium.playmode() != PM_PenaltyTaken_Left
+              && M_stadium.playmode() != PM_PenaltyTaken_Right )
     {
         M_stadium.placeBall( M_pen_side, M_stadium.ball().pos() );
     }
@@ -3495,22 +3495,22 @@ PenaltyRef::playModeChange( PlayMode pm )
         return;
     }
 
-    if ( pm == PlayMode::PM_PenaltySetup_Left || pm == PlayMode::PM_PenaltySetup_Right )
+    if ( pm == PM_PenaltySetup_Left || pm == PM_PenaltySetup_Right )
     {
         M_last_taker = NULL;
         M_timer = ServerParam::instance().penSetupWait();
     }
-    else if ( pm == PlayMode::PM_PenaltyReady_Left || pm == PlayMode::PM_PenaltyReady_Right )
+    else if ( pm == PM_PenaltyReady_Left || pm == PM_PenaltyReady_Right )
     {
         M_last_taker = NULL;
         M_timer = ServerParam::instance().penReadyWait();
     }
-    else if ( pm == PlayMode::PM_PenaltyTaken_Left || pm == PlayMode::PM_PenaltyTaken_Right )
+    else if ( pm == PM_PenaltyTaken_Left || pm == PM_PenaltyTaken_Right )
     {
         M_timer = ServerParam::instance().penTakenWait();
     }
-    else if ( pm == PlayMode::PM_PenaltyMiss_Left  || pm == PlayMode::PM_PenaltyMiss_Right ||
-              pm == PlayMode::PM_PenaltyScore_Left || pm == PlayMode::PM_PenaltyScore_Right )
+    else if ( pm == PM_PenaltyMiss_Left  || pm == PM_PenaltyMiss_Right ||
+              pm == PM_PenaltyScore_Left || pm == PM_PenaltyScore_Right )
     {
         M_last_taker = NULL;
         M_timer = ServerParam::instance().penBeforeSetupWait();
@@ -3534,8 +3534,8 @@ PenaltyRef::penalty_init()
                         ? RIGHT
                         : LEFT );
     PlayMode pm = ( M_cur_pen_taker == LEFT
-                    ? PlayMode::PM_PenaltySetup_Left
-                    : PlayMode::PM_PenaltySetup_Right );
+                    ? PM_PenaltySetup_Left
+                    : PM_PenaltySetup_Right );
     M_stadium.placeBall( pm,
                          NEUTRAL,
                          PVector( - M_pen_side
@@ -3548,8 +3548,8 @@ void
 PenaltyRef::penalty_score( Side side )
 {
     M_stadium.changePlayMode( side == RIGHT
-                              ? PlayMode::PM_PenaltyScore_Right
-                              : PlayMode::PM_PenaltyScore_Left );
+                              ? PM_PenaltyScore_Right
+                              : PM_PenaltyScore_Left );
 
     if ( side == RIGHT )
     {
@@ -3567,8 +3567,8 @@ void
 PenaltyRef::penalty_miss( Side side )
 {
     M_stadium.changePlayMode( side == LEFT
-                              ? PlayMode::PM_PenaltyMiss_Left
-                              : PlayMode::PM_PenaltyMiss_Right );
+                              ? PM_PenaltyMiss_Left
+                              : PM_PenaltyMiss_Right );
     M_pen_nr_taken++;
 
     if ( side == RIGHT )
@@ -3639,7 +3639,7 @@ PenaltyRef::penalty_check_score()
             {
                 M_stadium.sendRefereeAudio( "penalty_winner_r" );
             }
-            //M_stadium.changePlayMode( PlayMode::PM_TimeOver );
+            //M_stadium.changePlayMode( PM_TimeOver );
             M_timeover = true;
         }
     }
@@ -3670,7 +3670,7 @@ PenaltyRef::penalty_check_score()
         {
             M_stadium.sendRefereeAudio( "penalty_draw" );
         }
-        //M_stadium.changePlayMode( PlayMode::PM_TimeOver );
+        //M_stadium.changePlayMode( PM_TimeOver );
         M_timeover = true;
     }
     // during normal kicks, check whether one team cannot win anymore
@@ -3700,7 +3700,7 @@ PenaltyRef::penalty_check_score()
                       << M_stadium.teamLeft().penaltyPoint() << "-"
                       << M_stadium.teamRight().penaltyPoint() << std::endl;
             M_stadium.sendRefereeAudio( "penalty_winner_r" );
-            M_stadium.changePlayMode( PlayMode::PM_TimeOver );
+            M_stadium.changePlayMode( PM_TimeOver );
         }
         else if ( iMaxExtraRight < M_stadium.teamLeft().penaltyPoint() )
         {
@@ -3708,7 +3708,7 @@ PenaltyRef::penalty_check_score()
                       << M_stadium.teamLeft().penaltyPoint() << "-"
                       << M_stadium.teamRight().penaltyPoint() << std::endl;
             M_stadium.sendRefereeAudio( "penalty_winner_l" );
-            //M_stadium.changePlayMode( PlayMode::PM_TimeOver );
+            //M_stadium.changePlayMode( PM_TimeOver );
             M_timeover = true;
         }
     }
@@ -3725,8 +3725,8 @@ PenaltyRef::penalty_check_players( const Side side )
     const Player * outside_player = NULL;
     const Player * goalie = NULL;
 
-    if ( pm == PlayMode::PM_PenaltyMiss_Left  || pm == PlayMode::PM_PenaltyMiss_Right
-         || pm == PlayMode::PM_PenaltyScore_Left || pm == PlayMode::PM_PenaltyScore_Right )
+    if ( pm == PM_PenaltyMiss_Left  || pm == PM_PenaltyMiss_Right
+         || pm == PM_PenaltyScore_Left || pm == PM_PenaltyScore_Right )
     {
         return true;
     }
@@ -3772,7 +3772,7 @@ PenaltyRef::penalty_check_players( const Side side )
         // or taker goes into the center circle
         if ( iOutsideCircle == 0 )
         {
-            if ( pm == PlayMode::PM_PenaltySetup_Left || pm == PlayMode::PM_PenaltySetup_Right )
+            if ( pm == PM_PenaltySetup_Left || pm == PM_PenaltySetup_Right )
             {
                 if ( goalie->pos().distance( M_stadium.ball().pos() ) > 2.0 )
                 {
@@ -3801,7 +3801,7 @@ PenaltyRef::penalty_check_players( const Side side )
             bCheck = false;
         }
         // in setup, player outside circle should be close to ball
-        else if ( ( pm == PlayMode::PM_PenaltySetup_Left || pm == PlayMode::PM_PenaltySetup_Right )
+        else if ( ( pm == PM_PenaltySetup_Left || pm == PM_PenaltySetup_Right )
                   && iOutsideCircle == 1 )
         {
             if ( outside_player
@@ -3816,8 +3816,8 @@ PenaltyRef::penalty_check_players( const Side side )
     else //other team
     {
         // goalie does not stand in front of goal line
-        if ( M_stadium.playmode() == PlayMode::PM_PenaltyTaken_Left
-             && M_stadium.playmode() == PlayMode::PM_PenaltyTaken_Right )
+        if ( M_stadium.playmode() != PM_PenaltyTaken_Left
+             && M_stadium.playmode() != PM_PenaltyTaken_Right )
         {
             if ( std::fabs( posGoalie.x )
                  < ServerParam::PITCH_LENGTH/2.0 - ServerParam::instance().penMaxGoalieDistX()
@@ -3844,11 +3844,11 @@ PenaltyRef::penalty_check_players( const Side side )
     {
         // if in setup and already in set -> check fails
         if( ( side == LEFT
-              && M_stadium.playmode() == PlayMode::PM_PenaltySetup_Left
+              && M_stadium.playmode() == PM_PenaltySetup_Left
               && M_sLeftPenTaken.find( outside_player->unum() )
               != M_sLeftPenTaken.end() )
             || ( side == RIGHT
-                 && M_stadium.playmode() == PlayMode::PM_PenaltySetup_Right
+                 && M_stadium.playmode() == PM_PenaltySetup_Right
                  && M_sRightPenTaken.find( outside_player->unum() )
                  != M_sRightPenTaken.end() )
             )
@@ -3878,8 +3878,8 @@ PenaltyRef::penalty_place_all_players( const Side side )
 void
 PenaltyRef::placeTakerTeamPlayers()
 {
-    const bool bPenTaken = ( M_stadium.playmode() == PlayMode::PM_PenaltyTaken_Right
-                             || M_stadium.playmode() == PlayMode::PM_PenaltyTaken_Left );
+    const bool bPenTaken = ( M_stadium.playmode() == PM_PenaltyTaken_Right
+                             || M_stadium.playmode() == PM_PenaltyTaken_Left );
 
     const Player * taker = ( M_last_taker
                              ? M_last_taker
@@ -3941,8 +3941,8 @@ PenaltyRef::placeTakerTeamPlayers()
 void
 PenaltyRef::placeOtherTeamPlayers()
 {
-    const bool bPenTaken = ( M_stadium.playmode() == PlayMode::PM_PenaltyTaken_Right
-                             || M_stadium.playmode() == PlayMode::PM_PenaltyTaken_Left );
+    const bool bPenTaken = ( M_stadium.playmode() == PM_PenaltyTaken_Right
+                             || M_stadium.playmode() == PM_PenaltyTaken_Left );
     const double goalie_line
         = ( M_pen_side == LEFT
             ? - ServerParam::PITCH_LENGTH/2.0 + ServerParam::instance().penMaxGoalieDistX()

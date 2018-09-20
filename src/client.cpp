@@ -100,13 +100,11 @@ public:
     virtual
     ~Client()
       {
-
           close();
       }
 
     void run()
       {
-
           messageLoop();
       }
 
@@ -114,7 +112,6 @@ private:
 
     int open()
       {
-
           if ( M_socket.open() )
           {
               if ( M_socket.setNonBlocking() < 0 )
@@ -177,7 +174,7 @@ private:
 
     int setCompression( int level )
       {
-      #ifdef HAVE_LIBZ
+#ifdef HAVE_LIBZ
           if ( level >= 0 )
           {
               if ( ! M_gz_buf )
@@ -236,7 +233,7 @@ private:
               M_clean_cycle = true;
           }
 
-          //std::cout << std::string( msg, len - 1 ) << std::endl;
+          std::cout << std::string( msg, len - 1 ) << std::endl;
       }
 
     void messageLoop()
@@ -295,7 +292,6 @@ private:
                               M_socket.close();
                           }
                           std::cout << buf << std::endl;
-
                       }
                   }
 
@@ -303,7 +299,6 @@ private:
                   if ( FD_ISSET( M_socket.getFD(), &read_fds ) )
                   {
                       rcss::net::Addr from;
-                      // Add here
                       int len = M_socket.recv( buf, sizeof( buf ) - 1, from );
                       if ( len == -1
                            && errno != EWOULDBLOCK )

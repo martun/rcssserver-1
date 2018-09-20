@@ -31,10 +31,6 @@
  *EndCopyright:
  */
 
-#ifndef VERSION_H_
-#define VERSION_H_
 
 char Copyright[] = "Copyright (C) 1995, 1996, 1997, 1998, 1999 Electrotechnical Laboratory.\n\
 2000 - RoboCup Soccer Simulator Maintenance Group.\n";
-
-#endif

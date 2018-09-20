@@ -417,7 +417,7 @@ public:
 private:
     CondPlayMode()
         : Cond(),
-          M_pm( PlayMode::PM_None )
+          M_pm( PM_None )
       { }
 
 public:
