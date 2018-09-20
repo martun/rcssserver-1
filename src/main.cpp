@@ -40,6 +40,9 @@
 #include <csignal>
 #include <cerrno>
 
+#include "RemoteMain.h"
+#include <thread>
+
 namespace {
 
 Stadium Std;
@@ -94,6 +97,185 @@ main( int argc, char *argv[] )
     {
         timer = std::shared_ptr< Timer >( new StandardTimer( Std ) );
     }
+    // 1
+    std::vector<char *> parameters_for_player1 { 
+                  "here should be path to exe", 
+                  "-host", "localhost", 
+                  "-port", "6000", 
+                  "-coach_port", "6001", 
+                  "-olcoach_port", "6002",
+                  "-team_name", "A",
+                  "-goalie", "off",
+                  "-coach", "off"
+                  };
+
+    std::vector<char *> parameters_for_goalie1 = parameters_for_player1;
+    parameters_for_goalie1[parameters_for_goalie1.size() - 3] = "on";
+
+    std::vector<char *> parameters_for_coach1 = parameters_for_player1;
+    parameters_for_coach1[parameters_for_coach1.size() - 1] = "on";
+
+    std::cout << "Initializing team A...\n";
+
+    // for ( int i = 2 ; i <= 11; ++i )
+    // {
+    //   std::cout << "Running team player " << i << "...\n";
+    //   std::thread player1(RemoteMain::run, parameters_for_player1.size(), parameters_for_player1.data());
+    //   player1.detach();
+    // }
+    // std::cout << "Running team coach...\n";
+    // std::thread coach1(RemoteMain::run, parameters_for_coach1.size(), parameters_for_coach1.data());
+    // coach1.detach();
+    std::cout << "Running team goalie...\n";
+    std::thread goalie1(RemoteMain::run, parameters_for_goalie1.size(), parameters_for_goalie1.data());
+    goalie1.detach();
+
+    // // 2
+    // std::vector<char *> parameters_for_player2 { 
+    //           "here should be path to exe", 
+    //           "-host", "localhost", 
+    //           "-port", "6000", 
+    //           "-coach_port", "6001", 
+    //           "-olcoach_port", "6002",
+    //           "-team_name", "B",
+    //           "-goalie", "off",
+    //           "-coach", "off"
+    //           };
+
+    // std::vector<char *> parameters_for_goalie2 = parameters_for_player2;
+    // parameters_for_goalie2[parameters_for_goalie2.size() - 3] = "on";
+
+    // std::vector<char *> parameters_for_coach2 = parameters_for_player2;
+    // parameters_for_coach2[parameters_for_coach2.size() - 1] = "on";
+
+    // std::cout << "Initializing team B...\n";
+
+    // for ( int i = 2 ; i <= 11; ++i )
+    // {
+    //   std::cout << "Running team player " << i << "...\n";
+    //   std::thread player2(RemoteMain::run, parameters_for_player2.size(), parameters_for_player2.data());
+    //   player2.detach();
+    // }
+    // std::cout << "Running team coach...\n";
+    // std::thread coach2(RemoteMain::run, parameters_for_coach2.size(), parameters_for_coach2.data());
+    // coach2.detach();
+    // std::cout << "Running team goalie...\n";
+    // std::thread goalie2(RemoteMain::run, parameters_for_goalie2.size(), parameters_for_goalie2.data());
+    // goalie2.detach();
+
+
+    // for ( int i = 0; i < 2; i++)
+    // {
+    //   std::vector<thread> threads;
+    //   std::vector<char *> parameters_for_player { 
+    //                 "here should be path to exe", 
+    //                 "-host", "localhost", 
+    //                 "-port", "6000", 
+    //                 "-coach_port", "6001", 
+    //                 "-olcoach_port", "6002",
+    //                 "-team_name", "A"
+    //                 };
+    //   if(i == 1)
+    //     parameters_for_player[parameters_for_player.size() - 1] = "B"; // changing team name
+
+    //   std::vector<char *> parameters_for_goalie = parameters_for_player;
+    //   parameters_for_goalie.push_back("-goalie");
+    //   parameters_for_goalie.push_back("on");
+
+    //   std::vector<char *> parameters_for_coach = parameters_for_player;
+    //   parameters_for_coach.push_back("-coach");
+    //   parameters_for_coach.push_back("on");
+
+
+
+    //   std::cout << "Initializing team " << i << "...\n";
+
+    //   // std::cout << "Running team coach...\n";
+    //   // std::thread coach(RemoteMain::run, parameters_for_coach.size(), parameters_for_coach.data());
+    //   // coach.detach();
+    //   // std::cout << "Running team goalie...\n";
+    //   // std::thread goalie(RemoteMain::run, parameters_for_goalie.size(), parameters_for_goalie.data());
+    //   // goalie.detach();
+
+    //   parameters_for_player.push_back("-goalie");
+    //   parameters_for_player.push_back("off");
+    //   parameters_for_player.push_back("-coach");
+    //   parameters_for_player.push_back("off");
+    //   // threads.push_back(std::move(goalie));
+    //   // r.run(parameters.size(), parameters.data()); // goalie
+    //   for ( int i = 2 ; i <= 11; ++i )
+    //   {
+    //     std::cout << "Running team player " << i << "...\n";
+    //     std::thread player(RemoteMain::run, parameters_for_player.size(), parameters_for_player.data());
+    //     player.detach();
+    //     // threads.push_back(std::move(player));
+    //     // r.run(parameters.size(), parameters.data()); // players
+    //   }
+      
+    //   // threads.push_back(std::move(coach));
+    //   //r.run(parameters.size(), parameters.data()); // coach
+    //   // parameters.pop_back();
+    //   // parameters.push_back("off");
+
+    //   // parameters.pop_back();
+    //   // parameters.pop_back(); // delete coach
+    //   // parameters.pop_back();
+    //   // parameters.pop_back(); // delete goalie
+    //   // parameters.pop_back();
+    //   // parameters.pop_back(); // delete team
+    //   // for ( auto& th : threads )
+    //   // {
+    //   //   th.detach();
+    //   // }
+    // }
+
+
+
+    // vector<char *> parameters { "here should be path to exe", "-host", "localhost", "-port", "6000", "-coach_port", "6001", "-olcoach_port", "6002"};
+    // for ( int i = 0; i < 2; i++)
+    // {
+    //   parameters.push_back("-team_name");
+    //   std::cout << "Initializing team ";
+    //   if ( i == 0 )
+    //   {
+    //     parameters.push_back("A");
+    //   }
+    //   else
+    //   {
+    //     parameters.push_back("B");
+    //   }
+    //   std::cout << parameters.back() << "...\n";
+
+    //   parameters.push_back("-goalie");
+    //   parameters.push_back("on");
+    //   std::cout << "Running team goalie...\n";
+    //   std::thread goalie(RemoteMain::run, parameters.size(), parameters.data());
+    //   goalie.detach();
+    //   // r.run(parameters.size(), parameters.data()); // goalie
+    //   parameters.pop_back();
+    //   parameters.push_back("off");
+    //   for ( int i = 1 ; i < 11; ++i )
+    //   {
+    //     std::cout << "Running team player " << i << "...\n";
+    //     std::thread player(RemoteMain::run, parameters.size(), parameters.data());
+    //     player.detach();
+    //     // r.run(parameters.size(), parameters.data()); // players
+    //   }
+    //   parameters.push_back("-coach");
+    //   parameters.push_back("on");
+    //   std::cout << "Running team coach...\n";
+    //   std::thread coach(RemoteMain::run, parameters.size(), parameters.data());
+    //   coach.detach();
+    //   //r.run(parameters.size(), parameters.data()); // coach
+
+    //   parameters.pop_back();
+    //   parameters.pop_back(); // delete coach
+    //   parameters.pop_back();
+    //   parameters.pop_back(); // delete goalie
+    //   parameters.pop_back();
+    //   parameters.pop_back(); // delete team
+    // }
+    
 
     std::cout << "\nHit CTRL-C to exit\n";
 

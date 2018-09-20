@@ -149,7 +149,7 @@ SerializerMonitorStdv3::serializePlayMode( std::ostream & os,
     static const char * playmode_strings[] = PLAYMODE_STRINGS;
 
     os << "(playmode " << time
-       << ' ' << playmode_strings[pmode]
+       << ' ' << playmode_strings[static_cast<int>(pmode)]
        << ')';
 }
 
@@ -171,7 +171,7 @@ void
 SerializerMonitorStdv3::serializePlayModeId( std::ostream & os,
                                              const PlayMode pmode ) const
 {
-    os << " (pm " << pmode << ')';
+    os << " (pm " << static_cast<int>(pmode) << ')';
 }
 
 void

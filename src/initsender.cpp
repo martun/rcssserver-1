@@ -419,6 +419,7 @@ InitSenderCommonV7::serializePlayerType( const int id,
 void
 InitSenderCommonV8::sendServerParams()
 {
+    // ADD HERE
     serializer().serializeServerParamBegin( transport() );
     std::for_each( ServerParam::instance().verMap().begin(),
                    ServerParam::instance().verMap().end(),

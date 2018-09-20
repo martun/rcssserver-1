@@ -110,6 +110,10 @@ rcssserver_SOURCES = \
 	playerparam.cpp \
 	object.cpp \
 	referee.cpp \
+	\
+	streambufferwrapper.cpp \
+	serverclientmediator.cpp \
+	\
 	remoteclient.cpp \
 	resultsaver.cpp \
 	serializer.cpp \
@@ -144,7 +148,67 @@ rcssserver_SOURCES = \
 	visualsenderplayer.cpp \
 	weather.cpp \
 	xmlreader.cpp \
-	xpmholder.cpp
+	xpmholder.cpp \
+	ActionEffector.cpp \
+	Agent.cpp \
+	Analyser.cpp \
+	BaseState.cpp \
+	BasicCommand.cpp \
+	BehaviorAttack.cpp \
+	BehaviorBase.cpp \
+	BehaviorBlock.cpp \
+	BehaviorDefense.cpp \
+	BehaviorDribble.cpp \
+	BehaviorFormation.cpp \
+	BehaviorGoalie.cpp \
+	BehaviorHold.cpp \
+	BehaviorIntercept.cpp \
+	BehaviorMark.cpp \
+	BehaviorPass.cpp \
+	BehaviorPenalty.cpp \
+	BehaviorPosition.cpp \
+	BehaviorSetplay.cpp \
+	BehaviorShoot.cpp \
+	Client.cpp \
+	Coach.cpp \
+	CommandSender.cpp \
+	CommunicateSystem.cpp \
+	Dasher.cpp \
+	DecisionData.cpp \
+	DecisionTree.cpp \
+	DynamicDebug.cpp \
+	Evaluation.cpp \
+	Formation.cpp \
+	FormationTactics.cpp \
+	Geometry.cpp \
+	InfoState.cpp \
+	InterceptInfo.cpp \
+	InterceptModel.cpp \
+	Kicker.cpp \
+	Logger.cpp \
+	Net.cpp \
+	NetworkTest.cpp \
+	Observer.cpp \
+	ParamEngine.cpp \
+	Parser.cpp \
+	Player.cpp \
+	PlayerParam.cpp \
+	PlayerState.cpp \
+	Plotter.cpp \
+	PositionInfo.cpp \
+	ServerParam.cpp \
+	Simulator.cpp \
+	Strategy.cpp \
+	Tackler.cpp \
+	Thread.cpp \
+	TimeTest.cpp \
+	Trainer.cpp \
+	Types.cpp \
+	UDPSocket.cpp \
+	Utilities.cpp \
+	VisualSystem.cpp \
+	WorldModel.cpp \
+	WorldState.cpp
 
 nodist_rcssserver_SOURCES = \
 	player_command_parser.ypp \
@@ -180,6 +244,10 @@ noinst_HEADERS = \
 	playerparam.h \
 	random.h \
 	referee.h \
+	\
+	streambufferwrapper.h \
+	serverclientmediator.h \
+	\
 	remoteclient.h \
 	resultsaver.hpp \
 	sender.h \
@@ -220,7 +288,69 @@ noinst_HEADERS = \
 	visualsenderplayer.h \
 	weather.h \
 	xmlreader.h \
-	xpmholder.h
+	xpmholder.h \ 
+	ActionEffector.h \
+	Agent.h \
+	Analyser.h \
+	BallState.h \
+	BaseState.h \
+	BasicCommand.h \
+	BehaviorAttack.h \
+	BehaviorBase.h \
+	BehaviorBlock.h \
+	BehaviorDefense.h \
+	BehaviorDribble.h \
+	BehaviorFormation.h \
+	BehaviorGoalie.h \
+	BehaviorHold.h \
+	BehaviorIntercept.h \
+	BehaviorMark.h \
+	BehaviorPass.h \
+	BehaviorPenalty.h \
+	BehaviorPosition.h \
+	BehaviorSetplay.h \
+	BehaviorShoot.h \
+	Client.h \
+	Coach.h \
+	CommandSender.h \
+	CommunicateSystem.h \
+	Dasher.h \
+	DecisionData.h \
+	DecisionTree.h \
+	DynamicDebug.h \
+	Evaluation.h \
+	Formation.h \
+	FormationTactics.h \
+	Geometry.h \
+	InfoState.h \
+	InterceptInfo.h \
+	InterceptModel.h \
+	Kicker.h \
+	Logger.h \
+	Net.h \
+	NetworkTest.h \
+	Observer.h \
+	ParamEngine.h \
+	Parser.h \
+	Player.h \
+	PlayerParam.h \
+	PlayerState.h \
+	Plotter.h \
+	PositionInfo.h \
+	ServerParam.h \
+	Simulator.h \
+	Strategy.h \
+	Tackler.h \
+	Thread.h \
+	TimeTest.h \
+	Trainer.h \
+	Types.h \
+	UDPSocket.h \
+	Utilities.h \
+	VisualSystem.h \
+	WorldModel.h \
+	WorldState.h
+
 
 rcssserver_LDFLAGS = \
 	-L$(top_builddir)/rcssbase/conf \

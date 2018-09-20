@@ -36,11 +36,14 @@ class gzstreambuf;
 }
 
 
+class StreamBufferWrapper;
+
 class RemoteClient {
 
 private:
     rcss::net::UDPSocket M_socket;
     rcss::net::SocketStreamBuf * M_socket_buf;
+    StreamBufferWrapper * M_buffer_wrapper;
     rcss::gz::gzstreambuf * M_gz_buf;
     std::ostream * M_transport;
     int M_comp_level;
