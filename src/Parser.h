@@ -303,7 +303,7 @@ private:
 	bool mEarOnOk;
 	PlayerArray<bool, true> mChangePlayerTypeOk;
 
-	static char mBuf[MAX_MESSAGE];
+	char mBuf[MAX_MESSAGE];
 
 public:
     bool IsConnectServerOk() { bool ret; mOkMutex.Lock(); ret = mConnectServerOk; mOkMutex.UnLock(); return ret; }
@@ -313,10 +313,10 @@ public:
 	bool IsEarOnOk() { bool ret; mOkMutex.Lock(); ret = mEarOnOk; mOkMutex.UnLock(); return ret; }
 	bool IsChangePlayerTypeOk(Unum i) { bool ret; mOkMutex.Lock(); ret = mChangePlayerTypeOk[i]; mOkMutex.UnLock(); return ret; }
 
-	static bool IsPlayerTypesReady() { return mIsPlayerTypesReady; }
+	bool IsPlayerTypesReady() { return mIsPlayerTypesReady; }
 
 private:
-	static bool mIsPlayerTypesReady;
+	bool mIsPlayerTypesReady;
 	static const double INVALID_VALUE;
 
 	static bool InvalidValue(const double & x) {

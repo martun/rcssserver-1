@@ -541,7 +541,7 @@ bool ActionEffector::SetChangeViewAction(ViewWidth view_width)
 		return false;
 	}
 
-	VisualSystem::instance().ChangeViewWidth(mAgent, view_width); //与视觉系统同步
+	VisualSystem::instance(&mAgent)->ChangeViewWidth(view_width); //与视觉系统同步
 
 	if (view_width == mSelfState.GetViewWidth())
 	{
@@ -1267,7 +1267,7 @@ void ActionEffector::SendCommands(char *msg)
 				{
 					std::cerr << std::endl << it->mString.c_str(); // 动态调试模式，直接输出命令即可
 				}
-				else if (UDPSocket::instance().Send(it->mString.c_str()) < 0) // 发送命令
+				else if (UDPSocket::instance(m_playerParams).Send(it->mString.c_str()) < 0) // 发送命令
 				{
 					PRINT_ERROR("UDPSocket error!");
 				}
@@ -1302,7 +1302,7 @@ void ActionEffector::SendCommands(char *msg)
 			{
 				std::cerr << std::endl << command_msg; // 动态调试模式，直接输出命令即可
 			}
-			else if (UDPSocket::instance().Send(command_msg) < 0) // 发送命令
+			else if (UDPSocket::instance(m_playerParams).Send(command_msg) < 0) // 发送命令
 			{
 				PRINT_ERROR("UDPSocket error!");
 			}

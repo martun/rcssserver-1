@@ -95,14 +95,9 @@ public:
 	    }
 	    std::cout << std::endl;
 		
-	    std::cout << 1 << std::endl;
 		RemoteServerParam::instance().init(argc, argv);
 		RemotePlayerParam* playerParam = RemotePlayerParam::instance();
-	    std::cout << 2 << std::endl;
 		playerParam->init(argc, argv);
-	    std::cout << 3 << std::endl;
-
-		std::cout << "Done1\n";
 
 		Client *client = 0;
 		
@@ -127,7 +122,6 @@ public:
 			client = new RemotePlayer(playerParam);
 			std::cout << "Done RemotePlayer\n";
 		}
-	    std::cout << 4 << std::endl;
 
 		if (playerParam->DynamicDebugMode()) {
 			client->RunDynamicDebug(); // 进入动态调试模式
@@ -135,7 +129,6 @@ public:
 		else {
 			client->RunNormal(); // 进入正常比赛模式
 		}
-		std::cout << "Done\2";
 
 		delete client;
 

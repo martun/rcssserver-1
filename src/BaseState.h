@@ -334,5 +334,6 @@ private:
 
 	int mGuessed; //indicate that the times of this object ot be guessed -- only used from WorldStateUpdater::Run
 };
+
 #endif
 

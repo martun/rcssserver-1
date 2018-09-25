@@ -58,7 +58,7 @@ Tackler& Tackler::instance()
 	return instance;
 }
 
-
+#include <mutex>
 /**
  * Update data used by tackle.
  * \param agent.
@@ -68,6 +68,9 @@ void Tackler::UpdateTackleData(const Agent & agent)
     if (mAgentID == agent.GetAgentID())  {
         return; /** no need to update */
     }
+
+    // std::mutex m;
+    // std::lock_guard<std::mutex> lock(m);
 
     mAgentID = agent.GetAgentID();
 

@@ -90,14 +90,14 @@ void Trainer::SendOptionToServer()
 {
 	while (!mpParser->IsEyeOnOk())
 	{
-		UDPSocket::instance().Send("(eye on)");
+		UDPSocket::instance(m_playerParams).Send("(eye on)");
 		WaitFor(200);
 	}
 
 	while (!mpParser->IsEarOnOk())
 	{
 		cout << "Send (ear on)" << endl;
-		UDPSocket::instance().Send("(ear on)");
+		UDPSocket::instance(m_playerParams).Send("(ear on)");
 		WaitFor(200);
 	}
 }

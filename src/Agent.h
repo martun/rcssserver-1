@@ -122,8 +122,9 @@ public:
 			static RemotePlayerState coach(m_playerParam); //dummy player state for coach
 			return coach;
 		}
-
-		return GetWorldState().GetTeammate(mSelfUnum);
+		RemotePlayerState& state = const_cast<RemotePlayerState&>(GetWorldState().GetTeammate(mSelfUnum));
+		state.SetPlayerParam(m_playerParam);
+		return const_cast<RemotePlayerState&>(state);
 	}
 
 	RemotePlayerState & Self() {
@@ -132,7 +133,9 @@ public:
 			return coach;
 		}
 
-		return World().Teammate(mSelfUnum);
+		RemotePlayerState& state = World().Teammate(mSelfUnum);
+		state.SetPlayerParam(m_playerParam);
+		return state;
 	}
 
 	/**

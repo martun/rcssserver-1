@@ -55,12 +55,12 @@ public:
 		(void) plus;
 
 		if (fabs(mSelfState.GetPos().X() - mPositionInfo.GetTeammateOffsideLine()) < 30.0) {
-			VisualSystem::instance().RaisePlayer(mAgent, -mPositionInfo.GetTeammateOffsideLineOpp(), 3.0);
+			VisualSystem::instance(&mAgent)->RaisePlayer(-mPositionInfo.GetTeammateOffsideLineOpp(), 3.0);
 		}
 
 		if (mSelfState.GetUnum() == mPositionInfo.GetCloseTeammateToBall()[0]
 		  || mSelfState.GetUnum() == mPositionInfo.GetCloseTeammateToBall()[1] ){
-			VisualSystem::instance().RaiseBall(mAgent , 2);
+			VisualSystem::instance(&mAgent)->RaiseBall(2);
 		}
 	}
 

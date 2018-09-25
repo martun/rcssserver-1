@@ -36,7 +36,7 @@ public:
 
 private:
 
-    ClientServerMediator M_mediator;
+    ServerClientMediator M_mediator;
     std::streamsize M_bufsize;
     char_type * M_inbuf;
     char_type * M_outbuf;

@@ -93,6 +93,12 @@ public:
 		Assert(m_playerParams != nullptr);
 		return m_playerParams;
 	}
+	void SetPlayerParam(RemotePlayerParam* playerParams)
+	{
+		m_playerParams = playerParams;
+	 	// Updating player param
+	   	mMinStamina = GetPlayerParam()->MinStamina();
+	}
 	virtual ~RemotePlayerState() {}
 
 	/**更新体力

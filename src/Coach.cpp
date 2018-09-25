@@ -63,7 +63,7 @@ void RemoteCoach::SendOptionToServer()
 {
 	while (!mpParser->IsEyeOnOk())
 	{
-		UDPSocket::instance().Send("(eye on)");
+		UDPSocket::instance(m_playerParams).Send("(eye on)");
 		WaitFor(200);
 	}
 	vector<pair<int , double> > a ;

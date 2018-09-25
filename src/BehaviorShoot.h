@@ -52,9 +52,9 @@ public:
 		Assert(shoot.mKeyOppGT.mUnum >= 0);
 		Assert(shoot.mKeyOppGB.mUnum >= 0);
 
-		VisualSystem::instance().RaisePlayer(mAgent, -mWorldState.GetOpponentGoalieUnum(), 1.0 + plus);
-		VisualSystem::instance().RaisePlayer(mAgent, -shoot.mKeyOppGT.mUnum, 2.0 + plus);
-		VisualSystem::instance().RaisePlayer(mAgent, -shoot.mKeyOppGB.mUnum, 2.0 + plus);
+		VisualSystem::instance(&mAgent)->RaisePlayer(-mWorldState.GetOpponentGoalieUnum(), 1.0 + plus);
+		VisualSystem::instance(&mAgent)->RaisePlayer(-shoot.mKeyOppGT.mUnum, 2.0 + plus);
+		VisualSystem::instance(&mAgent)->RaisePlayer(-shoot.mKeyOppGB.mUnum, 2.0 + plus);
 	}
 
 	static const BehaviorType BEHAVIOR_TYPE;

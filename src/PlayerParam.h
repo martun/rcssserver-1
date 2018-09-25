@@ -561,12 +561,10 @@ public:
 
 	static HeteroParam & HeteroPlayer(const int & type)
 	{
-		std::cout << "HeteroPlayer Get start" << std::endl;
 		Assert (type >= 0 && type < m_playerParams.playerTypes());
-		Assert(type == 0 || Parser::IsPlayerTypesReady());
-		Assert(mHeteroPlayer)
+		// Assert(type == 0 || Parser::IsPlayerTypesReady());
+		Assert(mHeteroPlayer);
 		auto& obj = mHeteroPlayer[type];
-		std::cout << "HeteroPlayer Get end" << std::endl;
 		return obj;
 	}
 

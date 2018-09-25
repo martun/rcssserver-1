@@ -54,7 +54,12 @@ void InterceptInfo::SortIntercerptInfo()
 		if (i == 0) continue;
 
 		if (mpWorldState->GetPlayer(i).IsAlive()){
-			mOIT.push_back(OrderedIT(VerifyIntInfo(i), i, mpWorldState->GetPlayer(i).GetPosDelay()));
+			// TODO Delete
+			auto a1 = VerifyIntInfo(i);
+			auto a2 = i;
+			auto a3 = mpWorldState->GetPlayer(i).GetPosDelay();
+			auto a4 = OrderedIT(a1,a2,a3);
+			mOIT.push_back(a4);
 		}
 	}
 

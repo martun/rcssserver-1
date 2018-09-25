@@ -51,8 +51,8 @@ public:
 		Assert(dribble.mKeyOppGB.mUnum >= 0);
 		Assert(dribble.mKeyOppGT.mUnum >= 0);
 
-		VisualSystem::instance().RaisePlayer(mAgent, -dribble.mKeyOppGB.mUnum, 2.0 + plus);
-		VisualSystem::instance().RaisePlayer(mAgent, -dribble.mKeyOppGT.mUnum, 2.0 + plus);
+		VisualSystem::instance(&mAgent)->RaisePlayer(-dribble.mKeyOppGB.mUnum, 2.0 + plus);
+		VisualSystem::instance(&mAgent)->RaisePlayer(-dribble.mKeyOppGT.mUnum, 2.0 + plus);
 	}
 
     static const BehaviorType BEHAVIOR_TYPE;

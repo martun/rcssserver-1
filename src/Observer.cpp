@@ -37,10 +37,9 @@
 
 Observer::Observer(RemotePlayerParam* playerParams)
 	: m_playerParams(playerParams)
-	, mTeammate_Fullstate(RemotePlayerState(m_playerParams)) // ?????
-	, mOpponent_Fullstate(RemotePlayerState(m_playerParams)) // ?????
+	, mTeammate_Fullstate(RemotePlayerState(playerParams)) // ?????
+	, mOpponent_Fullstate(RemotePlayerState(playerParams)) // ?????
 {
-	std::cout << 31 << std::endl; 
 	mCurrentTime = Time(-1, 0);
     mOurInitSide = '?';
 	mOurSide = '?';
@@ -49,7 +48,6 @@ Observer::Observer(RemotePlayerParam* playerParams)
 	mOppGoalieUnum = 0;
 	mOurScore = 0;
 	mOppScore = 0;
-	std::cout << 32 << std::endl; 
 
 	mPlayMode = RemotePlayMode::PM_Before_Kick_Off;
 
@@ -57,7 +55,6 @@ Observer::Observer(RemotePlayerParam* playerParams)
 	mLastSightRealTime      = RealTime(0, 0);
 
 	Reset();
-	std::cout << 33 << std::endl; 
 
     mIsBeginDecision = false;
 	mSenseArrived = false;
@@ -83,7 +80,6 @@ Observer::Observer(RemotePlayerParam* playerParams)
 	mPlayerNeckDirByTurnNeck = 0.0; // 脖子角度，绝对量
 
 	mIsNewOppType = false;
-	std::cout << 34 << std::endl; 
 }
 
 Observer::~Observer()

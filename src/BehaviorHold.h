@@ -42,8 +42,8 @@ public:
 		Assert(hold.mKeyOppGB.mUnum >= 0);
 		Assert(hold.mKeyOppGT.mUnum >= 0);
 
-		VisualSystem::instance().RaisePlayer(mAgent, -hold.mKeyOppGB.mUnum, 2.0 + plus);
-		VisualSystem::instance().RaisePlayer(mAgent, -hold.mKeyOppGT.mUnum, 2.0 + plus);
+		VisualSystem::instance(&mAgent)->RaisePlayer(-hold.mKeyOppGB.mUnum, 2.0 + plus);
+		VisualSystem::instance(&mAgent)->RaisePlayer(-hold.mKeyOppGT.mUnum, 2.0 + plus);
 	}
 
     static const BehaviorType BEHAVIOR_TYPE;

@@ -112,13 +112,13 @@ void RemotePlayer::Run()
 
 	Formation::instance.UpdateOpponentRole(); //TODO: 暂时放在这里，教练未发来对手阵型信息时自己先计算
 
-	VisualSystem::instance().ResetVisualRequest();
+	VisualSystem::instance(mpAgent)->ResetVisualRequest();
 	mpDecisionTree->Decision(*mpAgent);
 
-	VisualSystem::instance().Decision();
+	VisualSystem::instance(mpAgent)->Decision();
 	CommunicateSystem::instance(m_playerParams)->Decision();
 
-	if (RemoteServerParam::instance().synchMode()) {
+if (RemoteServerParam::instance().synchMode()) {
 		mpAgent->Done();
 	}
 

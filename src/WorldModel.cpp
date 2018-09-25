@@ -36,16 +36,11 @@
 #include "InfoState.h"
 
 WorldModel::WorldModel() {
-	std::cout << 41 << std::endl;
 	mpHistoryState[0] = new HistoryState;
-	std::cout << 42 << std::endl;
 	mpWorldState[0] = new WorldState(mpHistoryState[0]); //队友的世界状态
 
-	std::cout << 43 << std::endl;
 	mpHistoryState[1] = new HistoryState;
-	std::cout << 44 << std::endl;
 	mpWorldState[1] = new WorldState(mpHistoryState[1]); //供反算时用的，对手的世界状态
-	std::cout << 45 << std::endl;
 }
 
 WorldModel::~WorldModel() {

@@ -41,7 +41,9 @@
 #include <cerrno>
 
 #include "RemoteMain.h"
+#include "PlayerState.h"
 #include <thread>
+#include <chrono>
 
 namespace {
 
@@ -54,7 +56,6 @@ sigHandle( int )
 }
 
 }
-
 int
 main( int argc, char *argv[] )
 {
@@ -97,7 +98,45 @@ main( int argc, char *argv[] )
     {
         timer = std::shared_ptr< Timer >( new StandardTimer( Std ) );
     }
+
+// // without thread
+//     std::vector<char *> parameters_for_player1 { 
+//                   "here should be path to exe", 
+//                   "-host", "localhost", 
+//                   "-port", "6000", 
+//                   "-coach_port", "6001", 
+//                   "-olcoach_port", "6002",
+//                   "-team_name", "A",
+//                   "-goalie", "off",
+//                   "-coach", "off"
+//                   };
+
+//     std::vector<char *> parameters_for_goalie1 = parameters_for_player1;
+//     parameters_for_goalie1[parameters_for_goalie1.size() - 3] = "on";
+
+//     std::vector<char *> parameters_for_coach1 = parameters_for_player1;
+//     parameters_for_coach1[parameters_for_coach1.size() - 1] = "on";
+
+//     std::cout << "Initializing team A...\n";
+
+//     std::cout << "Running team goalie...\n";
+//     RemoteMain::run(parameters_for_goalie1.size(), parameters_for_goalie1.data());
+
+//     for ( int i = 2 ; i <= 11; ++i )
+//     {
+//       std::cout << "Running team player " << i << "...\n";
+//       RemoteMain::run(parameters_for_player1.size(), parameters_for_player1.data());
+//     }
+
+//     std::cout << "Running team coach...\n";
+//     RemoteMain::run(parameters_for_coach1.size(), parameters_for_coach1.data());
+
+
+
+// threads
+
     // 1
+    using namespace std::chrono_literals;
     std::vector<char *> parameters_for_player1 { 
                   "here should be path to exe", 
                   "-host", "localhost", 
@@ -117,51 +156,88 @@ main( int argc, char *argv[] )
 
     std::cout << "Initializing team A...\n";
 
-    // for ( int i = 2 ; i <= 11; ++i )
-    // {
-    //   std::cout << "Running team player " << i << "...\n";
-    //   std::thread player1(RemoteMain::run, parameters_for_player1.size(), parameters_for_player1.data());
-    //   player1.detach();
-    // }
-    // std::cout << "Running team coach...\n";
-    // std::thread coach1(RemoteMain::run, parameters_for_coach1.size(), parameters_for_coach1.data());
-    // coach1.detach();
     std::cout << "Running team goalie...\n";
     std::thread goalie1(RemoteMain::run, parameters_for_goalie1.size(), parameters_for_goalie1.data());
     goalie1.detach();
+    
+    std::cout << "Waiting for goalie... ";
+    std::this_thread::sleep_for(1s);
+    std::cout << "Done." << std::endl;
 
-    // // 2
-    // std::vector<char *> parameters_for_player2 { 
-    //           "here should be path to exe", 
-    //           "-host", "localhost", 
-    //           "-port", "6000", 
-    //           "-coach_port", "6001", 
-    //           "-olcoach_port", "6002",
-    //           "-team_name", "B",
-    //           "-goalie", "off",
-    //           "-coach", "off"
-    //           };
+    for ( int i = 0 ; i < 10; ++i )
+    {
+        std::cout << "Running team player " << i << "...\n";
+        std::thread player1(RemoteMain::run, parameters_for_player1.size(), parameters_for_player1.data());
+        player1.detach();
+        std::cout << "Waiting for player... ";
+        std::this_thread::sleep_for(0.1s);
+        std::cout << "Done." << std::endl;
+    }
 
-    // std::vector<char *> parameters_for_goalie2 = parameters_for_player2;
-    // parameters_for_goalie2[parameters_for_goalie2.size() - 3] = "on";
 
-    // std::vector<char *> parameters_for_coach2 = parameters_for_player2;
-    // parameters_for_coach2[parameters_for_coach2.size() - 1] = "on";
+    std::cout << "Waiting for coach1... ";
+    std::this_thread::sleep_for(1s);
+    std::cout << "Done." << std::endl;
 
-    // std::cout << "Initializing team B...\n";
 
-    // for ( int i = 2 ; i <= 11; ++i )
-    // {
-    //   std::cout << "Running team player " << i << "...\n";
-    //   std::thread player2(RemoteMain::run, parameters_for_player2.size(), parameters_for_player2.data());
-    //   player2.detach();
-    // }
-    // std::cout << "Running team coach...\n";
-    // std::thread coach2(RemoteMain::run, parameters_for_coach2.size(), parameters_for_coach2.data());
-    // coach2.detach();
-    // std::cout << "Running team goalie...\n";
-    // std::thread goalie2(RemoteMain::run, parameters_for_goalie2.size(), parameters_for_goalie2.data());
-    // goalie2.detach();
+    std::cout << "Running team coach...\n";
+    std::thread coach1(RemoteMain::run, parameters_for_coach1.size(), parameters_for_coach1.data());
+    coach1.detach();
+
+    std::cout << "Waiting for coach2... ";
+    std::this_thread::sleep_for(1s);
+    std::cout << "Done." << std::endl;
+
+    // 2
+    std::vector<char *> parameters_for_player2 { 
+              "here should be path to exe", 
+              "-host", "localhost", 
+              "-port", "6000", 
+              "-coach_port", "6001", 
+              "-olcoach_port", "6002",
+              "-team_name", "B",
+              "-goalie", "off",
+              "-coach", "off"
+              };
+
+    std::vector<char *> parameters_for_goalie2 = parameters_for_player2;
+    parameters_for_goalie2[parameters_for_goalie2.size() - 3] = "on";
+
+    std::vector<char *> parameters_for_coach2 = parameters_for_player2;
+    parameters_for_coach2[parameters_for_coach2.size() - 1] = "on";
+
+    std::cout << "Initializing team B...\n";
+
+    std::cout << "Running team goalie...\n";
+    std::thread goalie2(RemoteMain::run, parameters_for_goalie2.size(), parameters_for_goalie2.data());
+    goalie2.detach();
+    
+    std::cout << "Waiting for goalie... ";
+    std::this_thread::sleep_for(1s);
+    std::cout << "Done." << std::endl;
+
+    for ( int i = 0 ; i < 10; ++i )
+    {
+        std::cout << "Running team player " << i << "...\n";
+        std::thread player2(RemoteMain::run, parameters_for_player2.size(), parameters_for_player2.data());
+        player2.detach();
+        
+        std::cout << "Waiting for player... ";
+        std::this_thread::sleep_for(0.1s);
+        std::cout << "Done." << std::endl;
+    }
+
+    std::cout << "Waiting for coach... ";
+    std::this_thread::sleep_for(1s);
+    std::cout << "Done." << std::endl;
+
+    std::cout << "Running team coach...\n";
+    std::thread coach2(RemoteMain::run, parameters_for_coach2.size(), parameters_for_coach2.data());
+    coach2.detach();
+
+    std::cout << "Waiting for coach... ";
+    std::this_thread::sleep_for(1s);
+    std::cout << "Done." << std::endl;
 
 
     // for ( int i = 0; i < 2; i++)

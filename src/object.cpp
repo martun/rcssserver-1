@@ -396,6 +396,7 @@ MPObject::MPObject( Stadium & stadium,
     , M_stadium( stadium )
     , M_vel( 0.0,0.0 )
     , M_accel( 0.0,0.0 )
+    , M_collided(false)
 {
     //assert( stadium );
     //M_weather = &( stadium->weather() );

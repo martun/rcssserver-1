@@ -1000,13 +1000,15 @@ Formation & Formation::Instance::operator ()()
 	Assert(mpAgent);
 	return mpAgent->GetFormation();
 }
-
+#include <mutex>
 void Formation::Instance::UpdateOpponentRole()
 {
 	if (!mpAgent) {
 		Assert(0);
 		return;
 	}
+	static std::mutex m;
+	std::lock_guard<std::mutex> lock(m);
 
 	const WorldState & world_state = mpAgent->GetWorldState();
 	const InfoState & info_state = mpAgent->GetInfoState();

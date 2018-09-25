@@ -224,7 +224,6 @@ const char RemoteServerParam::CONF_FILE[] = "./conf/server.conf";
 
 RemoteServerParam& RemoteServerParam::instance()
 {
-    std::cout << "RemoteServerParam::instance()" << std::endl;
 	static RemoteServerParam instance;
 	return instance;
 }

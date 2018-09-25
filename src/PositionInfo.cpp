@@ -36,6 +36,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdlib>
+#include <mutex>
 using namespace std;
 
 PositionInfo::PositionInfo(WorldState *pWorldState, InfoState *pInfoState):
@@ -46,6 +47,8 @@ PositionInfo::PositionInfo(WorldState *pWorldState, InfoState *pInfoState):
 
 void PositionInfo::UpdateRoutine()
 {
+	// static std::mutex m;
+	// std::lock_guard<std::mutex> lock(m);
 	UpdateDistMatrix();
 	UpdateOffsideLine();
     UpdateOppGoalInfo();
@@ -128,6 +131,8 @@ const double & PositionInfo::GetPlayerDistToPlayer(Unum unum1, Unum unum2) const
 
 void PositionInfo::UpdateOffsideLine()
 {
+	// static std::mutex m;
+	// std::lock_guard<std::mutex> lock(m);
 	const BallState &ball_state = mpWorldState->GetBall();
 	const RemotePlayerState *pPlayer  = 0;
 
@@ -246,7 +251,7 @@ void PositionInfo::UpdateOffsideLine()
 
 void PositionInfo::UpdateOppGoalInfo()
 {
-    mOppGoal2Ball       = Vector(RemoteServerParam::instance().PITCH_LENGTH / 2.0, 0.0) - mpWorldState->GetBall().GetPos();
+	mOppGoal2Ball       = Vector(RemoteServerParam::instance().PITCH_LENGTH / 2.0, 0.0) - mpWorldState->GetBall().GetPos();
     mOppLeftPost2Ball   = RemoteServerParam::instance().oppLeftGoalPost() - mpWorldState->GetBall().GetPos();
 	mOppRightPost2Ball  = RemoteServerParam::instance().oppRightGoalPost() - mpWorldState->GetBall().GetPos();
     mOppGoal2BallAngle      = mOppGoal2Ball.Dir();
@@ -257,7 +262,9 @@ void PositionInfo::UpdateOppGoalInfo()
 
 const list<KeyPlayerInfo> & PositionInfo::GetXSortTeammate()
 {
-    if (mXSortTeammateList.empty())
+ //    static std::mutex m;
+	// std::lock_guard<std::mutex> lock(m);
+	if (mXSortTeammateList.empty())
     {
 		KeyPlayerInfo kp;
 		for (int i=1; i<=TEAMSIZE; i++)
@@ -278,7 +285,9 @@ const list<KeyPlayerInfo> & PositionInfo::GetXSortTeammate()
 
 const list<KeyPlayerInfo> & PositionInfo::GetXSortOpponent()
 {
-    if (mXSortOpponentList.empty())
+ //    static std::mutex m;
+	// std::lock_guard<std::mutex> lock(m);
+	if (mXSortOpponentList.empty())
     {
 		KeyPlayerInfo kp;
 		for (int i=1; i<=TEAMSIZE; i++)
@@ -343,11 +352,16 @@ AngleDeg PositionInfo::GetShootAngle(AngleDeg left,AngleDeg right, const RemoteP
 //到某个点距离的按大小排列队员（F）
 vector<Unum> PositionInfo::GetClosePlayerToPoint(const Vector & bp, const Unum & exclude_unum) const
 {
+	// static std::mutex m;
+	// std::lock_guard<std::mutex> lock(m);
 	vector< pair<Unum, double> > tmp;
 
 	for (vector<RemotePlayerState*>::const_iterator it = mpWorldState->GetPlayerList().begin(); it != mpWorldState->GetPlayerList().end(); ++it){
         if ((*it)->IsAlive() && (*it)->GetPosConf() > FLOAT_EPS && (*it)->GetUnum() != exclude_unum){ // 算距离自己的球员时把自己排除掉
-			tmp.push_back(pair<Unum, double>((*it)->GetUnum(), (*it)->GetPos().Dist2(bp)));
+			auto f = (*it)->GetUnum();
+			auto s = (*it)->GetPos().Dist2(bp);
+			auto p = pair<Unum, double>(f, s);
+			tmp.push_back(p);
 		}
 	}
 

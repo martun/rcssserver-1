@@ -47,7 +47,7 @@ public:
 		Assert(intercept.mKeyOpp.mUnum >= 0);
 
 		(void) plus;
-		VisualSystem::instance().RaisePlayer(mAgent, -intercept.mKeyOpp.mUnum, 2.0);
+		VisualSystem::instance(&mAgent)->RaisePlayer(-intercept.mKeyOpp.mUnum, 2.0);
 	}
 
 	static const BehaviorType BEHAVIOR_TYPE;

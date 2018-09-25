@@ -813,7 +813,7 @@ Player::parseCommand( const char * command )
         else if ( ! std::strncmp( buf, "(clang ", 7 ) )
         {
             int min_ver, max_ver;
-            if ( std::sscanf( buf, " ( clang ( ver %d %d ) ) %n ",
+            if ( std::sscanf( buf, "(clang (ver %d %d))%n",
                               &min_ver, &max_ver, &n_read ) != 2 )
             {
                 std::cerr << "Error parsing >" << buf << "<\n";

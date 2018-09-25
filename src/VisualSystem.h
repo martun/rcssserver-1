@@ -57,7 +57,7 @@ class InfoState;
 * 各个根结点的行为可以向视觉系统提出视觉请求，由视觉系统最终做出视觉决策
 */
 class VisualSystem {
-	VisualSystem();
+	VisualSystem(const Agent * agent);
 
 	class VisualRequest
 	{
@@ -168,30 +168,41 @@ class VisualSystem {
 	};
 
 public:
-	static VisualSystem& instance();
+	static VisualSystem* instance(const Agent * agent);
 	virtual ~VisualSystem();
 
 	void ResetVisualRequest();
 	void Decision();
 
-	void RaiseBall(Agent & agent, double eva = 0.0) { if (mpAgent == & agent) { RaiseBall(eva); } }
-	void RaisePlayer(Agent & agent, Unum num, double eva = 0.0) { if (mpAgent == & agent) { RaisePlayer(num, eva); } }
+	// void RaiseBall(Agent & agent, double eva = 0.0) { if (mpAgent == & agent) { RaiseBall(eva); } }
+	// void RaisePlayer(Agent & agent, Unum num, double eva = 0.0) { if (mpAgent == & agent) { RaisePlayer(num, eva); } }
 
-	void SetForceSeeBall(const Agent & agent) { if (mpAgent == & agent) { SetForceSeeBall(); } }
-	void SetForceSeePlayer(const Agent & agent, Unum i) { if (mpAgent == & agent) { SetForceSeePlayer(i); } }
+	// void SetForceSeeBall(const Agent & agent) { if (mpAgent == & agent) { SetForceSeeBall(); } }
+	// void SetForceSeePlayer(const Agent & agent, Unum i) { if (mpAgent == & agent) { SetForceSeePlayer(i); } }
 
-	void SetCritical(const Agent & agent, bool critical) { if (mpAgent == & agent) { SetCritical(critical); } }
-	void ForbidDecision(const Agent & agent) { if (mpAgent == & agent) { mForbidden = true;} }
-	void ChangeViewWidth(const Agent & agent, ViewWidth view_width) { if (mpAgent == & agent) { ChangeViewWidth(view_width); } }
-	void SetCanTurn(const Agent & agent, bool can_turn) { if (mpAgent == & agent) { SetCanTurn(can_turn); } }
+	// void SetCritical(const Agent & agent, bool critical) { if (mpAgent == & agent) { SetCritical(critical); } }
+	// void ForbidDecision(const Agent & agent) { if (mpAgent == & agent) { mForbidden = true;} }
+	// void ChangeViewWidth(const Agent & agent, ViewWidth view_width) { if (mpAgent == & agent) { ChangeViewWidth(view_width); } }
+	// void SetCanTurn(const Agent & agent, bool can_turn) { if (mpAgent == & agent) { SetCanTurn(can_turn); } }
+
+	// void RaiseBall(double eva = 0.0) { RaiseBall(eva); }
+	// void RaisePlayer(Unum num, double eva = 0.0) { RaisePlayer(num, eva); }
+
+	// void SetForceSeeBall() { SetForceSeeBall(); }
+	// void SetForceSeePlayer(Unum i) { SetForceSeePlayer(i); }
+
+	// void SetCritical(bool critical) { SetCritical(critical); }
+	void ForbidDecision() { mForbidden = true;}
+	// void ChangeViewWidth(ViewWidth view_width) { ChangeViewWidth(view_width); }
+	// void SetCanTurn(bool can_turn) { SetCanTurn(can_turn); }
 
 public:
-	void Initial(Agent * agent);
+	void Initial();
 
-private:
-	void UpdatePredictInfo();
 	void RaiseBall(double eva = 0.0);
 	void RaisePlayer(ObjectIndex num, double eva = 0.0);
+private:
+	void UpdatePredictInfo();
 	void RaiseForgotObject(ObjectIndex unum);
 
 	void ViewModeDecision();
@@ -204,6 +215,7 @@ private:
 	bool ForceSearchBall();
 	void DoVisualExecute();
 	void DoDecision();
+public:
 
 	void SetForceSeeBall();
 	void SetForceSeePlayer(Unum i);
@@ -211,6 +223,7 @@ private:
 	void SetCritical(bool critical) { mIsCritical = critical; }
 	void ChangeViewWidth(ViewWidth view_width) { mViewWidth = view_width; }
 	void SetCanTurn(bool can_turn) { mCanTurn = can_turn; }
+private:
 
 	/**
 	* 评价视觉请求，计算score
@@ -239,7 +252,7 @@ private:
 	}
 
 private:
-	Agent       * mpAgent;
+	Agent * mpAgent;
 	WorldState  * mpWorldState;
 	BallState   * mpBallState;
 	RemotePlayerState * mpSelfState;

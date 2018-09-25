@@ -606,7 +606,6 @@ Stadium::initPlayer( const char * teamname,
                      const rcss::net::Addr & addr )
 {
     Team * team = static_cast< Team * >( 0 );
-    std::cout << "AAAAAAAAAAAAAAAAAAAAAAAA = (" << teamname << ", " << version << ", " << goalie << ")\n"; 
     if ( M_team_l->name().empty() )
     {
         team = M_team_l;
@@ -2792,7 +2791,6 @@ Stadium::parsePlayerInit( const char * message,
     if ( ! std::strncmp( message, "(init ", std::strlen( "(init " ) ) )
     {
         // (init <TeamName> [(version <Ver>)][ (goalie)])
-
         const char * msg = message;
 
         char teamname[16];

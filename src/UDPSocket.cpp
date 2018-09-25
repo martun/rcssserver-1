@@ -31,6 +31,8 @@
  ************************************************************************************/
 
 #include "UDPSocket.h"
+#include "PlayerParam.h"
+#include <map>
 
 //==============================================================================
 UDPSocket::UDPSocket() 
@@ -46,10 +48,14 @@ UDPSocket::~UDPSocket()
 
 
 //==============================================================================
-UDPSocket& UDPSocket::instance()
+UDPSocket& UDPSocket::instance(RemotePlayerParam* playerParam)
 {
-	static UDPSocket instance;
-	return instance;
+	static std::map<RemotePlayerParam*, UDPSocket*> instances;
+	if(instances[playerParam] == 0)
+	{
+		instances[playerParam] = new UDPSocket();
+	}
+	return *instances[playerParam];
 }
 
 
@@ -110,10 +116,12 @@ void UDPSocket::Initial(const char *host, int port)
 	mAddress.sin_addr.s_addr    = inet_addr( host ) ;
 	mAddress.sin_port           = htons( port ) ;
 	mIsInitialOK                = true;
+	std::cout << "Socket " << mSockfd << " binded, port = " << port << std::endl; 
 }
 
 
 //==============================================================================
+// #include "ServerClientMediator.h"
 int UDPSocket::Receive(char *msg)
 {
 #ifdef WIN32
@@ -149,7 +157,7 @@ int UDPSocket::Send(const char *msg)
 		return n;
 	}
 
-	std::cout << msg << std::endl;
+	std::cout << "UDPSocket::Send after: " << msg << std::endl;
 	return std::strlen(msg);
 }
 

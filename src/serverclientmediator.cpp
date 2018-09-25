@@ -2,21 +2,21 @@
 #include <cstring>
 #include <cstdio>
 
-ClientServerMediator::ClientServerMediator()
+ServerClientMediator::ServerClientMediator()
 {
 
 }
-void ClientServerMediator::sendToClients(const char* in_buffer, int size)
+void ServerClientMediator::sendToClients(const char* in_buffer, int size)
 {
 	to_client_queue.push({in_buffer, size});
 	printf("sendToClients - %s\n", in_buffer);
 }
-void ClientServerMediator::sendToServer(const char* in_buffer, int size)
+void ServerClientMediator::sendToServer(const char* in_buffer, int size)
 {
 	to_server_queue.push({in_buffer, size});
 	printf("sendToServer - %s\n", in_buffer);
 }
-int ClientServerMediator::recvFromClients(char* out_buffer, int size)
+int ServerClientMediator::recvFromClients(char* out_buffer, int size)
 {
 	size = 0;
 	if(!to_server_queue.empty())
@@ -25,10 +25,10 @@ int ClientServerMediator::recvFromClients(char* out_buffer, int size)
 		size = to_server_queue.front().second;
 		to_server_queue.pop();
 	}
-	return size;
 	printf("recvFromClients - %s\n", out_buffer);
+	return size;
 }
-int ClientServerMediator::recvFromServer(char* out_buffer, int size)
+int ServerClientMediator::recvFromServer(char* out_buffer, int size)
 {
 	size = 0;
 	if(!to_client_queue.empty())
@@ -37,6 +37,6 @@ int ClientServerMediator::recvFromServer(char* out_buffer, int size)
 		size = to_client_queue.front().second;
 		to_client_queue.pop();
 	}
-	return size;
 	printf("recvFromServer - %s\n", out_buffer);
+	return size;
 }

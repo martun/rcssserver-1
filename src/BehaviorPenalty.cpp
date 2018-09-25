@@ -65,13 +65,13 @@ bool BehaviorPenaltyExecuter::Execute(const ActiveBehavior &beh)
     {
     case BDT_Setplay_Scan:
 		mAgent.Turn(beh.mAngle);
-        VisualSystem::instance().SetCanTurn(mAgent, false);
+        VisualSystem::instance(&mAgent)->SetCanTurn(false);
         break;
     case BDT_Setplay_Move:
         if (mSelfState.IsGoalie())
         {
             Dasher::instance().GoToPoint(mAgent, beh.mTarget, 0.26);
-            VisualSystem::instance().RaiseBall(mAgent, 1.0);
+            VisualSystem::instance(&mAgent)->RaiseBall(1.0);
         }
         else
         {
@@ -87,8 +87,8 @@ bool BehaviorPenaltyExecuter::Execute(const ActiveBehavior &beh)
                     RemoteServerParam::instance().penReadyWait() - 6) // wait
                 {
                     Dasher::instance().GetTurnBodyToAngleAction(mAgent, 0.0).Execute(mAgent);
-                    VisualSystem::instance().RaisePlayer(mAgent, opp_goalie_state.GetUnum(), 1.0);
-                    VisualSystem::instance().SetCanTurn(mAgent, false);
+                    VisualSystem::instance(&mAgent)->RaisePlayer(opp_goalie_state.GetUnum(), 1.0);
+                    VisualSystem::instance(&mAgent)->SetCanTurn(false);
                 }
 				else if (mSelfState.IsKickable() == true)
                 {
@@ -111,8 +111,8 @@ bool BehaviorPenaltyExecuter::Execute(const ActiveBehavior &beh)
         else
         {
             Dasher::instance().GetTurnBodyToAngleAction(mAgent, 0.0).Execute(mAgent);
-            VisualSystem::instance().RaisePlayer(mAgent, opp_goalie_state.GetUnum(), 1.0);
-            VisualSystem::instance().SetCanTurn(mAgent, false);
+            VisualSystem::instance(&mAgent)->RaisePlayer(opp_goalie_state.GetUnum(), 1.0);
+            VisualSystem::instance(&mAgent)->SetCanTurn(false);
         }
         break;
     default:

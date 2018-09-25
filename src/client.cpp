@@ -235,6 +235,7 @@ private:
           {
               M_clean_cycle = true;
           }
+          std::cout << std::string( msg, len - 1 ) << std::endl;
 
           //std::cout << std::string( msg, len - 1 ) << std::endl;
       }
@@ -294,7 +295,7 @@ private:
                               }
                               M_socket.close();
                           }
-                          std::cout << buf << std::endl;
+                          std::cout << "client.cpp:298: " << buf << std::endl;
 
                       }
                   }

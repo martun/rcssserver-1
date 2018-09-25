@@ -195,8 +195,6 @@ RemotePlayerParam* RemotePlayerParam::instance()
 	return new RemotePlayerParam;
 }
 
-HeteroParam* RemotePlayerParam::mHeteroPlayer = nullptr;
-
 RemotePlayerParam::RemotePlayerParam()
 	// : mHeteroPlayer(nullptr)
 {
@@ -225,6 +223,7 @@ bool RemotePlayerParam::mNetworkTest = NETWORK_TEST;
 int RemotePlayerParam::mWaitTimeOut = WAIT_TIME_OUT;
 double RemotePlayerParam::mAtPointBuffer = AT_POINT_BUFFER;
 int RemotePlayerParam::mKickerMode = KICKER_MODE;
+HeteroParam *RemotePlayerParam::mHeteroPlayer = new HeteroParam[DEFAULT_PLAYER_TYPES];
 
 
 void RemotePlayerParam::AddParams()

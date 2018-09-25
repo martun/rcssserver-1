@@ -69,7 +69,7 @@ bool BehaviorSetplayExecuter::Execute(const ActiveBehavior &setplay)
 			return mAgent.Move(setplay.mTarget);
 		}
 		else if (setplay.mDetailType == BDT_Setplay_Scan) {
-			VisualSystem::instance().ForbidDecision(mAgent);
+			VisualSystem::instance(&mAgent)->ForbidDecision();
 			return mAgent.Turn(50.0);
 		}
 		else {

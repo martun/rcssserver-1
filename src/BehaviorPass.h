@@ -46,14 +46,14 @@ public:
     bool Execute(const ActiveBehavior & act_bhv);
     void SubmitVisualRequest(const ActiveBehavior & pass, double plus = 0.0) {
     	if (pass.mKickCycle == 1) {
-    		VisualSystem::instance().RaisePlayer(mAgent, pass.mKeyTm.mUnum, 3.0 + plus);
-    		VisualSystem::instance().RaisePlayer(mAgent, -pass.mKeyOppGB.mUnum, 3.0 + plus);
-    		VisualSystem::instance().RaisePlayer(mAgent, -pass.mKeyOppGT.mUnum, 3.0 + plus);
+    		VisualSystem::instance(&mAgent)->RaisePlayer(pass.mKeyTm.mUnum, 3.0 + plus);
+    		VisualSystem::instance(&mAgent)->RaisePlayer(-pass.mKeyOppGB.mUnum, 3.0 + plus);
+    		VisualSystem::instance(&mAgent)->RaisePlayer(-pass.mKeyOppGT.mUnum, 3.0 + plus);
     	}
     	else {
-    		VisualSystem::instance().RaisePlayer(mAgent, pass.mKeyTm.mUnum, 2.0 + plus);
-    		VisualSystem::instance().RaisePlayer(mAgent, -pass.mKeyOppGB.mUnum, 3.0 + plus);
-    		VisualSystem::instance().RaisePlayer(mAgent, -pass.mKeyOppGT.mUnum, 2.0 + plus);
+    		VisualSystem::instance(&mAgent)->RaisePlayer(pass.mKeyTm.mUnum, 2.0 + plus);
+    		VisualSystem::instance(&mAgent)->RaisePlayer(-pass.mKeyOppGB.mUnum, 3.0 + plus);
+    		VisualSystem::instance(&mAgent)->RaisePlayer(-pass.mKeyOppGT.mUnum, 2.0 + plus);
     	}
     }
 

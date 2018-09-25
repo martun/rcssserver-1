@@ -37,8 +37,9 @@
 
 RemotePlayerState::RemotePlayerState(RemotePlayerParam* playerParams)
 	: MobileState(RemoteServerParam::instance().playerDecay(), RemotePlayerParam::HeteroPlayer(0).effectiveSpeedMax())
-	, m_playerParams(playerParams)
 {
+	m_playerParams = playerParams;
+
 	mBallCatchable = false;
 	mCatchBan = 0;
 	mCollideWithBall = false;
@@ -68,11 +69,11 @@ RemotePlayerState::RemotePlayerState(RemotePlayerParam* playerParams)
 
 	mViewWidth = VW_Normal;
 	mIsTired = false;
-    mMinStamina = m_playerParams->MinStamina();
+	if(m_playerParams)
+	    mMinStamina = GetPlayerParam()->MinStamina();
 
 	mCardType = CR_None;
 	mIsBodyDirMayChanged = true;
-	std::cout << "RemotePlayerState Done" << std::endl;
 }
 
 bool RemotePlayerState::IsKickable(const BallState & ball_state, const double & buffer) const
@@ -158,11 +159,11 @@ double RemotePlayerState::CorrectDashPowerForStamina(double dash_power) const
 	double new_power;
 
 	if (dash_power >= 0) {
-		new_power = Min( dash_power, stamina - m_playerParams->MinStamina() );
+		new_power = Min( dash_power, stamina - GetPlayerParam()->MinStamina() );
 		if ( new_power < 0 ) new_power = 0;
 	}
 	else {
-		new_power = Min( -dash_power, (stamina - m_playerParams->MinStamina()) / 2.0);
+		new_power = Min( -dash_power, (stamina - GetPlayerParam()->MinStamina()) / 2.0);
 		if ( new_power < 0 ) new_power = 0;
 
 		new_power = -new_power;
@@ -235,3 +236,5 @@ double RemotePlayerState::GetCatchProb( const double & dist ) const
 }
 
 //end of file pLayerState.cpp
+
+

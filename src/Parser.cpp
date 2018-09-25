@@ -42,8 +42,6 @@
 #include "Thread.h"
 #include "NetworkTest.h"
 
-char Parser::mBuf[MAX_MESSAGE];
-bool Parser::mIsPlayerTypesReady = false;
 const double Parser::INVALID_VALUE = std::numeric_limits<double>::max();
 
 #ifdef _Debug
@@ -56,6 +54,8 @@ const double Parser::INVALID_VALUE = std::numeric_limits<double>::max();
 Parser::Parser(Observer *p_Observer)
 {
 	mpObserver = p_Observer;
+	mIsPlayerTypesReady = false;
+
 
 	mConnectServerOk = false;
 	mHalfTime = 0;
@@ -69,19 +69,19 @@ Parser::Parser(Observer *p_Observer)
 	ServerPlayModeMap::instance();
 
 	if (mpObserver->GetPlayerParam()->isCoach()){
-		UDPSocket::instance().Initial(
+		UDPSocket::instance(p_Observer->GetPlayerParam()).Initial(
 				RemoteServerParam::instance().serverHost().c_str(),
 				RemoteServerParam::instance().onlineCoachPort()
 		);
 	}
 	else if (mpObserver->GetPlayerParam()->isTrainer()) {
-		UDPSocket::instance().Initial(
+		UDPSocket::instance(p_Observer->GetPlayerParam()).Initial(
 				RemoteServerParam::instance().serverHost().c_str(),
 				RemoteServerParam::instance().offlineCoachPort()
 		);
 	}
 	else {
-		UDPSocket::instance().Initial(
+		UDPSocket::instance(p_Observer->GetPlayerParam()).Initial(
 				RemoteServerParam::instance().serverHost().c_str(),
 				RemoteServerParam::instance().playerPort()
 		);
@@ -99,7 +99,7 @@ void Parser::StartRoutine()
 
 	while( true )
 	{
-		if (UDPSocket::instance().Receive(mBuf) > 0)
+		if (UDPSocket::instance(mpObserver->GetPlayerParam()).Receive(mBuf) > 0)
 		{
 			NetworkTest::instance().AddParserBegin();
 
@@ -119,15 +119,17 @@ void Parser::ConnectToServer()
 	mOkMutex.Lock();
 	mConnectServerOk = false;
 	mOkMutex.UnLock();
-
+	std::cout << "ConnectToServer start" << std::endl;
 	SendInitialLizeMsg();
 	do {
-		UDPSocket::instance().Receive(mBuf);
+		// std::cout << "while (!ParseInitializeMsg(" << mBuf << "))" << std::endl;
+		UDPSocket::instance(mpObserver->GetPlayerParam()).Receive(mBuf);
 	} while (!ParseInitializeMsg(mBuf));
 
 	mOkMutex.Lock();
 	mConnectServerOk = true;
 	mOkMutex.UnLock();
+	std::cout << "ConnectToServer END" << std::endl;
 
 	DynamicDebug::instance().Initial(mpObserver); // 动态调试的初始化，知道自己是哪边了才能初始化，位置不能动
 	DynamicDebug::instance().AddMessage(mBuf, MT_Parse); // 动态调试记录Parse信息
@@ -155,7 +157,7 @@ void Parser::SendInitialLizeMsg(){
 				" (version " << mpObserver->GetPlayerParam()->playerVersion() << "))";
 	}
 
-	if (UDPSocket::instance().Send(init_string.str().c_str()) < 0){
+	if (UDPSocket::instance(mpObserver->GetPlayerParam()).Send(init_string.str().c_str()) < 0){
 		PRINT_ERROR("send_initialize_message failed");
 	}
 }
@@ -265,8 +267,16 @@ void Parser::Parse(char *msg)
 
 	char *time_end = 0;
 	switch (msg_type){
-	case Sight_Msg: ParseTime(msg, &time_end, false); ParseSight(time_end); mpObserver->SetNewSight(); break;
-	case CoachSight_Msg: ParseTime(msg, &time_end, true); ParseSight_Coach(time_end); mpObserver->SetNewSight(); break;
+	case Sight_Msg: 
+		ParseTime(msg, &time_end, false); 
+		ParseSight(time_end); 
+		mpObserver->SetNewSight(); 
+		break;
+	case CoachSight_Msg: 
+		ParseTime(msg, &time_end, true); 
+		ParseSight_Coach(time_end); 
+		mpObserver->SetNewSight(); 
+		break;
 	case Sense_Msg: ParseTime(msg, &time_end, true); ParseSense(time_end); mpObserver->SetNewSense(); break;
 	case Hear_Msg: if(!ParseForTrainer(msg)){ ParseTime(msg, &time_end, true); ParseSound(time_end); }break;
 	case RemotePlayerParam_Msg: ParsePlayerParam(msg); break;

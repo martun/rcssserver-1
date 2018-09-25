@@ -141,7 +141,7 @@ int
 RemoteClient::send( const char * msg,
                     const size_t & len )
 {
-    printf("RemoteClient::send - %s\n", msg);
+    // printf("RemoteClient::send - %s\n", msg);
     if ( M_socket.isConnected() )
     {
         M_transport->write( msg, len );

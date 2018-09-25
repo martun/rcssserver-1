@@ -49,6 +49,7 @@
 #include <iostream>
 #include "Types.h"
 
+class RemotePlayerParam;
 
 class UDPSocket
 {
@@ -57,7 +58,7 @@ class UDPSocket
 public:
     ~UDPSocket();
 
-    static UDPSocket & instance();
+    static UDPSocket & instance(RemotePlayerParam* playerParam);
     void Initial(const char *host, int port);
 
     int Receive(char *msg) ;

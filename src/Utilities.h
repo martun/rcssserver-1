@@ -309,7 +309,8 @@ public:
 		}
 	}
 
-	Array(const _Tp & x) {
+	Array(const _Tp & x) 
+	{
 		fill(x);
 	}
 

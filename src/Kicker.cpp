@@ -452,7 +452,7 @@ void Kicker::ReadUtilityTable()
  */
 void Kicker::ComputeUtilityTable()
 {
-	Assert(Parser::IsPlayerTypesReady());
+	// Assert(Parser::IsPlayerTypesReady());
 
     mInput.mPlayerType = 0;//离线计算只考虑0号类型
     for (int k = 0; k < POINTS_NUM; ++k)

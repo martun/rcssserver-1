@@ -54,58 +54,46 @@
 Client::Client(RemotePlayerParam* playerParams) 
 	: m_playerParams(playerParams)
 {
-	std::cout << 21 << std::endl; 
 	srand(time(0)); //global srand once
 	srand48(time(0));
 
 	/** Observer and World Model */
 	mpAgent         = 0;
     mpObserver      = new Observer(m_playerParams);
-	std::cout << 221 << std::endl; 
-	mpWorldModel    = new WorldModel;
-	std::cout << 222 << std::endl; 
+	mpWorldModel    = new WorldModel();
 
     // instance放在这里创建以节省后面的运行效率，部分instance不能放在这里，需要时创建
 
     /** Assistant instance */
 
 	TimeTest::instance();
-	std::cout << 23 << std::endl; 
-    NetworkTest::instance();
-	std::cout << 24 << std::endl; 
-    DynamicDebug::instance();
-	std::cout << 25 << std::endl; 
-    RemoteLogger::instance(m_playerParams)->Initial(mpObserver, &(mpWorldModel->World(false)));
-	std::cout << 25 << std::endl; 
-    Plotter::instance();
-	std::cout << 26 << std::endl; 
+	NetworkTest::instance();
+	DynamicDebug::instance();
+	RemoteLogger::instance(m_playerParams)->Initial(mpObserver, &(mpWorldModel->World(false)));
+	Plotter::instance();
+	
 
     /** Param */
 	RemoteServerParam::instance();
     // m_playerParams; // ???????????????????
-	std::cout << 27 << std::endl; 
+	
 
 	/** Base Model */
     InterceptModel::instance();
-	std::cout << 28 << std::endl; 
+	
 
     /** Smart Action */
     Dasher::instance();
-	std::cout << 29 << std::endl; 
-    Tackler::instance();
-	std::cout << 210 << std::endl; 
-    Kicker::instance();
-	std::cout << 211 << std::endl; 
+	Tackler::instance();
+	Kicker::instance();
+	
 
     /** Other Useful instance */
     BehaviorFactory::instance();
-	std::cout << 212 << std::endl; 
-    UDPSocket::instance();
-	std::cout << 213 << std::endl; 
-    VisualSystem::instance();
-	std::cout << 214 << std::endl; 
-    CommunicateSystem::instance(playerParams);
-	std::cout << 215 << std::endl; 
+	UDPSocket::instance(m_playerParams);
+	// VisualSystem::instance();
+	CommunicateSystem::instance(playerParams);
+	
 
 	/** Parser thread and CommandSend thread */
     mpCommandSender = new CommandSender(mpObserver);
@@ -114,7 +102,7 @@ Client::Client(RemotePlayerParam* playerParams)
 
 
 	mpParser        = new Parser(mpObserver);
-	std::cout << 216 << std::endl; 
+	
 
 }
 
@@ -181,11 +169,12 @@ void Client::RunNormal()
 	do
 	{
 		WaitFor(100); // wait for the parser thread to connect the server
-		if (++past_cycle > 20)
-		{
-			std::cout << m_playerParams->teamName() << ": Connect Server Error ..." << std::endl;
-			return;
-		}
+		// std::cout << m_playerParams->teamName() << " waiting ..." << std::endl;
+		// if (++past_cycle > 20)
+		// {
+		// 	std::cout << m_playerParams->teamName() << ": Connect Server Error ..." << std::endl;
+		// 	return;
+		// }
 	} while (mpParser->IsConnectServerOk() == false);
 
 	ConstructAgent();
@@ -226,7 +215,7 @@ void Client::ConstructAgent()
 	Formation::instance.AssignWith(mpAgent);
 	mpCommandSender->RegisterAgent(mpAgent);
 	CommunicateSystem::instance(m_playerParams)->Initial(mpObserver , mpAgent); //init communicate system
-	VisualSystem::instance().Initial(mpAgent);
+	VisualSystem::instance(mpAgent)->Initial();
 }
 
 void Client::MainLoop()

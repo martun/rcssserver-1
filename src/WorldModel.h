@@ -36,6 +36,7 @@
 class Observer;
 class WorldState;
 class HistoryState;
+class RemotePlayerParam;
 
 /**
  * WorldModel 里面存放两对 WorldState，一对用于队友的决策，另一对用于对手的决策

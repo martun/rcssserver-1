@@ -41,8 +41,9 @@
 #include "BehaviorShoot.h"
 #include "Logger.h"
 
-VisualSystem::VisualSystem() 
+VisualSystem::VisualSystem(const Agent * agent) 
 {
+	mpAgent         = const_cast<Agent*>(agent);
 	mCanForceChangeViewWidth = false;
 	mIsSearching = false;
 	mIsCritical = false;
@@ -53,19 +54,23 @@ VisualSystem::VisualSystem()
 VisualSystem::~VisualSystem() {
 }
 
-VisualSystem& VisualSystem::instance()
+VisualSystem* VisualSystem::instance(const Agent * agent)
 {
-	static VisualSystem instance;
-	return instance;
+	static std::map< const Agent*, VisualSystem*> instances;
+	if(instances[agent] == 0)
+	{
+		instances[agent] = new VisualSystem(agent);
+	}
+	return instances[agent];
 }
 
-void VisualSystem::Initial(Agent * agent)
+void VisualSystem::Initial()
 {
-	mpAgent         = agent;
-	mpWorldState    = & (agent->World());
-	mpInfoState     = & (agent->Info());
-	mpBallState     = & (agent->World().Ball());
-	mpSelfState     = & (agent->Self());
+	// mpAgent         = agent;
+	mpWorldState    = & (mpAgent->World());
+	mpInfoState     = & (mpAgent->Info());
+	mpBallState     = & (mpAgent->World().Ball());
+	mpSelfState     = & (mpAgent->Self());
 
 	mVisualRequest.GetOfBall().mpObject = mpBallState;
 	mVisualRequest.GetOfBall().mUnum = 0;
