@@ -563,4 +563,101 @@ void Strategy::PenaltyAnalyze()
     }
 }
 
+Strategy::VirtualSelf::VirtualSelf((const RemotePlayerState & player)
+    : RemotePlayerState(player) {}
+
+const double& Strategy::VirtualSelf::GetKickableArea() const { 
+    return RemoteServerParam::instance().maxTackleArea(); }
+
+RemotePlayerParam* Agent::GetPlayerParam() const
+{
+	Assert(m_playerParam)
+	return m_playerParam;
+}
+
+/**
+ * Interface to create an agent which represents a team mate.
+ */
+Agent * Agent::CreateTeammateAgent(Unum unum, RemotePlayerParam* playerParam); ///反算队友
+
+/**
+ * Interface to create an agent which represents an opponent.
+ */
+Agent * Agent::CreateOpponentAgent(Unum unum/*no params*/); ///反算对手
+
+/**
+ * Interfaces to get the agent's world state.
+ */
+WorldState       & Agent::World() { return *mpWorldState; }
+const WorldState & Agent::GetWorldState() const { return *mpWorldState; }
+
+/**
+ * Interfaces to get the agent's info state.
+ */
+InfoState        & Agent::Info() {	return *mpInfoState; }
+const InfoState  & Agent::GetInfoState() const { return *mpInfoState; }
+
+/**
+ * 自己相关的接口
+ * Interfaces to get information about the agent it self.
+ */
+AgentID             Agent::GetAgentID() const { return AgentID(mSelfUnum, GetWorldState().CurrentTime(), mReverse); }
+Unum                Agent::GetSelfUnum() const { return mSelfUnum; }
+
+Vector Agent::GetSelfPosWithQueuedActions() { return GetActionEffector().GetSelfPosWithQueuedActions(); }
+Vector Agent::GetSelfVelWithQueuedActions() { return GetActionEffector().GetSelfVelWithQueuedActions(); }
+AngleDeg Agent::GetSelfBodyDirWithQueuedActions() { return GetActionEffector().GetSelfBodyDirWithQueuedActions(); }
+Vector Agent::GetBallPosWithQueuedActions() { return GetActionEffector().GetBallPosWithQueuedActions(); }
+Vector Agent::GetBallVelWithQueuedActions() { return GetActionEffector().GetBallVelWithQueuedActions(); }
+
+bool Strategy::IsBallActuralKickable() const { return mIsBallActuralKickable;}
+bool Strategy::IsBallFree() const { return mIsBallFree; }
+int Strategy::GetBallFreeCycleLeft() const { return mBallFreeCycleLeft; }
+bool Strategy::IsTmKickable() const;
+
+Unum Strategy::GetController() const { return mController;  }
+void Strategy::SetController(Unum controller) { mController = controller; }
+bool Strategy::IsMyControl() const;
+bool Strategy::IsTmControl() const { return mController > 0; }
+bool Strategy::IsOppControl() const { return mController < 0; }
+bool Strategy::IsBallOutOfControl() const { return mController == 0; }
+
+bool Strategy::IsLastTmControl() const { return mLastController > 0; }
+bool Strategy::IsLastOppControl() const { return mLastController < 0; }
+bool Strategy::IsLastBallFree() const { return mIsLastBallFree; }
+Unum Strategy::GetLastController() const { return mLastController; }
+Unum Strategy::GetLastChallenger() const { return mLastChallenger; }
+
+const Time & Strategy::GetLastBallFreeTime() const { return mLastBallFreeTime; }
+
+const Situation & Strategy::GetSituation() const { return mSituation; }
+void Strategy::SetSituation(Situation S){mSituation = S;}
+
+const Vector & Strategy::GetBallInterPos() const { return mBallInterPos; }
+
+int Strategy::GetBallOutCycle() const { return mBallOutCycle; }
+
+int Strategy::GetMyInterCycle() const { return mMyInterCycle; }
+void Strategy::SetMyInterCycle(int cycle) { mMyInterCycle = cycle; }
+
+Vector Strategy::GetMyInterPos();
+
+int Strategy::GetMinOppInterCycle() const { return mMinOppInterCycle; }
+int Strategy::GetMinTmInterCycle() const { return mMinTmInterCycle; }
+Unum Strategy::GetFastestTm() const { return mFastestTm; }
+Unum Strategy::GetFastestOpp() const { return mFastestOpp; }
+
+int Strategy::GetSureOppInterCycle() const { return mSureOppInterCycle; }
+int Strategy::GetSureTmInterCycle() const { return mSureTmInterCycle; }
+int Strategy::GetSureInterCycle() const {return mSureInterCycle;}
+Unum Strategy::GetSureTm() const { return mSureTm; }
+Unum Strategy::GetSureOpp() const { return mSureOpp; }
+
+bool Strategy::IsForbidenDribble() const { return mForbiddenDribble; }
+void Strategy::SetForbidenDribble(const bool & forbiden) { mForbiddenDribble = forbiden; }
+
+void Strategy::SetPenaltyFirstStep(bool flag)    { mIsPenaltyFirstStep = flag; }
+bool Strategy::IsPenaltyFirstStep() const        { return mIsPenaltyFirstStep; }
+Unum Strategy::GetPenaltyTaker() const           { return mPenaltyTaker; }
+	
 // end of file Strategyinfo.cpp

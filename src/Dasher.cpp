@@ -38,10 +38,6 @@
 
 double Dasher::GETBALL_BUFFER = 0.1;
 
-Array<double, 8> Dasher::DASH_DIR;
-Array<int, 8> Dasher::ANTI_DIR_IDX;
-Array<double, 8> Dasher::DIR_RATE;
-
 Dasher::Dasher() 
 {
 	Assert(std::fabs(RemoteServerParam::instance().dashAngleStep() - 45.0) < FLOAT_EPS);

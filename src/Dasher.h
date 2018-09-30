@@ -41,17 +41,18 @@ class RemotePlayerState;
 
 class Dasher
 {
+private:
     Dasher();
 public:
     ~Dasher();
 
     static Dasher & instance();
 
-    static Array<double, 8> DASH_DIR;
-    static Array<int, 8> ANTI_DIR_IDX;
-    static Array<double, 8> DIR_RATE;
+    Array<double, 8> DASH_DIR;
+    Array<int, 8> ANTI_DIR_IDX;
+    Array<double, 8> DIR_RATE;
 
-    static int GetDashDirIdx(const AngleDeg & dir) {
+    int GetDashDirIdx(const AngleDeg & dir) {
     	for (int i = 0; i < 8; ++i) {
     		if (GetAngleDegDiffer(dir, DASH_DIR[i]) < FLOAT_EPS) return i;
     	}

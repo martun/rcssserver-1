@@ -50,6 +50,7 @@ RemotePlayer::RemotePlayer(RemotePlayerParam* playerParams)
 	: Client(playerParams)
 	, mpDecisionTree( new DecisionTree )
 	, m_playerParams(playerParams)
+    , last_time(Time(-100, 0))
 {
 }
 
@@ -85,13 +86,10 @@ void RemotePlayer::SendOptionToServer()
 void RemotePlayer::Run()
 {
     //TIMETEST("Run");
-
-	static Time last_time = Time(-100, 0);
-
 	mpObserver->Lock();
 
 	/** 下面几个更新顺序不能变 */
-	Formation::instance.SetTeammateFormations();
+	formation_instance.SetTeammateFormations();
 	CommunicateSystem::instance(m_playerParams)->Update(); //在这里解析hear信息，必须首先更新
 	mpAgent->CheckCommands(mpObserver);
 	mpWorldModel->Update(mpObserver);
@@ -110,7 +108,7 @@ void RemotePlayer::Run()
 
 	last_time = time;
 
-	Formation::instance.UpdateOpponentRole(); //TODO: 暂时放在这里，教练未发来对手阵型信息时自己先计算
+	formation_instance.UpdateOpponentRole(); //TODO: 暂时放在这里，教练未发来对手阵型信息时自己先计算
 
 	VisualSystem::instance(mpAgent)->ResetVisualRequest();
 	mpDecisionTree->Decision(*mpAgent);
@@ -118,7 +116,7 @@ void RemotePlayer::Run()
 	VisualSystem::instance(mpAgent)->Decision();
 	CommunicateSystem::instance(m_playerParams)->Decision();
 
-if (RemoteServerParam::instance().synchMode()) {
+    if (RemoteServerParam::instance().synchMode()) {
 		mpAgent->Done();
 	}
 

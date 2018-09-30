@@ -344,7 +344,8 @@ void VisualSystem::DoInfoGatherForFastForward()
 	const Strategy & strategy = mpAgent->GetStrategy();
 
 	RaiseBall();
-	switch (mpAgent->GetFormation().GetTeammateRoleType(mpSelfState->GetUnum()).mLineType){
+	auto line_type = mpAgent->GetFormation().GetTeammateRoleType(mpSelfState->GetUnum()).mLineType;
+	switch (line_type){
 	case LT_Defender:
 		for (Unum i = 1; i <= TEAMSIZE; ++i){
 			if (i != mpSelfState->GetUnum() && i != mpWorldState->GetTeammateGoalieUnum()){

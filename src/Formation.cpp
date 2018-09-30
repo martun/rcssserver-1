@@ -490,8 +490,8 @@ OpponentFormation::~OpponentFormation()
 	}
 }
 
-double OpponentFormation::mForwardMaxX = -100000;
-double OpponentFormation::mDefenderMinX = 100000;
+const double OpponentFormation::mForwardMaxX = -100000;
+const double OpponentFormation::mDefenderMinX = 100000;
 
 void OpponentFormation::SetFormationRole()
 {
@@ -952,8 +952,6 @@ void Formation::Rollback(std::string update_name)
 	RemoteLogger::instance(nullptr)->GetTextLogger("formation_update")<<mAgent.GetWorldState().CurrentTime() << ", " <<mAgent.GetAgentID() << ", -, " <<  mFormationTypeStack.size() << ": " << update_name <<endl;
 }
 
-Formation::Instance Formation::instance;
-
 Formation::Instance::Instance() :
 	mpAgent(0)
 {
@@ -1007,8 +1005,8 @@ void Formation::Instance::UpdateOpponentRole()
 		Assert(0);
 		return;
 	}
-	static std::mutex m;
-	std::lock_guard<std::mutex> lock(m);
+	// static std::mutex m;
+	// std::lock_guard<std::mutex> lock(m);
 
 	const WorldState & world_state = mpAgent->GetWorldState();
 	const InfoState & info_state = mpAgent->GetInfoState();

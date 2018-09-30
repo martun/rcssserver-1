@@ -42,6 +42,9 @@
 #ifdef HAVE_WINSOCK2_H
 #include <winsock2.h>
 #endif
+#ifndef WIN32
+#include <arpa/inet.h>
+#endif
 
 namespace rcss {
 

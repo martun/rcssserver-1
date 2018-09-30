@@ -51,6 +51,10 @@
 #ifdef HAVE_NETINET_IN_H
 #include <netinet/in.h>
 #endif
+#ifndef WIN32
+#include <arpa/inet.h>
+#include <sys/time.h>
+#endif
 
 #ifdef HAVE_SYS_TIME_H
 #include <sys/time.h> // gettimeofday

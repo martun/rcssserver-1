@@ -122,8 +122,11 @@ void UDPSocket::Initial(const char *host, int port)
 
 //==============================================================================
 // #include "ServerClientMediator.h"
+#include<mutex>
 int UDPSocket::Receive(char *msg)
 {
+	// std::mutex m;
+	// std::lock_guard<std::mutex> lock(m);
 #ifdef WIN32
 	int servlen;
 #else

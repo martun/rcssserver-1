@@ -44,6 +44,7 @@ class HeteroManager;
 class RemoteCoach: public Client
 {
 	RemotePlayerParam* m_playerParams;
+    Formation::Instance formation;
 public:
 	/**
 	* 构造函数和析构函数

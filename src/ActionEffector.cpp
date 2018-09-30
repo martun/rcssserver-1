@@ -1282,7 +1282,7 @@ void ActionEffector::SendCommands(char *msg)
 	else
 	{
 		//球员把命令放在一起发
-		static char command_msg[MAX_MESSAGE];
+		char command_msg[MAX_MESSAGE];
 
 		command_msg[0] = '\0';
 		ActionEffector::CMD_QUEUE_MUTEX.Lock();

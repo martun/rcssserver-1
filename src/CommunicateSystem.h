@@ -56,10 +56,10 @@ static const int MAX_DENGER_OPP = 4;
 class CommunicateSystem {
 public:
 	static const unsigned char *CODE;
-	static int CODE_TO_INT[128];
+	int CODE_TO_INT[128];
 	static const int CODE_SIZE;
 	static const int MAX_MSG_SIZE;
-	static int MAX_BITS_USED;
+	int MAX_BITS_USED;
 
 private:
 	Observer *mpObserver;

@@ -39,9 +39,9 @@
 #include "InterceptInfo.h"
 #include "BehaviorBase.h"
 #include "DecisionData.h"
+#include "PlayerState.h"
 
 class Agent;
-class RemotePlayerState;
 
 /**
  * 由于 Strategy 里得信息更新时，要用到自己得号码，所以不能放在 InfoState 里面，现在移到 Agent 里
@@ -66,49 +66,47 @@ public:
 	Vector GetTeammateSBSPPosition(Unum t_num,const Vector& ballpos);
 
 public:
-	bool IsBallActuralKickable() const { return mIsBallActuralKickable;}
-	bool IsBallFree() const { return mIsBallFree; }
-	int GetBallFreeCycleLeft() const { return mBallFreeCycleLeft; }
+	bool IsBallActuralKickable() const;
+	bool IsBallFree() const;
+	int GetBallFreeCycleLeft() const;
 	bool IsTmKickable() const;
 
-	Unum GetController() const { return mController;  }
-	void SetController(Unum controller) { mController = controller; }
+	Unum GetController() const;
+	void SetController(Unum controller);
     bool IsMyControl() const;
-	bool IsTmControl() const { return mController > 0; }
-	bool IsOppControl() const { return mController < 0; }
-	bool IsBallOutOfControl() const { return mController == 0; }
-
+	bool IsTmControl() const;
+	bool IsOppControl() const;
+	bool IsBallOutOfControl() const;
     bool IsLastMyControl() const;
-	bool IsLastTmControl() const { return mLastController > 0; }
-	bool IsLastOppControl() const { return mLastController < 0; }
-    bool IsLastBallFree() const { return mIsLastBallFree; }
-    Unum GetLastController() const { return mLastController; }
-    Unum GetLastChallenger() const { return mLastChallenger; }
+	bool IsLastTmControl() const;
+	bool IsLastOppControl() const;
+    bool IsLastBallFree() const;
+    Unum GetLastController() const;
+    Unum GetLastChallenger() const;
 
-    const Time & GetLastBallFreeTime() const { return mLastBallFreeTime; }
+    const Time & GetLastBallFreeTime() const;
 
-	const Situation & GetSituation() const { return mSituation; }
-	void SetSituation(Situation S){mSituation = S;}
+	const Situation & GetSituation() const;
+	void SetSituation(Situation S);
 
-	const Vector & GetBallInterPos() const { return mBallInterPos; }
+	const Vector & GetBallInterPos() const;
 
-	int GetBallOutCycle() const { return mBallOutCycle; }
+	int GetBallOutCycle() const;
 
-	int GetMyInterCycle() const { return mMyInterCycle; }
-	void SetMyInterCycle(int cycle) { mMyInterCycle = cycle; }
+	int GetMyInterCycle() const;
+	void SetMyInterCycle(int cycle);
 
 	Vector GetMyInterPos();
 
-	int GetMinOppInterCycle() const { return mMinOppInterCycle; }
-	int GetMinTmInterCycle() const { return mMinTmInterCycle; }
-	Unum GetFastestTm() const { return mFastestTm; }
-	Unum GetFastestOpp() const { return mFastestOpp; }
-
-	int GetSureOppInterCycle() const { return mSureOppInterCycle; }
-	int GetSureTmInterCycle() const { return mSureTmInterCycle; }
-	int GetSureInterCycle() const {return mSureInterCycle;}
-	Unum GetSureTm() const { return mSureTm; }
-	Unum GetSureOpp() const { return mSureOpp; }
+	int GetMinOppInterCycle() const;
+	int GetMinTmInterCycle() const;
+	Unum GetFastestTm() const;
+	Unum GetFastestOpp() const;
+	int GetSureOppInterCycle() const;
+	int GetSureTmInterCycle() const;
+	int GetSureInterCycle() const;
+	Unum GetSureTm() const;
+	Unum GetSureOpp() const;
 
 private:
 	bool mIsBallActuralKickable;//是否实际可踢
@@ -147,8 +145,8 @@ private:
 	bool mForbiddenDribble; //setplay发球时不能带球
 
 public:
-	bool IsForbidenDribble() const { return mForbiddenDribble; }
-	void SetForbidenDribble(const bool & forbiden) { mForbiddenDribble = forbiden; }
+	bool IsForbidenDribble() const;
+	void SetForbidenDribble(const bool & forbiden);
 
 public:
     PlayerInterceptInfo mMyTackleInfo; //假设自己的可踢范围扩大到铲球距离的截球信息
@@ -158,15 +156,15 @@ public:
 private:
 	class VirtualSelf: public RemotePlayerState {
 	public:
-		VirtualSelf(const RemotePlayerState & player): RemotePlayerState(player) {}
-		const double & GetKickableArea() const { return RemoteServerParam::instance().maxTackleArea(); }
+		VirtualSelf(const RemotePlayerState & player);
+		const double & GetKickableArea() const;
 	};
 
 /** 关于点球的接口和数据 */
 public:
-	void SetPenaltyFirstStep(bool flag)    { mIsPenaltyFirstStep = flag; }
-	bool IsPenaltyFirstStep() const        { return mIsPenaltyFirstStep; }
-	Unum GetPenaltyTaker() const           { return mPenaltyTaker; }
+	void SetPenaltyFirstStep(bool flag); 
+	bool IsPenaltyFirstStep() const;  
+	Unum GetPenaltyTaker() const;
 	bool IsMyPenaltyTaken() const;
 
 private:

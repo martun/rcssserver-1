@@ -45,13 +45,14 @@ using namespace std;
 
 const unsigned char *CommunicateSystem::CODE = (const unsigned char *)"uMKJNPpA1Yh0)f6_x3WU<>SgQ4wbDizV5dc9t2XZ?(/7*s.FEHvLG8yRTkej-OlB+armnoqCI";
 
-int CommunicateSystem::CODE_TO_INT[128];
+// int CommunicateSystem::CODE_TO_INT[128];
 const int CommunicateSystem::CODE_SIZE = 73;
 const int CommunicateSystem::MAX_MSG_SIZE = 10;
-int CommunicateSystem::MAX_BITS_USED = 61;
+// int CommunicateSystem::MAX_BITS_USED = 61;
 
 CommunicateSystem::CommunicateSystem(RemotePlayerParam* playerParams) 
 	: m_playerParams(playerParams) 
+	, MAX_BITS_USED(61)
 	{
 	memset(CODE_TO_INT, 0, sizeof(CODE_TO_INT));
 	for (int i = 0; i < CODE_SIZE; ++i){

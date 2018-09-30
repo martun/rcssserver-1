@@ -118,7 +118,7 @@ Client::~Client()
 
 void Client::RunDynamicDebug()
 {
-	static char msg[MAX_MESSAGE];
+	char msg[MAX_MESSAGE];
 	DynamicDebug::instance().Initial(mpObserver); // 动态调试的初始化，注意位置不能移动
 
 	DynamicDebug::instance().Run(msg); // 初始化信息
@@ -212,7 +212,7 @@ void Client::ConstructAgent()
    	 }
 	mpAgent = new Agent(mpObserver->SelfUnum(), mpWorldModel, false, m_playerParams); //要知道号码才能初始化
 
-	Formation::instance.AssignWith(mpAgent);
+	formation.AssignWith(mpAgent);
 	mpCommandSender->RegisterAgent(mpAgent);
 	CommunicateSystem::instance(m_playerParams)->Initial(mpObserver , mpAgent); //init communicate system
 	VisualSystem::instance(mpAgent)->Initial();

@@ -876,7 +876,7 @@ void Trainer::AddCondition(Trainer::Condition * superCondition, const char* name
 
 	Trainer::ConditionType type = ET_Null;
 	double arg; //初始化而已
-	static int keyPlayer=0;
+	int keyPlayer=0;
 	if(!strcmp(name,"Time"))
 	{
 		sscanf(buffer,"%lf",&arg);
@@ -1024,7 +1024,7 @@ void Trainer::InitializeStadium()
 
 void Trainer::PrepareForTrain()
 {
-	static uint i = 0;
+	uint i = 0;
 
 	if (i == 0) {
 		if (mpAgent->World().CurrentTime().T()) {

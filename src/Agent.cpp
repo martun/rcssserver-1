@@ -146,3 +146,37 @@ void Agent::SetHistoryActiveBehaviors()
     mActiveBehavior[0] = 0;
 }
 
+/**
+ * Check commands sent to server, based on ActionEffector::CheckCommands. Will update IsNewSight and BallSeenTime.
+ */
+void Agent::CheckCommands(Observer *observer) { mIsNewSight = observer->IsNewSight();mBallSeenTime = observer->Ball().GetDist().time(); GetActionEffector().CheckCommands(observer); }
+
+const RemotePlayerState & Agent::GetSelf() const {
+	if (!mSelfUnum || mSelfUnum == TRAINER_UNUM) {
+		static std::map<RemotePlayerParam*, RemotePlayerState*> coach_map;
+		if(coach_map[m_playerParam] == 0)
+		{
+			coach_map[m_playerParam] = new RemotePlayerState(m_playerParam); //dummy player state for coach
+		}
+		return *coach_map[m_playerParam];
+	}
+	RemotePlayerState& state = const_cast<RemotePlayerState&>(GetWorldState().GetTeammate(mSelfUnum));
+	state.SetPlayerParam(m_playerParam);
+	return const_cast<RemotePlayerState&>(state);
+}
+
+RemotePlayerState & Agent::Self() {
+	if (!mSelfUnum || mSelfUnum == TRAINER_UNUM) {
+		static std::map<RemotePlayerParam*, RemotePlayerState*> coach_map;
+		if(coach_map[m_playerParam] == 0)
+		{
+			coach_map[m_playerParam] = new RemotePlayerState(m_playerParam); //dummy player state for coach
+		}
+		return *coach_map[m_playerParam];
+	}
+
+	RemotePlayerState& state = World().Teammate(mSelfUnum);
+	state.SetPlayerParam(m_playerParam);
+	return state;
+}
+

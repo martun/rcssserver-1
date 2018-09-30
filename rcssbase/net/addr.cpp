@@ -40,6 +40,12 @@
 #include <arpa/inet.h>
 #endif
 
+// #ifndef WIN32
+// #include <netinet/in.h>
+// #include <arpa/inet.h>
+// #include <netdb.h>
+// #endif
+
 #ifdef __CYGWIN__
 // cygwin is not win32
 #elif defined(_WIN32) || defined(__WIN32__) || defined (WIN32)

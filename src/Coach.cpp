@@ -189,7 +189,7 @@ void RemoteCoach::Run()
 	mpObserver->Lock();
 
 	/** 下面几个更新顺序不能变 */
-	Formation::instance.SetTeammateFormations();
+	formation.SetTeammateFormations();
 	mpAgent->CheckCommands(mpObserver); // 检查上周期发送命令情况
 	mpWorldModel->Update(mpObserver);
 

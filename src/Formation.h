@@ -295,8 +295,8 @@ class OpponentFormation: public FormationBase {
     OpponentFormation(const OpponentFormation & formation);
 
 public:
-    static double mForwardMaxX; // forward max x
-    static double mDefenderMinX;  // defender min x
+    static const double mForwardMaxX; // forward max x
+    static const double mDefenderMinX;  // defender min x
 
     OpponentFormation(Unum goalie_unum, FormationType type);
     virtual ~OpponentFormation();
@@ -530,7 +530,7 @@ private:
 
 public:
     friend class Instance;
-    static class Instance
+    class Instance
     {
     	Array<TeammateFormation*, 4> mpTeammateFormationsImp;
     	Array<OpponentFormation*, 4> mpOpponentFormationsImp;
@@ -565,7 +565,9 @@ public:
 
     private:
     	Agent * mpAgent;
-    } instance;
+    };
+public:
+    Instance instance;
 };
 
 #endif

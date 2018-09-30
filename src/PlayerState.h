@@ -36,6 +36,7 @@
 #include "BaseState.h"
 #include "PlayerParam.h"
 #include "BallState.h"
+#include "Dasher.h"
 
 class RemotePlayerState : public MobileState
 {
@@ -328,6 +329,9 @@ public:
 	void GetReverseFrom(const RemotePlayerState & o);
 
 private:
+    
+    Dasher dasher;
+
 	/**存储数个周期的体力*/
 	double mStamina;
 
@@ -518,151 +522,6 @@ public:
 
 };
 
-//make to be inlined
-inline void RemotePlayerState::UpdateStamina(double stamina)
-{
-	mStamina = stamina;
-}
 
-inline void RemotePlayerState::UpdateEffort(double effort)
-{
-	mEffort = effort;
-}
-
-inline void RemotePlayerState::UpdateCapacity(double capacity)
-{
-	mCapacity = capacity;
-}
-
-inline void RemotePlayerState::UpdateNeckDir(double dir, int delay, double conf)
-{
-	mNeckDir.mValue = GetNormalizeAngleDeg(dir);
-	mNeckDir.mCycleDelay = delay;
-	mNeckDir.mConf  = conf;
-}
-
-inline void RemotePlayerState::UpdateBodyDir(double dir, int delay, double conf)
-{
-	mBodyDir.mValue = GetNormalizeAngleDeg(dir);
-	mBodyDir.mCycleDelay = delay;
-	mBodyDir.mConf = conf;
-}
-
-inline void RemotePlayerState::UpdateTackleBan(int ban)
-{
-	mTackleBan = ban;
-}
-
-inline void RemotePlayerState::UpdateCatchBan(int ban)
-{
-	mCatchBan = ban;
-}
-
-inline void RemotePlayerState::UpdateArmPoint(AngleDeg dir, int delay, double conf, double dist, int move_ban , int expire_ban )
-{
-	ArmPoint arm;
-	arm.mTargetDir = GetNormalizeAngleDeg(dir);
-	arm.mTargetDist = dist;
-	arm.mMovableBan = move_ban;
-	arm.mExpireBan  = expire_ban;
-
-	mArmPoint.mValue = arm;
-	mArmPoint.mCycleDelay = delay;
-	mArmPoint.mConf  = conf;
-}
-
-inline void RemotePlayerState::UpdateFocusOn(char side, Unum num, int delay, double conf)
-{
-	FocusOn focus;
-	focus.mFocusSide = side;
-	focus.mFocusNum  = num;
-
-	mFocusOn.mValue = focus;
-	mFocusOn.mCycleDelay = delay;
-	mFocusOn.mConf  = conf;
-}
-
-inline void RemotePlayerState::UpdateKicked(bool is_kicked)
-{
-	mIsKicked = is_kicked;
-}
-
-inline void RemotePlayerState::AutoUpdate(int delay_add, double conf_dec_factor)
-{
-	MobileState::AutoUpdate(delay_add , conf_dec_factor);
-
-	mNeckDir.AutoUpdate(delay_add , conf_dec_factor);
-	mBodyDir.AutoUpdate(delay_add , conf_dec_factor);
-	mArmPoint.AutoUpdate(delay_add , conf_dec_factor);
-	mFocusOn.AutoUpdate(delay_add , conf_dec_factor);
-
-	mCollideWithPost = false;
-	mCollideWithPlayer = false;
-	mCollideWithBall = false;
-	mIsKicked    = false;
-	mIsTired     = false;
-
-	if (mTackleBan > 0) {
-		mTackleBan -= delay_add;
-		mTackleBan = Max(mTackleBan, 0);
-	}
-
-	if (mFoulChargedCycle > 0) {
-		mFoulChargedCycle -= delay_add;
-		mFoulChargedCycle = Max(mFoulChargedCycle, 0);
-	}
-
-	if (mCatchBan > 0) {
-		mCatchBan -= delay_add;
-		mCatchBan = Max(mCatchBan, 0);
-	}
-
-	if (mArmPoint.mValue.mExpireBan > 0) {
-		mArmPoint.mValue.mExpireBan -= delay_add;
-		mArmPoint.mValue.mExpireBan = Max(mArmPoint.mValue.mExpireBan, 0);
-	}
-
-	if (mArmPoint.mValue.mMovableBan > 0) {
-		mArmPoint.mValue.mMovableBan -= delay_add;
-		mArmPoint.mValue.mMovableBan = Max(mArmPoint.mValue.mMovableBan, 0);
-	}
-
-	if (GetPosDelay() > delay_add) {
-		mIsBodyDirMayChanged = true;
-	}
-}
-
-inline void RemotePlayerState::UpdatePlayerType(int type)
-{
-	if (mPlayerType != type) {
-		mPlayerType = type;
-
-		SetDecay(RemotePlayerParam::HeteroPlayer(mPlayerType).playerDecay());
-		SetEffectiveSpeedMax(RemotePlayerParam::HeteroPlayer(mPlayerType).effectiveSpeedMax());
-	}
-}
-
-inline void RemotePlayerState::UpdateViewWidth(ViewWidth width)
-{
-	mViewWidth = width;
-}
-
-inline void RemotePlayerState::UpdateUnum(Unum num)
-{
-	mUnum = num;
-}
-
-inline void RemotePlayerState::SetIsAlive(bool alive)
-{
-	mIsAlive = alive;
-
-	if (!mIsAlive) {
-		UpdatePos(GetPos(), GetPosDelay(), 0.0);
-		UpdateVel(GetVel(), GetVelDelay(), 0.0);
-
-		mNeckDir.mConf = 0.0;
-		mBodyDir.mConf = 0.0;
-	}
-}
 
 #endif

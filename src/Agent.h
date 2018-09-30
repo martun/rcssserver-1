@@ -40,6 +40,7 @@
 #include "Strategy.h"
 #include "Analyser.h"
 #include "Formation.h"
+#include "Observer.h"
 
 class WorldModel;
 class ActiveBehavior;
@@ -82,12 +83,8 @@ class Agent
 public:
 	virtual ~Agent();
 
-	RemotePlayerParam* GetPlayerParam() const
-	{
-		Assert(m_playerParam)
-		return m_playerParam;
-	}
-
+	RemotePlayerParam* GetPlayerParam() const;
+	
 	/**
 	 * Interface to create an agent which represents a team mate.
 	 */
@@ -101,51 +98,33 @@ public:
 	/**
 	 * Interfaces to get the agent's world state.
 	 */
-	WorldState       & World() { return *mpWorldState; }
-	const WorldState & GetWorldState() const { return *mpWorldState; }
+	WorldState       & World();
+	const WorldState & GetWorldState() const;
 
 	/**
 	 * Interfaces to get the agent's info state.
 	 */
-	InfoState        & Info() {	return *mpInfoState; }
-	const InfoState  & GetInfoState() const { return *mpInfoState; }
+	InfoState        & Info();
+	const InfoState  & GetInfoState() const;
 
 	/**
 	 * 自己相关的接口
 	 * Interfaces to get information about the agent it self.
 	 */
-	AgentID             GetAgentID() const { return AgentID(mSelfUnum, GetWorldState().CurrentTime(), mReverse); }
-	Unum                GetSelfUnum() const { return mSelfUnum; }
+	AgentID             GetAgentID() const;
+	Unum                GetSelfUnum() const;
 
-	const RemotePlayerState & GetSelf() const {
-		if (!mSelfUnum || mSelfUnum == TRAINER_UNUM) {
-			static RemotePlayerState coach(m_playerParam); //dummy player state for coach
-			return coach;
-		}
-		RemotePlayerState& state = const_cast<RemotePlayerState&>(GetWorldState().GetTeammate(mSelfUnum));
-		state.SetPlayerParam(m_playerParam);
-		return const_cast<RemotePlayerState&>(state);
-	}
+	const RemotePlayerState & GetSelf() const;
 
-	RemotePlayerState & Self() {
-		if (!mSelfUnum || mSelfUnum == TRAINER_UNUM) {
-			static RemotePlayerState coach(m_playerParam); //dummy player state for coach
-			return coach;
-		}
-
-		RemotePlayerState& state = World().Teammate(mSelfUnum);
-		state.SetPlayerParam(m_playerParam);
-		return state;
-	}
-
+	RemotePlayerState & Self();
 	/**
 	 * Get state information after queued actions are executed.
 	 */
-	Vector GetSelfPosWithQueuedActions() { return GetActionEffector().GetSelfPosWithQueuedActions(); }
-	Vector GetSelfVelWithQueuedActions() { return GetActionEffector().GetSelfVelWithQueuedActions(); }
-	AngleDeg GetSelfBodyDirWithQueuedActions() { return GetActionEffector().GetSelfBodyDirWithQueuedActions(); }
-	Vector GetBallPosWithQueuedActions() { return GetActionEffector().GetBallPosWithQueuedActions(); }
-	Vector GetBallVelWithQueuedActions() { return GetActionEffector().GetBallVelWithQueuedActions(); }
+	Vector GetSelfPosWithQueuedActions();
+	Vector GetSelfVelWithQueuedActions();
+	AngleDeg GetSelfBodyDirWithQueuedActions();
+	Vector GetBallPosWithQueuedActions();
+	Vector GetBallVelWithQueuedActions();
 
 	/**
 	 * Action interfaces
@@ -231,11 +210,6 @@ public:
 	Analyser & GetAnalyser() { return GetDecisionData(& mpAnalyser); }
 
 public:
-    /**
-     * Check commands sent to server, based on ActionEffector::CheckCommands. Will update IsNewSight and BallSeenTime.
-     */
-	void CheckCommands(Observer *observer) { mIsNewSight = observer->IsNewSight();mBallSeenTime = observer->Ball().GetDist().time(); GetActionEffector().CheckCommands(observer); }
-
 	/**
 	 * Interface to ActionEffector::SendCommands.
 	 */

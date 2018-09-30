@@ -61,8 +61,8 @@ main( int argc, char *argv[] )
 {
     std::locale::global( std::locale::classic() );
 
-    std::cout << PACKAGE << "-" << VERSION << "\n\n"
-              << Copyright << std::endl;
+    // std::cout << PACKAGE << "-" << VERSION << "\n\n"
+    //           << Copyright << std::endl;
 
     if ( ! ServerParam::init( argc, argv ) )
     {

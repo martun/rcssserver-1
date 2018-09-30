@@ -1307,7 +1307,7 @@ OnlineCoach::parse_command( const char * command )
                 if ( M_freeform_messages_said < M_freeform_messages_allowed
                      || M_freeform_messages_allowed < 0 )
                 {
-                    static char msg[MaxMesg];
+                    char msg[MaxMesg];
                     n = std::sscanf( command, SAY_MESSAGE_SCAN_FORMAT, com, msg );
                     if( n < 2 )
                     {

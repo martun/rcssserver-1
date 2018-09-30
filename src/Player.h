@@ -34,15 +34,13 @@
 #define __Player_H__
 
 #include "Client.h"
+#include "TimeTest.h"
 
 class DecisionTree;
 class  BeliefState;
 
 class RemotePlayer: public Client
 {
-	DecisionTree *mpDecisionTree;
-	RemotePlayerParam* m_playerParams;
-
 public:
     /**
      * 构造函数和析构函数
@@ -52,6 +50,13 @@ public:
 
     void Run();
     void SendOptionToServer();
+
+private:
+	DecisionTree *mpDecisionTree;
+	RemotePlayerParam* m_playerParams;
+    Time last_time;
+    Formation::Instance formation_instance;
+
 };
 
 #endif

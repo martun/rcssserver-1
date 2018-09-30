@@ -48,7 +48,7 @@ CommandSender::~CommandSender()
 
 void CommandSender::StartRoutine()
 {
-	static char msg[MAX_MESSAGE];
+	char msg[MAX_MESSAGE];
 
     while (mpObserver->WaitForCommandSend())
     {

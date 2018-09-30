@@ -40,6 +40,8 @@ class Parser;
 class CommandSender;
 class RemotePlayerParam;
 
+#include "Formation.h"
+
 class Client {
 	friend class RemotePlayer;
 	friend class RemoteCoach;
@@ -52,6 +54,8 @@ class Client {
 
 	Parser 		    *mpParser;
 	CommandSender   *mpCommandSender;
+    Formation::Instance formation;
+
 public:
 	Client(RemotePlayerParam* playerParams);
 	virtual ~Client();

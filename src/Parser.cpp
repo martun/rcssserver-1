@@ -317,7 +317,7 @@ void Parser::ParseFullstateMsg(char *msg)
 	parser::get_word( &msg );
 
 	{
-		static char buffer[MAX_MESSAGE];
+		char buffer[MAX_MESSAGE];
 		char *end = msg;
 
 		while (*end != ')') end++;
@@ -1406,7 +1406,7 @@ void Parser::ParseSound(char *msg)
 {
 	char *end;
 	int n;
-	static char buffer[MAX_MESSAGE];
+	char buffer[MAX_MESSAGE];
 
 	msg++;
 	if (msg[0] == 'r') // referee
@@ -1918,7 +1918,7 @@ bool Parser::ParseForTrainer(char *msg)
 {
 	char *end;
 	int n;
-	static char buffer[MAX_MESSAGE];
+	char buffer[MAX_MESSAGE];
 
 	if (msg[6] == 'r') // 跳过括号和hear，referee
 	{

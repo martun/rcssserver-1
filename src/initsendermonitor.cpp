@@ -34,6 +34,9 @@
 #ifdef HAVE_NETINET_IN_H
 #include <netinet/in.h>
 #endif
+#ifndef WIN32
+#include <arpa/inet.h>
+#endif
 #ifdef HAVE_WINSOCK2_H
 #include <winsock2.h>
 #endif

@@ -51,6 +51,10 @@
 #ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h> /* needed for htonl, htons, ... */
 #endif
+#ifndef WIN32
+#include <netinet/in.h>
+#include <sys/param.h> /* needed for htonl, htons, ... */
+#endif
 
 #ifdef HAVE_NETINET_IN_H
 #include <netinet/in.h>

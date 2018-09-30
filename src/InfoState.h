@@ -52,9 +52,7 @@ public:
 	}
 	virtual ~InfoStateBase(){}
 
-	void Update() {
-		UpdateAtTime(mpWorldState->CurrentTime());
-	}
+	void Update(); 
 
 protected:
 	const WorldState *mpWorldState;

@@ -2232,7 +2232,7 @@ TouchRef::checkGoal()
     return false;
 }
 
-
+#include <sstream>
 void
 TouchRef::announceGoal( const Team & team )
 {
@@ -2243,7 +2243,7 @@ TouchRef::announceGoal( const Team & team )
 #else
     std::ostrstream msg;
     msg << "goal_" << SideStr( team.side() ) << "_" << team.point() << std::ends;
-    M_stadium.say( msg.str() );
+    M_stadium.sendRefereeAudio( msg.str() );
     msg.freeze( false );
 #endif
 }
@@ -3005,7 +3005,7 @@ PenaltyRef::analyse()
 void
 PenaltyRef::startPenaltyShootout()
 {
-    static bool first_time = true;
+    static thread_local bool first_time = true;
 
     const ServerParam & param = ServerParam::instance();
 

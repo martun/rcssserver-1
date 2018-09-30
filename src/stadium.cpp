@@ -65,6 +65,9 @@
 #ifdef HAVE_SYS_TIME_H
 #include <sys/time.h> // gettimeofday
 #endif
+#ifndef WIN32
+#include <sys/time.h> // gettimeofday
+#endif
 #ifdef HAVE_UNI_STD_H
 #include <unistd.h>
 #endif
@@ -467,7 +470,7 @@ Stadium::startTeam( const std::string & start )
     int pid = fork();
     if ( pid == -1 )
     {
-        std::cerr << PACKAGE << "-" << VERSION
+        std::cerr //<< PACKAGE << "-" << VERSION
                   << ": Error: Could not fork to start team: "
                   << strerror( errno ) << std::endl;
         //this->exit( EXIT_FAILURE );
@@ -478,7 +481,7 @@ Stadium::startTeam( const std::string & start )
     if ( pid == 0 )
     {
         execlp( "/bin/sh", "sh", "-c", start.c_str(), (char *)NULL );
-        std::cerr << PACKAGE << "-" << VERSION
+        std::cerr //<< PACKAGE << "-" << VERSION
                   << ": Error: Could not execute \"/bin/sh -c "
                   << start.c_str() << "\": "
                   << strerror( errno ) << std::endl;
