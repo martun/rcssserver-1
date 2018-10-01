@@ -89,36 +89,36 @@ private:
 	Array<double, DASH_POWER_NUM + 1> acceleration_side;
 
 public:
-	const int & type() const { return M_type; }
+	const int & type() const;
 
 	//standard
-	const double & playerSpeedMax() const { return player_speed_max; }
-	const double & staminaIncMax() const { return stamina_inc_max; }
-	const double & playerDecay() const { return player_decay; }
-	const double & inertiaMoment() const { return inertia_moment; }
-	const double & dashPowerRate() const { return dash_power_rate; }
-	const double & playerSize() const { return player_size; }
-	const double & kickableMargin() const { return kickable_margin; }
-	const double & kickRand() const { return kick_rand; }
-	const double & extraStamina() const { return extra_stamina; }
-	const double & effortMax() const { return effort_max; }
-	const double & effortMin() const { return effort_min; }
+	const double & playerSpeedMax() const;
+	const double & staminaIncMax() const;
+	const double & playerDecay() const;
+	const double & inertiaMoment() const;
+	const double & dashPowerRate() const;
+	const double & playerSize() const;
+	const double & kickableMargin() const;
+	const double & kickRand() const;
+	const double & extraStamina() const;
+	const double & effortMax() const;
+	const double & effortMin() const;
 
 	//v14
-	const double & kickPowerRate() const { return kick_power_rate; }
-	const double & catchableAreaLStretch() const { return catchable_area_l_stretch; }
-	const double & foulDetectProbability() const { return foul_detect_probability; }
+	const double & kickPowerRate() const;
+	const double & catchableAreaLStretch() const;
+	const double & foulDetectProbability() const;
 
 	//private
-	const double & kickableArea() const { return kickable_area; }
-	const double & effectiveSpeedMax() const { return effective_speed_max; }
-	const double & minCatchArea() const { return min_catch_area; }
-	const double & maxCatchArea() const { return max_catch_area; }
+	const double & kickableArea() const;
+	const double & effectiveSpeedMax() const;
+	const double & minCatchArea() const;
+	const double & maxCatchArea() const;
 
-    const double & accelerationFrontRate() const { return acceleration_front_rate; }
-    const double & accelerationSideRate() const { return acceleration_side_rate; }
-    const double & accelerationFrontMax() const { return acceleration_front[DASH_POWER_NUM]; }
-    const double & accelerationSideMax() const { return acceleration_side[DASH_POWER_NUM]; }
+    const double & accelerationFrontRate() const;
+    const double & accelerationSideRate() const;
+    const double & accelerationFrontMax() const;
+    const double & accelerationSideMax() const;
     const double & accelerationFront(const double & power) const;
     const double & accelerationSide(const double & power) const;
 
@@ -249,7 +249,7 @@ private:
 
 	//private
 	std::string M_player_conf_file;
-	static std::string M_log_dir;
+	std::string M_log_dir;
 
 	std::string M_train_data_file;
 
@@ -475,79 +475,76 @@ public:
 	void MaintainConsistency();
 	bool SaveParam();
 
-	static int playerTypes() { return player_types; }
-	int subsMax() const { return subs_max; }
-	int ptMax() const { return pt_max; }
+	static int playerTypes();
+	int subsMax() const;
+	int ptMax() const;
 
-	bool allowMultDefaultType() const { return M_allow_mult_default_type; }
+	bool allowMultDefaultType() const;
 
-	const double & maxConf() const { return M_max_conf; }
-	static const double & minValidConf() { return M_min_valid_conf; } // ???????
-	const double & confDecay() const { return M_conf_decay; }
-	const double & playerConfDecay() const { return M_player_conf_decay; }
-	const double & ballConfDecay() const { return M_ball_conf_decay; }
+	const double & maxConf() const;
+	static const double & minValidConf(); // ???????
+	const double & confDecay() const;
+	const double & playerConfDecay() const;
+	const double & ballConfDecay() const;
 
-	const double & playerSpeedMaxDeltaMin() const { return player_speed_max_delta_min; }
+	const double & playerSpeedMaxDeltaMin() const;
 
-	const double & playerSpeedMaxDeltaMax() const { return player_speed_max_delta_max; }
-	const double & staminaIncMaxDeltaFactor() const { return stamina_inc_max_delta_factor; }
+	const double & playerSpeedMaxDeltaMax() const;
+	const double & staminaIncMaxDeltaFactor() const;
 
-	const double & playerDecayDeltaMin() const { return player_decay_delta_min; }
-	const double & playerDecayDeltaMax() const { return player_decay_delta_max; }
-	const double & inertiaMomentDeltaFactor() const { return inertia_moment_delta_factor; }
+	const double & playerDecayDeltaMin() const;
+	const double & playerDecayDeltaMax() const;
+	const double & inertiaMomentDeltaFactor() const;
 
-	const double & dashPowerRateDeltaMin() const { return dash_power_rate_delta_min; }
-	const double & dashPowerRateDeltaMax() const { return dash_power_rate_delta_max; }
-	const double & playerSizeDeltaFactor() const { return player_size_delta_factor; }
+	const double & dashPowerRateDeltaMin() const;
+	const double & dashPowerRateDeltaMax() const;
+	const double & playerSizeDeltaFactor() const;
 
-	const double & kickableMarginDeltaMin() const { return kickable_margin_delta_min; }
-	const double & kickableMarginDeltaMax() const { return kickable_margin_delta_max; }
-	const double & kickRandDeltaFactor() const { return kick_rand_delta_factor; }
+	const double & kickableMarginDeltaMin() const;
+	const double & kickableMarginDeltaMax() const;
+	const double & kickRandDeltaFactor() const;
 
-	const double & extraStaminaDeltaMin() const { return extra_stamina_delta_min; }
-	const double & extraStaminaDeltaMax() const { return extra_stamina_delta_max; }
-	const double & effortMaxDeltaFactor() const { return effort_max_delta_factor; }
-	const double & effortMinDeltaFactor() const { return effort_min_delta_factor; }
+	const double & extraStaminaDeltaMin() const;
+	const double & extraStaminaDeltaMax() const;
+	const double & effortMaxDeltaFactor() const;
+	const double & effortMinDeltaFactor() const;
 
-    const double & kickPowerRateDeltaMin() const { return kick_power_rate_delta_min; }
-    const double & kickPowerRateDeltaMax() const { return kick_power_rate_delta_max; }
-    const double & foulDetectProbabilityDeltaFactor() const { return foul_detect_probability_delta_factor; }
+    const double & kickPowerRateDeltaMin() const;
+    const double & kickPowerRateDeltaMax() const;
+    const double & foulDetectProbabilityDeltaFactor() const;
 
-	const double & newDashPowerRateDeltaMin() const { return new_dash_power_rate_delta_min; }
-	const double & newDashPowerRateDeltaMax() const { return new_dash_power_rate_delta_max; }
-	const double & newStaminaIncMaxDeltaFactor() const { return new_stamina_inc_max_delta_factor; }
+	const double & newDashPowerRateDeltaMin() const;
+	const double & newDashPowerRateDeltaMax() const;
+	const double & newStaminaIncMaxDeltaFactor() const;
 
-	const double & shootMaxDistance() const { return shoot_max_distance; }
+	const double & shootMaxDistance() const;
 
-	static const std::string & logDir() { return M_log_dir; }
-	const std::string & teamName() const { return M_team_name; }
-	void setTeamName(const char *name) { M_team_name = std::string(name); }
-	const int & teamNameLen() const { return M_team_name_len; }
-	const std::string & opponentTeamName() const { return M_opponent_team_name; }
+	const std::string & logDir();
+	const std::string & teamName() const;
+	void setTeamName(const char *name);
+	const int & teamNameLen() const;
+	const std::string & opponentTeamName() const;
 
-	const std::string & trainDataFile() const { return M_train_data_file; }
+	const std::string & trainDataFile() const;
 
-	void setOpponentTeamName(const char *name) 
-	{ 
-		M_opponent_team_name = std::string(name);
-	}
+	void setOpponentTeamName(const char *name);
 
-	const std::string & heteroTestModel() const { return M_hetero_test_model; }
+	const std::string & heteroTestModel() const;
 
-	static const int & ourGoalieUnum() { return M_our_goalie_unum; } //这个量在决策层不应该使用，否则反算对手时会出错
-	const bool & isGoalie() const { return M_is_goalie; } //这个量在决策层不应该使用，否则反算对手时会出错
-	const bool & isCoach() const { return M_is_coach; }
+	static const int & ourGoalieUnum(); //这个量在决策层不应该使用，否则反算对手时会出错
+	const bool & isGoalie() const; //这个量在决策层不应该使用，否则反算对手时会出错
+	const bool & isCoach() const;
 	
-	const bool & isTrainer() const { return M_is_trainer;}
+	const bool & isTrainer() const;
 	
-	const double & playerVersion() const { return M_player_version; }
-	const double & coachVersion() const { return M_coach_version; }
+	const double & playerVersion() const;
+	const double & coachVersion() const;
 
-	const double & sayPosXEps() const { return M_say_pos_x_eps; }
-	const double & sayPosYEps() const { return M_say_pos_y_eps; }
-	const double & sayBallSpeedEps() const { return M_say_ball_speed_eps; }
-	const double & sayPlayerSpeedEps() const { return M_say_player_speed_eps; }
-	const double & sayDirEps() const { return M_say_dir_eps; }
+	const double & sayPosXEps() const;
+	const double & sayPosYEps() const;
+	const double & sayBallSpeedEps() const;
+	const double & sayPlayerSpeedEps() const;
+	const double & sayDirEps() const;
 
 private:
 	static HeteroParam *mHeteroPlayer;
@@ -604,19 +601,19 @@ private:
 	static const double SETPLAY_REINFORCE_DIST;
 	static const int SETPLAY_REINFORCE_PLAYERS;
 
-	static bool mDynamicDebugMode; // DynamicDebug模式
+	bool mDynamicDebugMode; // DynamicDebug模式
 	bool mForcePenaltyMode; //利用trainer强制进入penalty模式
-	static bool mSaveServerMessage; // 是否保存server的信息，用于动态调试
-	static bool mSaveSightLog; // 是否保存sight_log
-	static bool mSaveDecLog; // 是否保存dec_log
+	bool mSaveServerMessage; // 是否保存server的信息，用于动态调试
+	bool mSaveSightLog; // 是否保存sight_log
+	bool mSaveDecLog; // 是否保存dec_log
 	static bool mSaveTextLog;
-	static bool mUsePlotter;
+	bool mUsePlotter;
     bool mUseTeamGraphic;
 	static bool mTimeTest;
-	static bool mNetworkTest;
+	bool mNetworkTest;
 	int mWaitSightBuffer; // 等待视觉到来的最大buffer
 	int mWaitHearBuffer; // 等待听觉到来的最大buffer
-	static int mWaitTimeOut; // 等待server的最大时间
+	int mWaitTimeOut; // 等待server的最大时间
 
     double mTiredBuffer;
     double mMinStamina;
@@ -641,28 +638,28 @@ private:
     double mLowStaminaPointThr;
 
 public:
-	static const bool & DynamicDebugMode() { return mDynamicDebugMode; }
-	const bool & ForcePenaltyMode() const { return mForcePenaltyMode; }
-	static const bool & SaveServerMessage() { return mSaveServerMessage; }
-	static const bool & SaveSightLog() { return mSaveSightLog; }
-	static const bool & SaveDecLog() { return mSaveDecLog; }
-	static const bool & SaveTextLog() { return mSaveTextLog; }
-	static const bool & TimeTest() { return mTimeTest; }
-	static const bool & NetworkTest() { return mNetworkTest; }
-	static const bool & UsePlotter() { return mUsePlotter; }
-    const bool & UseTeamGraphic() const { return mUseTeamGraphic; }
-	const int & WaitSightBuffer() const { return mWaitSightBuffer; }
-	const int & WaitHearBuffer() const { return mWaitHearBuffer; }
-	static const int & WaitTimeOut() { return mWaitTimeOut; }
+	const bool & DynamicDebugMode();
+	const bool & ForcePenaltyMode() const;
+	const bool & SaveServerMessage();
+	const bool & SaveSightLog();
+	const bool & SaveDecLog();
+	static const bool & SaveTextLog();
+	static const bool & TimeTest();
+	const bool & NetworkTest();
+	const bool & UsePlotter();
+    const bool & UseTeamGraphic() const;
+	const int & WaitSightBuffer() const;
+	const int & WaitHearBuffer() const;
+	const int & WaitTimeOut();
 
-	const double & minAppearancePoss() const { return M_min_appearance_poss; }
+	const double & minAppearancePoss() const;
 
-    const double & TiredBuffer() const { return mTiredBuffer; }
-    const double & MinStamina() const { return mMinStamina; }
-    static const double & AtPointBuffer() { return mAtPointBuffer; } // ????
-    static const int & KickerMode() { return mKickerMode; } // ????
+    const double & TiredBuffer() const;
+    const double & MinStamina() const;
+    static const double & AtPointBuffer(); // ????
+    static const int & KickerMode(); // ????
 
-	const double & LowStaminaPointThr() const { return mLowStaminaPointThr; }
+	const double & LowStaminaPointThr() const;
 };
 
 #endif /* PLAYERPARAM_H_ */

@@ -66,7 +66,7 @@ bool BehaviorPositionExecuter::Execute(const ActiveBehavior & beh)
 {
 	RemoteLogger::instance(mAgent.GetPlayerParam())->LogGoToPoint(mSelfState.GetPos(), beh.mTarget, "@Position");
 
-	return Dasher::instance().GoToPoint(mAgent, beh.mTarget, beh.mBuffer, beh.mPower, false, true);
+	return Dasher::instance(mAgent.GetPlayerParam()).GoToPoint(mAgent, beh.mTarget, beh.mBuffer, beh.mPower, false, true);
 }
 
 BehaviorPositionPlanner::~BehaviorPositionPlanner()
@@ -129,7 +129,7 @@ void BehaviorPositionPlanner::Plan(ActiveBehaviorList &behavior_list)
 		position.mPower = mSelfState.CorrectDashPowerForStamina(RemoteServerParam::instance().maxDashPower());
 	}
 	else position.mPower = mSelfState.CorrectDashPowerForStamina(RemoteServerParam::instance().maxDashPower())/2;
-	position.mEvaluation = Evaluation::instance().EvaluatePosition(position.mTarget, false);
+	position.mEvaluation = Evaluation::instance(mAgent.GetPlayerParam()).EvaluatePosition(position.mTarget, false);
 
 	behavior_list.push_back(position);
 }

@@ -101,13 +101,19 @@ TimeTest::~TimeTest()
 
 /**
  * 创建实例
- * Instacne.
+ * Instance.
  */
-TimeTest& TimeTest::instance()
+
+TimeTest& TimeTest::instance(RemotePlayerParam* playerParam)
 {
-	static TimeTest instance;
-	return instance;
+	static std::map<RemotePlayerParam*, TimeTest*> instances;
+	if(instances[playerParam] == 0)
+	{
+		instances[playerParam] = new TimeTest;	
+	}
+	return *instances[playerParam];
 }
+
 
 
 /**
@@ -243,7 +249,7 @@ TimeTestFunc::TimeTestFunc(std::string func_name)
 {
 	if (RemotePlayerParam::TimeTest())
 	{
-		mEventID = TimeTest::instance().Begin(func_name);
+		mEventID = TimeTest::instance(nullptr).Begin(func_name);
 	}
 }
 
@@ -257,7 +263,7 @@ TimeTestFunc::~TimeTestFunc()
 	{
 		if (mEventID >= 0)
 		{
-			TimeTest::instance().End(mEventID);
+			TimeTest::instance(nullptr).End(mEventID);
 		}
 	}
 }

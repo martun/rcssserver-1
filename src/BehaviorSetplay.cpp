@@ -82,7 +82,7 @@ bool BehaviorSetplayExecuter::Execute(const ActiveBehavior &setplay)
 			return true; //交给视觉决策
 		}
 		else if (setplay.mDetailType == BDT_Setplay_GetBall) {
-			return Dasher::instance().GetBall(mAgent);
+			return Dasher::instance(mAgent.GetPlayerParam()).GetBall(mAgent);
 		}
 		if (setplay.mDetailType == BDT_Setplay_Move) {
 			return mAgent.Move(setplay.mTarget);
@@ -118,7 +118,7 @@ void BehaviorSetplayPlanner::Plan(std::list<ActiveBehavior> & behavior_list)
 				setplay.mDetailType = BDT_Setplay_Scan;
 			}
 
-			setplay.mEvaluation = Evaluation::instance().EvaluatePosition(setplay.mTarget, true);
+			setplay.mEvaluation = Evaluation::instance(mAgent.GetPlayerParam()).EvaluatePosition(setplay.mTarget, true);
 
 			behavior_list.push_back(setplay);
 		}
@@ -127,7 +127,7 @@ void BehaviorSetplayPlanner::Plan(std::list<ActiveBehavior> & behavior_list)
 				if (!mSelfState.IsKickable()) {
 					setplay.mDetailType = BDT_Setplay_GetBall;
 					setplay.mTarget = mBallState.GetPos();
-					setplay.mEvaluation = Evaluation::instance().EvaluatePosition(setplay.mTarget, true);
+					setplay.mEvaluation = Evaluation::instance(mAgent.GetPlayerParam()).EvaluatePosition(setplay.mTarget, true);
 
 					behavior_list.push_back(setplay);
 				}
@@ -137,7 +137,7 @@ void BehaviorSetplayPlanner::Plan(std::list<ActiveBehavior> & behavior_list)
 					if (mWorldState.GetLastPlayMode() != RemotePlayMode::PM_Before_Kick_Off) {
 						if (mWorldState.CurrentTime().T() - mWorldState.GetPlayModeTime().T() < 20) {
 							setplay.mDetailType = BDT_Setplay_Scan;
-							setplay.mEvaluation = Evaluation::instance().EvaluatePosition(setplay.mTarget, true);
+							setplay.mEvaluation = Evaluation::instance(mAgent.GetPlayerParam()).EvaluatePosition(setplay.mTarget, true);
 
 							behavior_list.push_back(setplay);
 						}
@@ -148,7 +148,7 @@ void BehaviorSetplayPlanner::Plan(std::list<ActiveBehavior> & behavior_list)
 										(mWorldState.GetOpponent(mPositionInfo.GetClosestOpponentToTeammate((*it).mUnum)).GetPos()- mWorldState.GetTeammate((*it).mUnum).GetPos()).Mod() >= 1.0){
 									double y = MinMax(RemoteServerParam::instance().ourPenaltyArea().Top() + 1, mWorldState.GetTeammate((*it).mUnum).GetPos().Y(), RemoteServerParam::instance().ourPenaltyArea().Bottom() - 1);
 									setplay.mTarget = Vector(RemoteServerParam::instance().ourPenaltyArea().Right() - 1 , y);
-									setplay.mEvaluation = Evaluation::instance().EvaluatePosition(setplay.mTarget, true);
+									setplay.mEvaluation = Evaluation::instance(mAgent.GetPlayerParam()).EvaluatePosition(setplay.mTarget, true);
 									behavior_list.push_back(setplay);
 									break;
 								}

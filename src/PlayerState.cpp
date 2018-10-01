@@ -127,7 +127,7 @@ void RemotePlayerState::GetReverseFrom(const RemotePlayerState & o)
 Vector RemotePlayerState::GetPredictedPosWithDash(int steps, double dash_power, AngleDeg dash_dir) const
 {
 	Simulator::Player self(*this);
-	int dash_dir_idx = dasher.GetDashDirIdx(dash_dir);
+	int dash_dir_idx = 0;// TODO? dasher.GetDashDirIdx(dash_dir);
 
 	for (int i = 0; i < steps; ++i) {
 		self.Dash(dash_power, dash_dir_idx);
@@ -236,46 +236,46 @@ double RemotePlayerState::GetCatchProb( const double & dist ) const
 }
 
 //make to be inlined
-inline void RemotePlayerState::UpdateStamina(double stamina)
+void RemotePlayerState::UpdateStamina(double stamina)
 {
 	mStamina = stamina;
 }
 
-inline void RemotePlayerState::UpdateEffort(double effort)
+void RemotePlayerState::UpdateEffort(double effort)
 {
 	mEffort = effort;
 }
 
-inline void RemotePlayerState::UpdateCapacity(double capacity)
+void RemotePlayerState::UpdateCapacity(double capacity)
 {
 	mCapacity = capacity;
 }
 
-inline void RemotePlayerState::UpdateNeckDir(double dir, int delay, double conf)
+void RemotePlayerState::UpdateNeckDir(double dir, int delay, double conf)
 {
 	mNeckDir.mValue = GetNormalizeAngleDeg(dir);
 	mNeckDir.mCycleDelay = delay;
 	mNeckDir.mConf  = conf;
 }
 
-inline void RemotePlayerState::UpdateBodyDir(double dir, int delay, double conf)
+void RemotePlayerState::UpdateBodyDir(double dir, int delay, double conf)
 {
 	mBodyDir.mValue = GetNormalizeAngleDeg(dir);
 	mBodyDir.mCycleDelay = delay;
 	mBodyDir.mConf = conf;
 }
 
-inline void RemotePlayerState::UpdateTackleBan(int ban)
+void RemotePlayerState::UpdateTackleBan(int ban)
 {
 	mTackleBan = ban;
 }
 
-inline void RemotePlayerState::UpdateCatchBan(int ban)
+void RemotePlayerState::UpdateCatchBan(int ban)
 {
 	mCatchBan = ban;
 }
 
-inline void RemotePlayerState::UpdateArmPoint(AngleDeg dir, int delay, double conf, double dist, int move_ban , int expire_ban )
+void RemotePlayerState::UpdateArmPoint(AngleDeg dir, int delay, double conf, double dist, int move_ban , int expire_ban )
 {
 	ArmPoint arm;
 	arm.mTargetDir = GetNormalizeAngleDeg(dir);
@@ -288,7 +288,7 @@ inline void RemotePlayerState::UpdateArmPoint(AngleDeg dir, int delay, double co
 	mArmPoint.mConf  = conf;
 }
 
-inline void RemotePlayerState::UpdateFocusOn(char side, Unum num, int delay, double conf)
+void RemotePlayerState::UpdateFocusOn(char side, Unum num, int delay, double conf)
 {
 	FocusOn focus;
 	focus.mFocusSide = side;
@@ -299,12 +299,12 @@ inline void RemotePlayerState::UpdateFocusOn(char side, Unum num, int delay, dou
 	mFocusOn.mConf  = conf;
 }
 
-inline void RemotePlayerState::UpdateKicked(bool is_kicked)
+void RemotePlayerState::UpdateKicked(bool is_kicked)
 {
 	mIsKicked = is_kicked;
 }
 
-inline void RemotePlayerState::AutoUpdate(int delay_add, double conf_dec_factor)
+void RemotePlayerState::AutoUpdate(int delay_add, double conf_dec_factor)
 {
 	MobileState::AutoUpdate(delay_add , conf_dec_factor);
 
@@ -349,7 +349,7 @@ inline void RemotePlayerState::AutoUpdate(int delay_add, double conf_dec_factor)
 	}
 }
 
-inline void RemotePlayerState::UpdatePlayerType(int type)
+void RemotePlayerState::UpdatePlayerType(int type)
 {
 	if (mPlayerType != type) {
 		mPlayerType = type;
@@ -359,17 +359,17 @@ inline void RemotePlayerState::UpdatePlayerType(int type)
 	}
 }
 
-inline void RemotePlayerState::UpdateViewWidth(ViewWidth width)
+void RemotePlayerState::UpdateViewWidth(ViewWidth width)
 {
 	mViewWidth = width;
 }
 
-inline void RemotePlayerState::UpdateUnum(Unum num)
+void RemotePlayerState::UpdateUnum(Unum num)
 {
 	mUnum = num;
 }
 
-inline void RemotePlayerState::SetIsAlive(bool alive)
+void RemotePlayerState::SetIsAlive(bool alive)
 {
 	mIsAlive = alive;
 

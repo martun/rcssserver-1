@@ -44,7 +44,7 @@ class Tackler
 public:
     ~Tackler();
 
-    static Tackler & instance();
+    static Tackler & instance(RemotePlayerParam* playerParam);
 
     int ang2idx(const AngleDeg & angle) { return GetNormalizeAngleDeg(angle, 0.0); }
     int dir2idx(const AngleDeg & dir) { return Rint(GetNormalizeAngleDeg(dir, 0.0)); }

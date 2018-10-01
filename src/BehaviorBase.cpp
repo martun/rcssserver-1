@@ -70,10 +70,10 @@ BehaviorDefenseData::~BehaviorDefenseData()
 
 bool ActiveBehavior::Execute()
 {
-	BehaviorExecutable * behavior = BehaviorFactory::instance().CreateBehavior(GetAgent(), GetType());
+	BehaviorExecutable * behavior = BehaviorFactory::instance(mpAgent->GetPlayerParam()).CreateBehavior(GetAgent(), GetType());
 
 	if (behavior){
-		RemoteLogger::instance(nullptr)->GetTextLogger("executing") << GetAgent().GetWorldState().CurrentTime() << " " << BehaviorFactory::instance().GetBehaviorName(GetType()) << " executing" << std::endl;
+		RemoteLogger::instance(nullptr)->GetTextLogger("executing") << GetAgent().GetWorldState().CurrentTime() << " " << BehaviorFactory::instance(mpAgent->GetPlayerParam()).GetBehaviorName(GetType()) << " executing" << std::endl;
 
 		behavior->SubmitVisualRequest(*this);
 		bool ret = behavior->Execute(*this);
@@ -88,10 +88,10 @@ bool ActiveBehavior::Execute()
 
 void ActiveBehavior::SubmitVisualRequest(double plus)
 {
-	BehaviorExecutable * behavior = BehaviorFactory::instance().CreateBehavior(GetAgent(), GetType());
+	BehaviorExecutable * behavior = BehaviorFactory::instance(mpAgent->GetPlayerParam()).CreateBehavior(GetAgent(), GetType());
 
 	if (behavior){
-		RemoteLogger::instance(nullptr)->GetTextLogger("executing") << GetAgent().GetWorldState().CurrentTime() << " " << BehaviorFactory::instance().GetBehaviorName(GetType()) << " visual plus: " << plus << std::endl;
+		RemoteLogger::instance(nullptr)->GetTextLogger("executing") << GetAgent().GetWorldState().CurrentTime() << " " << BehaviorFactory::instance(mpAgent->GetPlayerParam()).GetBehaviorName(GetType()) << " visual plus: " << plus << std::endl;
 
 		behavior->SubmitVisualRequest(*this, plus);
 
@@ -107,10 +107,14 @@ BehaviorFactory::~BehaviorFactory()
 {
 }
 
-BehaviorFactory& BehaviorFactory::instance()
+BehaviorFactory& BehaviorFactory::instance(RemotePlayerParam* playerParam)
 {
-	static BehaviorFactory instance;
-	return instance;
+	static std::map<RemotePlayerParam*, BehaviorFactory*> instances;
+	if(instances[playerParam] == 0)
+	{
+		instances[playerParam] = new BehaviorFactory;
+	}
+	return *instances[playerParam];
 }
 
 BehaviorExecutable * BehaviorFactory::CreateBehavior(Agent & agent, BehaviorType type)

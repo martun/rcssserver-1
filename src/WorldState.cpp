@@ -618,7 +618,7 @@ void WorldStateUpdater::UpdateFieldInfo()
         mpWorldState->mPlayModeTime = mpObserver->CurrentTime();
     }
 
-    Formation::instance.SetOpponentGoalieUnum(mpObserver->OppGoalieUnum()); // 设置OpponentFormation的守门员号码
+    // TODO: Formation::instance.SetOpponentGoalieUnum(mpObserver->OppGoalieUnum()); // 设置OpponentFormation的守门员号码
     mpWorldState->mTeammateGoalieUnum = mpObserver->GetPlayerParam()->ourGoalieUnum();
 	mpWorldState->mOpponentGoalieUnum = mpObserver->OppGoalieUnum();
 

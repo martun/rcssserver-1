@@ -63,10 +63,10 @@ bool BehaviorHoldExecuter::Execute(const ActiveBehavior & hold)
 	RemoteLogger::instance(mAgent.GetPlayerParam())->LogDribble(mBallState.GetPos(), hold.mTarget, "@Hold", true);
 	//	RemoteLogger::instance(nullptr)->GetTextLogger("Hold")<< mWorldState.CurrentTime(). + "Hold";
 	if(hold.mDetailType == BDT_Hold_Turn){
-		return Dasher::instance().GetTurnBodyToAngleAction(mAgent, hold.mAngle).Execute(mAgent);
+		return Dasher::instance(mAgent.GetPlayerParam()).GetTurnBodyToAngleAction(mAgent, hold.mAngle).Execute(mAgent);
 	}
 	else
-		return Kicker::instance().KickBallCloseToBody(mAgent ,hold.mAngle, 0.6);
+		return Kicker::instance(mAgent.GetPlayerParam()).KickBallCloseToBody(mAgent ,hold.mAngle, 0.6);
 }
 
 BehaviorHoldPlanner::BehaviorHoldPlanner(Agent & agent) :

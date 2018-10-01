@@ -81,9 +81,9 @@ bool BehaviorShootExecuter::Execute(const ActiveBehavior & shoot)
 {
 	RemoteLogger::instance(mAgent.GetPlayerParam())->LogShoot(mBallState.GetPos(), shoot.mTarget, "@Shoot");
 	if (shoot.mDetailType == BDT_Shoot_Tackle)
-		return Tackler::instance().TackleToDir(mAgent,shoot.mAngle);
+		return Tackler::instance(mAgent.GetPlayerParam()).TackleToDir(mAgent,shoot.mAngle);
 	else
-		return Kicker::instance().KickBall(mAgent, shoot.mTarget, RemoteServerParam::instance().ballSpeedMax(), KM_Quick, 0, true);
+		return Kicker::instance(mAgent.GetPlayerParam()).KickBall(mAgent, shoot.mTarget, RemoteServerParam::instance().ballSpeedMax(), KM_Quick, 0, true);
 }
 
 /**
@@ -130,8 +130,8 @@ void BehaviorShootPlanner::Plan(list<ActiveBehavior> & behavior_list)
 
 		Ray f(mSelfState.GetPos(),shootDir);
 		c.Intersection(f,target);
-		if(Tackler::instance().CanTackleToDir(mAgent, shootDir)
-				&& Tackler::instance().GetBallVelAfterTackle(mAgent,shootDir).Mod() > RemoteServerParam::instance().ballSpeedMax() -  0.05){
+		if(Tackler::instance(mAgent.GetPlayerParam()).CanTackleToDir(mAgent, shootDir)
+				&& Tackler::instance(mAgent.GetPlayerParam()).GetBallVelAfterTackle(mAgent,shootDir).Mod() > RemoteServerParam::instance().ballSpeedMax() -  0.05){
 			ActiveBehavior shoot(mAgent, BT_Shoot,BDT_Shoot_Tackle);
 			shoot.mTarget = target;
 			shoot.mAngle = shootDir;

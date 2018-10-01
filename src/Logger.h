@@ -39,10 +39,10 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include "WorldState.h"
 #include "Types.h"
 #include "Geometry.h"
 #include "Thread.h"
-#include "WorldState.h"
 
 class Observer;
 class BallState;
@@ -230,7 +230,7 @@ public:
 	template<typename T>
 	TextLogger& operator<<(const T& value)
 	{
-		if (RemotePlayerParam::SaveTextLog())
+		if (m_playerParams->SaveTextLog())
 		{
 			mBuffer << value;
 		}
@@ -243,7 +243,7 @@ public:
 	 */
 	TextLogger& operator<<(std::ostream& (*man)(std::ostream&))
 	{
-		if (RemotePlayerParam::SaveTextLog())
+		if (m_playerParams->SaveTextLog())
 		{
 			mBuffer << man;
 		}
@@ -251,7 +251,7 @@ public:
 	}
 	TextLogger& operator<<(std::ios_base& (*man)(std::ios_base&))
 	{
-		if (RemotePlayerParam::SaveTextLog())
+		if (m_playerParams->SaveTextLog())
 		{
 			mBuffer << man;
 		}

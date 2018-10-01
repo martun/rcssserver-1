@@ -123,10 +123,14 @@ Kicker::~Kicker()
 /**
  * Instrance.
  */
-Kicker& Kicker::instance()
+Kicker& Kicker::instance(RemotePlayerParam* playerParam)
 {
-	static Kicker instance;
-	return instance;
+	static std::map<RemotePlayerParam*, Kicker*> instances;
+	if(instances[playerParam] == 0)
+	{
+		instances[playerParam] = new Kicker;	
+	}
+	return *instances[playerParam];
 }
 
 

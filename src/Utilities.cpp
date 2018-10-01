@@ -55,33 +55,33 @@ timeval GetRealTime() {
 	return time_val;
 }
 
-timeval GetRealTimeParser() {
-	if (RemotePlayerParam::DynamicDebugMode() == true) {
-		return DynamicDebug::instance().GetTimeParser();
+timeval GetRealTimeParser(RemotePlayerParam* playerParam) {
+	if (playerParam->DynamicDebugMode() == true) {
+		return DynamicDebug::instance(playerParam).GetTimeParser();
 	}
 
 	timeval time_val = GetRealTime();
-	DynamicDebug::instance().AddTimeParser(time_val);
+	DynamicDebug::instance(playerParam).AddTimeParser(time_val);
 	return time_val;
 }
 
-timeval GetRealTimeDecision() {
-	if (RemotePlayerParam::DynamicDebugMode() == true) {
-		return DynamicDebug::instance().GetTimeDecision();
+timeval GetRealTimeDecision(RemotePlayerParam* playerParam) {
+	if (playerParam->DynamicDebugMode() == true) {
+		return DynamicDebug::instance(playerParam).GetTimeDecision();
 	}
 
 	timeval time_val = GetRealTime();
-	DynamicDebug::instance().AddTimeDecision(time_val);
+	DynamicDebug::instance(playerParam).AddTimeDecision(time_val);
 	return time_val;
 }
 
-timeval GetRealTimeCommandSend() {
-	if (RemotePlayerParam::DynamicDebugMode() == true) {
-		return DynamicDebug::instance().GetTimeCommandSend();
+timeval GetRealTimeCommandSend(RemotePlayerParam* playerParam) {
+	if (playerParam->DynamicDebugMode() == true) {
+		return DynamicDebug::instance(playerParam).GetTimeCommandSend();
 	}
 
 	timeval time_val = GetRealTime();
-	DynamicDebug::instance().AddTimeCommandSend(time_val);
+	DynamicDebug::instance(playerParam).AddTimeCommandSend(time_val);
 	return time_val;
 }
 

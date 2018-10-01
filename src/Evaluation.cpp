@@ -49,16 +49,18 @@ Evaluation::~Evaluation()
 	delete mSensitivityNet;
 }
 
-Evaluation& Evaluation::instance()
+Evaluation& Evaluation::instance(RemotePlayerParam* playerParam)
 {
-	static Evaluation instance;
-	return instance;
+	static std::map<RemotePlayerParam*, Evaluation*> instances;
+	if(instances[playerParam] == 0)
+		instances[playerParam] = new Evaluation;
+	return *instances[playerParam];
 }
 
 double Evaluation::EvaluatePosition(const Vector & pos, bool ourside)
 {
-	static double input[2];
-	static double output[1];
+	double input[2];
+	double output[1];
 
 	input[0] = pos.X() / (RemoteServerParam::instance().PITCH_LENGTH * 0.5);
 	input[1] = fabs(pos.Y()) / (RemoteServerParam::instance().PITCH_WIDTH * 0.5) * 2.0 - 1.0;

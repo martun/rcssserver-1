@@ -196,6 +196,14 @@ RemotePlayerParam* RemotePlayerParam::instance()
 }
 
 RemotePlayerParam::RemotePlayerParam()
+	: M_log_dir(std::string(LOG_DIR))
+	, mDynamicDebugMode(DYNAMIC_DEBUG_MODE)
+	, mSaveServerMessage(SAVE_SERVER_MESSAGE)
+	, mSaveSightLog(SAVE_SIGHT_LOG)
+	, mSaveDecLog(SAVE_DEC_LOG)
+	, mUsePlotter(USE_PLOTTER)
+	, mNetworkTest(NETWORK_TEST)
+	, mWaitTimeOut(WAIT_TIME_OUT)
 	// : mHeteroPlayer(nullptr)
 {
 	AddParams();
@@ -208,19 +216,19 @@ RemotePlayerParam::~RemotePlayerParam()
 }
 
 int RemotePlayerParam::player_types = DEFAULT_PLAYER_TYPES;
-std::string RemotePlayerParam::M_log_dir = std::string(LOG_DIR);
+// std::string RemotePlayerParam::M_log_dir = std::string(LOG_DIR);
 int RemotePlayerParam::M_our_goalie_unum = 1;
 double RemotePlayerParam::M_min_valid_conf = MIN_VALID_CONF;
 
-bool RemotePlayerParam::mDynamicDebugMode = DYNAMIC_DEBUG_MODE; 
-bool RemotePlayerParam::mSaveServerMessage = SAVE_SERVER_MESSAGE; 
-bool RemotePlayerParam::mSaveSightLog = SAVE_SIGHT_LOG; 
-bool RemotePlayerParam::mSaveDecLog = SAVE_DEC_LOG; 
+// bool RemotePlayerParam::mDynamicDebugMode = DYNAMIC_DEBUG_MODE; 
+// bool RemotePlayerParam::mSaveServerMessage = SAVE_SERVER_MESSAGE; 
+// bool RemotePlayerParam::mSaveSightLog = SAVE_SIGHT_LOG; 
+// bool RemotePlayerParam::mSaveDecLog = SAVE_DEC_LOG; 
 bool RemotePlayerParam::mSaveTextLog = SAVE_TEXT_LOG;
-bool RemotePlayerParam::mUsePlotter = USE_PLOTTER;
+// bool RemotePlayerParam::mUsePlotter = USE_PLOTTER;
 bool RemotePlayerParam::mTimeTest = TIME_TEST;
-bool RemotePlayerParam::mNetworkTest = NETWORK_TEST;
-int RemotePlayerParam::mWaitTimeOut = WAIT_TIME_OUT;
+// bool RemotePlayerParam::mNetworkTest = NETWORK_TEST;
+// int RemotePlayerParam::mWaitTimeOut = WAIT_TIME_OUT;
 double RemotePlayerParam::mAtPointBuffer = AT_POINT_BUFFER;
 int RemotePlayerParam::mKickerMode = KICKER_MODE;
 HeteroParam *RemotePlayerParam::mHeteroPlayer = new HeteroParam[DEFAULT_PLAYER_TYPES];
@@ -391,3 +399,136 @@ void RemotePlayerParam::MaintainConsistency()
 	M_team_name_len = M_team_name.length();
     mMinStamina = RemoteServerParam::instance().recoverDecStamina() + TiredBuffer();
 }
+
+const int & HeteroParam::type() const { return M_type; }
+
+//standard
+const double & HeteroParam::playerSpeedMax() const { return player_speed_max; }
+const double & HeteroParam::staminaIncMax() const { return stamina_inc_max; }
+const double & HeteroParam::playerDecay() const { return player_decay; }
+const double & HeteroParam::inertiaMoment() const { return inertia_moment; }
+const double & HeteroParam::dashPowerRate() const { return dash_power_rate; }
+const double & HeteroParam::playerSize() const { return player_size; }
+const double & HeteroParam::kickableMargin() const { return kickable_margin; }
+const double & HeteroParam::kickRand() const { return kick_rand; }
+const double & HeteroParam::extraStamina() const { return extra_stamina; }
+const double & HeteroParam::effortMax() const { return effort_max; }
+const double & HeteroParam::effortMin() const { return effort_min; }
+
+//v14
+const double & HeteroParam::kickPowerRate() const { return kick_power_rate; }
+const double & HeteroParam::catchableAreaLStretch() const { return catchable_area_l_stretch; }
+const double & HeteroParam::foulDetectProbability() const { return foul_detect_probability; }
+
+//private
+const double & HeteroParam::kickableArea() const { return kickable_area; }
+const double & HeteroParam::effectiveSpeedMax() const { return effective_speed_max; }
+const double & HeteroParam::minCatchArea() const { return min_catch_area; }
+const double & HeteroParam::maxCatchArea() const { return max_catch_area; }
+
+const double & HeteroParam::accelerationFrontRate() const { return acceleration_front_rate; }
+const double & HeteroParam::accelerationSideRate() const { return acceleration_side_rate; }
+const double & HeteroParam::accelerationFrontMax() const { return acceleration_front[DASH_POWER_NUM]; }
+const double & HeteroParam::accelerationSideMax() const { return acceleration_side[DASH_POWER_NUM]; }
+
+
+
+
+int RemotePlayerParam::playerTypes() { return player_types; }
+int RemotePlayerParam::subsMax() const { return subs_max; }
+int RemotePlayerParam::ptMax() const { return pt_max; }
+
+bool RemotePlayerParam::allowMultDefaultType() const { return M_allow_mult_default_type; }
+
+const double & RemotePlayerParam::maxConf() const { return M_max_conf; }
+const double & RemotePlayerParam::minValidConf() { return M_min_valid_conf; } // ???????
+const double & RemotePlayerParam::confDecay() const { return M_conf_decay; }
+const double & RemotePlayerParam::playerConfDecay() const { return M_player_conf_decay; }
+const double & RemotePlayerParam::ballConfDecay() const { return M_ball_conf_decay; }
+
+const double & RemotePlayerParam::playerSpeedMaxDeltaMin() const { return player_speed_max_delta_min; }
+
+const double & RemotePlayerParam::playerSpeedMaxDeltaMax() const { return player_speed_max_delta_max; }
+const double & RemotePlayerParam::staminaIncMaxDeltaFactor() const { return stamina_inc_max_delta_factor; }
+
+const double & RemotePlayerParam::playerDecayDeltaMin() const { return player_decay_delta_min; }
+const double & RemotePlayerParam::playerDecayDeltaMax() const { return player_decay_delta_max; }
+const double & RemotePlayerParam::inertiaMomentDeltaFactor() const { return inertia_moment_delta_factor; }
+
+const double & RemotePlayerParam::dashPowerRateDeltaMin() const { return dash_power_rate_delta_min; }
+const double & RemotePlayerParam::dashPowerRateDeltaMax() const { return dash_power_rate_delta_max; }
+const double & RemotePlayerParam::playerSizeDeltaFactor() const { return player_size_delta_factor; }
+
+const double & RemotePlayerParam::kickableMarginDeltaMin() const { return kickable_margin_delta_min; }
+const double & RemotePlayerParam::kickableMarginDeltaMax() const { return kickable_margin_delta_max; }
+const double & RemotePlayerParam::kickRandDeltaFactor() const { return kick_rand_delta_factor; }
+
+const double & RemotePlayerParam::extraStaminaDeltaMin() const { return extra_stamina_delta_min; }
+const double & RemotePlayerParam::extraStaminaDeltaMax() const { return extra_stamina_delta_max; }
+const double & RemotePlayerParam::effortMaxDeltaFactor() const { return effort_max_delta_factor; }
+const double & RemotePlayerParam::effortMinDeltaFactor() const { return effort_min_delta_factor; }
+
+const double & RemotePlayerParam::kickPowerRateDeltaMin() const { return kick_power_rate_delta_min; }
+const double & RemotePlayerParam::kickPowerRateDeltaMax() const { return kick_power_rate_delta_max; }
+const double & RemotePlayerParam::foulDetectProbabilityDeltaFactor() const { return foul_detect_probability_delta_factor; }
+
+const double & RemotePlayerParam::newDashPowerRateDeltaMin() const { return new_dash_power_rate_delta_min; }
+const double & RemotePlayerParam::newDashPowerRateDeltaMax() const { return new_dash_power_rate_delta_max; }
+const double & RemotePlayerParam::newStaminaIncMaxDeltaFactor() const { return new_stamina_inc_max_delta_factor; }
+
+const double & RemotePlayerParam::shootMaxDistance() const { return shoot_max_distance; }
+
+const std::string & RemotePlayerParam::logDir() { return M_log_dir; }
+const std::string & RemotePlayerParam::teamName() const { return M_team_name; }
+void RemotePlayerParam::setTeamName(const char *name) { M_team_name = std::string(name); }
+const int & RemotePlayerParam::teamNameLen() const { return M_team_name_len; }
+const std::string & RemotePlayerParam::opponentTeamName() const { return M_opponent_team_name; }
+
+const std::string & RemotePlayerParam::trainDataFile() const { return M_train_data_file; }
+
+void RemotePlayerParam::setOpponentTeamName(const char *name) 
+{ 
+	M_opponent_team_name = std::string(name);
+}
+
+const std::string & RemotePlayerParam::heteroTestModel() const { return M_hetero_test_model; }
+
+const int & RemotePlayerParam::ourGoalieUnum() { return M_our_goalie_unum; } //这个量在决策层不应该使用，否则反算对手时会出错
+const bool & RemotePlayerParam::isGoalie() const { return M_is_goalie; } //这个量在决策层不应该使用，否则反算对手时会出错
+const bool & RemotePlayerParam::isCoach() const { return M_is_coach; }
+
+const bool & RemotePlayerParam::isTrainer() const { return M_is_trainer;}
+
+const double & RemotePlayerParam::playerVersion() const { return M_player_version; }
+const double & RemotePlayerParam::coachVersion() const { return M_coach_version; }
+
+const double & RemotePlayerParam::sayPosXEps() const { return M_say_pos_x_eps; }
+const double & RemotePlayerParam::sayPosYEps() const { return M_say_pos_y_eps; }
+const double & RemotePlayerParam::sayBallSpeedEps() const { return M_say_ball_speed_eps; }
+const double & RemotePlayerParam::sayPlayerSpeedEps() const { return M_say_player_speed_eps; }
+const double & RemotePlayerParam::sayDirEps() const { return M_say_dir_eps; }
+
+
+
+const bool & RemotePlayerParam::DynamicDebugMode() { return mDynamicDebugMode; }
+const bool & RemotePlayerParam::ForcePenaltyMode() const { return mForcePenaltyMode; }
+const bool & RemotePlayerParam::SaveServerMessage() { return mSaveServerMessage; }
+const bool & RemotePlayerParam::SaveSightLog() { return mSaveSightLog; }
+const bool & RemotePlayerParam::SaveDecLog() { return mSaveDecLog; }
+const bool & RemotePlayerParam::SaveTextLog() { return mSaveTextLog; }
+const bool & RemotePlayerParam::TimeTest() { return mTimeTest; }
+const bool & RemotePlayerParam::NetworkTest() { return mNetworkTest; }
+const bool & RemotePlayerParam::UsePlotter() { return mUsePlotter; }
+const bool & RemotePlayerParam::UseTeamGraphic() const { return mUseTeamGraphic; }
+const int & RemotePlayerParam::WaitSightBuffer() const { return mWaitSightBuffer; }
+const int & RemotePlayerParam::WaitHearBuffer() const { return mWaitHearBuffer; }
+const int & RemotePlayerParam::WaitTimeOut() { return mWaitTimeOut; }
+
+const double & RemotePlayerParam::minAppearancePoss() const { return M_min_appearance_poss; }
+
+const double & RemotePlayerParam::TiredBuffer() const { return mTiredBuffer; }
+const double & RemotePlayerParam::MinStamina() const { return mMinStamina; }
+const double & RemotePlayerParam::AtPointBuffer() { return mAtPointBuffer; } // ????
+const int & RemotePlayerParam::KickerMode() { return mKickerMode; } // ????
+
+const double & RemotePlayerParam::LowStaminaPointThr() const { return mLowStaminaPointThr; }

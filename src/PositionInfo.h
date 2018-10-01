@@ -40,7 +40,7 @@
 #include <deque>
 
 class WorldState;
-
+class RemotePlayerState;
 /**
  * 有关场上球和球员位置的Info
  */
@@ -69,7 +69,44 @@ public:
 	const std::vector<Unum> & GetCloseOpponentToPlayer(Unum i);
 
 		AngleDeg GetShootAngle(AngleDeg left,AngleDeg right , const RemotePlayerState & state  , AngleDeg & interval);
+	const std::vector<Unum> & GetClosePlayerToTeammate(Unum i) { Assert(i > 0); return GetClosePlayerToPlayer(i); }
+	const std::vector<Unum> & GetCloseTeammateToTeammate(Unum i) { Assert(i > 0); return GetCloseTeammateToPlayer(i); }
+	const std::vector<Unum> & GetCloseOpponentToTeammate(Unum i) { Assert(i > 0); return GetCloseOpponentToPlayer(i); }
 
+	const std::vector<Unum> & GetClosePlayerToOpponent(Unum i) { Assert(i > 0); return GetClosePlayerToPlayer(-i); }
+	const std::vector<Unum> & GetCloseTeammateToOpponent(Unum i) { Assert(i > 0); return GetCloseTeammateToPlayer(-i); }
+	const std::vector<Unum> & GetCloseOpponentToOpponent(Unum i) { Assert(i > 0); return GetCloseOpponentToPlayer(-i); }
+
+	Unum GetClosestOpponentToPoint(const Vector& bp)   { return GetCloseOpponentToPoint(bp).empty()? 0: GetCloseOpponentToPoint(bp)[0]; }
+	Unum GetClosestPlayerToBall()   { return GetClosePlayerToBall().empty()? 0: GetClosePlayerToBall()[0]; }
+	Unum GetClosestTeammateToBall() { return GetCloseTeammateToBall().empty()? 0: GetCloseTeammateToBall()[0]; }
+	Unum GetClosestOpponentToBall() { return GetCloseOpponentToBall().empty()? 0: GetCloseOpponentToBall()[0]; }
+
+	Unum GetClosestPlayerToPlayer(Unum i) { return GetClosePlayerToPlayer(i).empty()? 0: GetClosePlayerToPlayer(i)[0]; }
+	Unum GetClosestTeammateToPlayer(Unum i) { return GetCloseTeammateToPlayer(i).empty()? 0: GetCloseTeammateToPlayer(i)[0]; }
+	Unum GetClosestOpponentToPlayer(Unum i) { return GetCloseOpponentToPlayer(i).empty()? 0: GetCloseOpponentToPlayer(i)[0]; }
+
+	Unum GetClosestPlayerToTeammate(Unum i) { return GetClosePlayerToTeammate(i).empty()? 0: GetClosePlayerToTeammate(i)[0]; }
+	Unum GetClosestTeammateToTeammate(Unum i) { return GetCloseTeammateToTeammate(i).empty()? 0: GetCloseTeammateToTeammate(i)[0]; }
+	Unum GetClosestOpponentToTeammate(Unum i) { return GetCloseOpponentToTeammate(i).empty()? 0: GetCloseOpponentToTeammate(i)[0]; }
+
+	Unum GetClosestPlayerToOpponent(Unum i) { return GetClosePlayerToOpponent(i).empty()? 0: GetClosePlayerToOpponent(i)[0]; }
+	Unum GetClosestTeammateToOpponent(Unum i) { return GetCloseTeammateToOpponent(i).empty()? 0: GetCloseTeammateToOpponent(i)[0]; }
+	Unum GetClosestOpponentToOpponent(Unum i) { return GetCloseOpponentToOpponent(i).empty()? 0: GetCloseOpponentToOpponent(i)[0]; }
+
+	double GetClosestPlayerDistToBall() { return GetClosestPlayerToBall() == 0? HUGE_VALUE: mpWorldState->GetPlayer(GetClosestPlayerToBall()).GetPos().Dist(mpWorldState->GetBall().GetPos()); }
+	double GetClosestTeammateDistToBall() { return GetClosestTeammateToBall() == 0? HUGE_VALUE: mpWorldState->GetTeammate(GetClosestTeammateToBall()).GetPos().Dist(mpWorldState->GetBall().GetPos()); }
+	double GetClosestOpponentDistToBall() { return GetClosestOpponentToBall() == 0? HUGE_VALUE: mpWorldState->GetOpponent(GetClosestOpponentToBall()).GetPos().Dist(mpWorldState->GetBall().GetPos()); }
+
+	const Unum & GetTeammateOffsideLineOpp() const     { return mTeammateOffsideLineOpp; }
+	const double & GetTeammateOffsideLine() const       { return mTeammateOffsideLine; }
+	const double & GetTeammateOffsideLineConf() const   { return mTeammateOffsideLineConf; }
+	const double & GetTeammateOffsideLineSpeed() const  { return mTeammateOffsideLineSpeed; }
+
+	const Unum & GetOpponentOffsideLineTm() const     { return mOpponentOffsideLineTm; }
+	const double & GetOpponentOffsideLine() const       { return mOpponentOffsideLine; }
+	const double & GetOpponentOffsideLineConf() const   { return mOpponentOffsideLineConf; }
+	const double & GetOpponentOffsideLineSpeed() const { return mOpponentOffsideLineSpeed; }
 	/** 得到当前可以踢到球的球员列表 */
 	const std::vector<Unum> & GetPlayerWithBallList();
 

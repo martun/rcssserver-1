@@ -52,11 +52,17 @@ Tackler::~Tackler()
 /**
  * instance.
  */
-Tackler& Tackler::instance()
+
+Tackler& Tackler::instance(RemotePlayerParam* playerParam)
 {
-	static Tackler instance;
-	return instance;
+	static std::map<RemotePlayerParam*, Tackler*> instances;
+	if(instances[playerParam] == 0)
+	{
+		instances[playerParam] = new Tackler;	
+	}
+	return *instances[playerParam];
 }
+
 
 #include <mutex>
 /**

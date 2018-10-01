@@ -63,7 +63,7 @@ bool BehaviorInterceptExecuter::Execute(const ActiveBehavior & intercept)
 {
 	RemoteLogger::instance(mAgent.GetPlayerParam())->LogIntercept(intercept.mTarget, "@Intercept");
 
-	return Dasher::instance().GetBall(mAgent);
+	return Dasher::instance(mAgent.GetPlayerParam()).GetBall(mAgent);
 }
 
 BehaviorInterceptPlanner::BehaviorInterceptPlanner(Agent & agent): BehaviorPlannerBase<BehaviorAttackData>(agent)
@@ -95,7 +95,7 @@ void BehaviorInterceptPlanner::Plan(std::list<ActiveBehavior> & behavior_list)
 				return;
 			}
 			else {
-				intercept.mEvaluation = Evaluation::instance().EvaluatePosition(intercept.mTarget, true);
+				intercept.mEvaluation = Evaluation::instance(mAgent.GetPlayerParam()).EvaluatePosition(intercept.mTarget, true);
 				behavior_list.push_back(intercept);
 			}
 		}
@@ -111,7 +111,7 @@ void BehaviorInterceptPlanner::Plan(std::list<ActiveBehavior> & behavior_list)
 		ActiveBehavior intercept(mAgent, BT_Intercept, BDT_Intercept_Normal);
 
 		intercept.mTarget = mStrategy.GetMyInterPos();
-		intercept.mEvaluation = Evaluation::instance().EvaluatePosition(intercept.mTarget, true);
+		intercept.mEvaluation = Evaluation::instance(mAgent.GetPlayerParam()).EvaluatePosition(intercept.mTarget, true);
 
 		behavior_list.push_back(intercept);
 	}
@@ -121,7 +121,7 @@ void BehaviorInterceptPlanner::Plan(std::list<ActiveBehavior> & behavior_list)
 	{
 		ActiveBehavior intercept(mAgent, BT_Intercept, BDT_Intercept_Normal);
 		intercept.mTarget = mStrategy.GetMyInterPos();
-		intercept.mEvaluation = Evaluation::instance().EvaluatePosition(intercept.mTarget, true);
+		intercept.mEvaluation = Evaluation::instance(mAgent.GetPlayerParam()).EvaluatePosition(intercept.mTarget, true);
 		behavior_list.push_back(intercept);
 
 	}
@@ -129,9 +129,9 @@ void BehaviorInterceptPlanner::Plan(std::list<ActiveBehavior> & behavior_list)
 	{
 		ActiveBehavior intercept(mAgent, BT_Intercept, BDT_Intercept_Normal);
 		intercept.mTarget = mStrategy.GetMyInterPos();
-		intercept.mEvaluation = Evaluation::instance().EvaluatePosition(intercept.mTarget, true);
+		intercept.mEvaluation = Evaluation::instance(mAgent.GetPlayerParam()).EvaluatePosition(intercept.mTarget, true);
 		if(mWorldState.GetPlayMode() == RemotePlayMode::PM_Opp_Penalty_Taken){
-			intercept.mEvaluation = Evaluation::instance().EvaluatePosition(intercept.mTarget, false);
+			intercept.mEvaluation = Evaluation::instance(mAgent.GetPlayerParam()).EvaluatePosition(intercept.mTarget, false);
 		}
 		behavior_list.push_back(intercept);
 	}
@@ -139,7 +139,7 @@ void BehaviorInterceptPlanner::Plan(std::list<ActiveBehavior> & behavior_list)
 			&& !mSelfState.IsGoalie()){
 		ActiveBehavior intercept(mAgent, BT_Intercept, BDT_Intercept_Normal);
 		intercept.mTarget = mStrategy.GetMyInterPos();
-		intercept.mEvaluation = Evaluation::instance().EvaluatePosition(intercept.mTarget, true);
+		intercept.mEvaluation = Evaluation::instance(mAgent.GetPlayerParam()).EvaluatePosition(intercept.mTarget, true);
 		behavior_list.push_back(intercept);
 	}
 	else if (mPositionInfo.GetClosestTeammateToBall() == mWorldState.GetTeammateGoalieUnum()
@@ -147,7 +147,7 @@ void BehaviorInterceptPlanner::Plan(std::list<ActiveBehavior> & behavior_list)
 
 		ActiveBehavior intercept(mAgent, BT_Intercept, BDT_Intercept_Normal);
 		intercept.mTarget = mStrategy.GetMyInterPos();
-		intercept.mEvaluation = Evaluation::instance().EvaluatePosition(intercept.mTarget, true);
+		intercept.mEvaluation = Evaluation::instance(mAgent.GetPlayerParam()).EvaluatePosition(intercept.mTarget, true);
 		behavior_list.push_back(intercept);
 	}
 }

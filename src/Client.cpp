@@ -66,11 +66,11 @@ Client::Client(RemotePlayerParam* playerParams)
 
     /** Assistant instance */
 
-	TimeTest::instance();
-	NetworkTest::instance();
-	DynamicDebug::instance();
+	TimeTest::instance(m_playerParams);
+	NetworkTest::instance(m_playerParams);
+	DynamicDebug::instance(m_playerParams);
 	RemoteLogger::instance(m_playerParams)->Initial(mpObserver, &(mpWorldModel->World(false)));
-	Plotter::instance();
+	Plotter::instance(m_playerParams);
 	
 
     /** Param */
@@ -83,13 +83,13 @@ Client::Client(RemotePlayerParam* playerParams)
 	
 
     /** Smart Action */
-    Dasher::instance();
-	Tackler::instance();
-	Kicker::instance();
+    Dasher::instance(m_playerParams);
+	Tackler::instance(m_playerParams);
+	Kicker::instance(m_playerParams);
 	
 
     /** Other Useful instance */
-    BehaviorFactory::instance();
+    BehaviorFactory::instance(m_playerParams);
 	UDPSocket::instance(m_playerParams);
 	// VisualSystem::instance();
 	CommunicateSystem::instance(playerParams);
@@ -119,9 +119,9 @@ Client::~Client()
 void Client::RunDynamicDebug()
 {
 	char msg[MAX_MESSAGE];
-	DynamicDebug::instance().Initial(mpObserver); // 动态调试的初始化，注意位置不能移动
+	DynamicDebug::instance(m_playerParams).Initial(mpObserver); // 动态调试的初始化，注意位置不能移动
 
-	DynamicDebug::instance().Run(msg); // 初始化信息
+	DynamicDebug::instance(m_playerParams).Run(msg); // 初始化信息
 	mpParser->ParseInitializeMsg(msg);
 
 	ConstructAgent();
@@ -132,7 +132,7 @@ void Client::RunDynamicDebug()
 
 	while (true)
 	{
-		msg_type = DynamicDebug::instance().Run(msg);
+		msg_type = DynamicDebug::instance(m_playerParams).Run(msg);
 
 		switch (msg_type)
 		{
@@ -222,7 +222,7 @@ void Client::MainLoop()
 {
 	while (mpObserver->WaitForNewInfo()) // 等待新视觉
 	{
-        NetworkTest::instance().AddDecisionBegin();
+        NetworkTest::instance(m_playerParams).AddDecisionBegin();
 
         // 比赛结束，bye ...
         if (mpObserver->GetPlayMode() == RemotePlayMode::PM_Time_Over)
@@ -237,13 +237,13 @@ void Client::MainLoop()
             break;
         }
 
-        DynamicDebug::instance().AddMessage("\0", MT_Run); // 动态调试记录Run信息
+        DynamicDebug::instance(m_playerParams).AddMessage("\0", MT_Run); // 动态调试记录Run信息
         Run();
 
 		mpObserver->SetPlanned();
 		mpObserver->SetCommandSend(); //唤醒发送命令的线程
 		RemoteLogger::instance(m_playerParams)->SetFlushCond(); // set flush cond and let the logger thread flush the logs to file.
 
-        NetworkTest::instance().AddDecisionEnd(mpObserver->CurrentTime());
+        NetworkTest::instance(m_playerParams).AddDecisionEnd(mpObserver->CurrentTime());
 	}
 }

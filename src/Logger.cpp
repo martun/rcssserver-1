@@ -64,7 +64,7 @@ SightLogger::SightLogger(RemotePlayerParam* playerParams, Observer *observer, Wo
 	mTeamState_dirty = true;
 
 	char file_name[256];
-	sprintf( file_name, "%s/%s-%d-sight.log", RemotePlayerParam::logDir().c_str(), m_playerParams->teamName().c_str(), mpObserver->SelfUnum());
+	sprintf( file_name, "%s/%s-%d-sight.log", m_playerParams->logDir().c_str(), m_playerParams->teamName().c_str(), mpObserver->SelfUnum());
 	os.open(file_name);
 	if (!os.good()){
 		PRINT_ERROR("open sight log file error");
@@ -118,7 +118,7 @@ void SightLogger::Flush()
 {
 	static const double prec = 0.0001;
 
-	if (mHeaderReady && RemotePlayerParam::SaveSightLog())
+	if (mHeaderReady && m_playerParams->SaveSightLog())
 	{
 		if (!mHeaderLogged)
 		{
@@ -215,7 +215,7 @@ void SightLogger::Flush()
 		os.flush();
 	}
 
-	if (RemotePlayerParam::SaveDecLog())
+	if (m_playerParams->SaveDecLog())
 	{
 		mDecMutex.Lock();
 		int time = mTime.S()<<16 | mTime.T();
@@ -289,7 +289,7 @@ void SightLogger::LogSight()
 
 void SightLogger::LogPlayerInfo(const RemotePlayerState & player)
 {
-	if (RemotePlayerParam::SaveDecLog()){
+	if (m_playerParams->SaveDecLog()){
 		DecLock();
 		LogDec();
 
@@ -306,7 +306,7 @@ void SightLogger::LogPlayerInfo(const RemotePlayerState & player)
 
 void SightLogger::LogBallInfo(const BallState & ball)
 {
-	if (RemotePlayerParam::SaveDecLog()){
+	if (m_playerParams->SaveDecLog()){
 		DecLock();
 		LogDec();
 
@@ -362,7 +362,7 @@ TextLogger::~TextLogger()
  */
 void TextLogger::Flush()
 {
-	if (RemotePlayerParam::SaveTextLog())
+	if (m_playerParams->SaveTextLog())
 	{
 		os << mBuffer.str();
 		os.flush();
@@ -377,7 +377,7 @@ void TextLogger::Flush()
 //template<typename T>
 //TextLogger& operator<<(TextLogger& logger, const T &value)
 //{
-//	if (RemotePlayerParam::SaveTextLog())
+//	if (m_playerParams->SaveTextLog())
 //	{
 //		logger.mBuffer << value;
 //	}
@@ -429,7 +429,7 @@ TextLogger RemoteLogger::mTextLoggerNull;
  */
 void RemoteLogger::StartRoutine()
 {
-	while (!mCondFlush.Wait(RemotePlayerParam::WaitTimeOut() * 1000))
+	while (!mCondFlush.Wait(m_playerParams->WaitTimeOut() * 1000))
 	{
 		Flush();
 	}
@@ -458,7 +458,7 @@ SightLogger* RemoteLogger::GetSightLogger()
  */
 TextLogger& RemoteLogger::GetTextLogger(const char* log_name)
 {
-	if (RemotePlayerParam::SaveTextLog())
+	if (m_playerParams->SaveTextLog())
 	{
 		std::map<std::string, TextLogger*>::iterator logger=mTextLoggers.find(log_name);
 		if (logger == mTextLoggers.end())
@@ -494,7 +494,7 @@ void RemoteLogger::Flush()
  */
 void RemoteLogger::SetFlushCond()
 {
-	if (RemotePlayerParam::SaveSightLog() || RemotePlayerParam::SaveDecLog() || RemotePlayerParam::SaveTextLog())
+	if (m_playerParams->SaveSightLog() || m_playerParams->SaveDecLog() || m_playerParams->SaveTextLog())
 		mCondFlush.Set();
 }
 
@@ -506,7 +506,7 @@ void RemoteLogger::SetFlushCond()
  */
 void RemoteLogger::InitSightLogger(ServerMsgType msg_type, const char* msg)
 {
-	if (RemotePlayerParam::SaveSightLog())
+	if (m_playerParams->SaveSightLog())
 	{
 		switch (msg_type)
 		{
@@ -523,7 +523,7 @@ void RemoteLogger::InitSightLogger(ServerMsgType msg_type, const char* msg)
  */
 void RemoteLogger::LogSight()
 {
-	if (RemotePlayerParam::SaveSightLog())
+	if (m_playerParams->SaveSightLog())
 	{
 		GetSightLogger()->LogSight();
 	}
@@ -531,7 +531,7 @@ void RemoteLogger::LogSight()
 
 void RemoteLogger::LogPoint(const Vector & target, SightLogger::Color color, const char* comment)
 {
-	if (RemotePlayerParam::SaveDecLog()){
+	if (m_playerParams->SaveDecLog()){
 		SightLogger *pSightLogger = GetSightLogger();
 		pSightLogger->DecLock();
 		pSightLogger->LogDec();
@@ -542,7 +542,7 @@ void RemoteLogger::LogPoint(const Vector & target, SightLogger::Color color, con
 
 void RemoteLogger::LogGoToPoint(const Vector & start, const Vector & target, const char* comment)
 {
-	if (RemotePlayerParam::SaveDecLog()){
+	if (m_playerParams->SaveDecLog()){
 		SightLogger *pSightLogger = GetSightLogger();
 		pSightLogger->DecLock();
 		pSightLogger->LogDec();
@@ -555,7 +555,7 @@ void RemoteLogger::LogGoToPoint(const Vector & start, const Vector & target, con
 
 void RemoteLogger::LogShoot(const Vector & start, const Vector & target, const char* comment)
 {
-    if (RemotePlayerParam::SaveDecLog())
+    if (m_playerParams->SaveDecLog())
     {
         SightLogger *pSightLogger = GetSightLogger();
         pSightLogger->DecLock();
@@ -568,7 +568,7 @@ void RemoteLogger::LogShoot(const Vector & start, const Vector & target, const c
 
 void RemoteLogger::LogIntercept(const Vector & interpt, const char* comment)
 {
-	if (RemotePlayerParam::SaveDecLog())
+	if (m_playerParams->SaveDecLog())
 	{
 		SightLogger *pSightLogger = GetSightLogger();
 		pSightLogger->DecLock();
@@ -581,7 +581,7 @@ void RemoteLogger::LogIntercept(const Vector & interpt, const char* comment)
 
 void RemoteLogger::LogLine(const Vector & begin, const Vector & end, SightLogger::Color color, const char* comment)
 {
-	if (RemotePlayerParam::SaveDecLog()){
+	if (m_playerParams->SaveDecLog()){
 		SightLogger *pSightLogger = GetSightLogger();
 		pSightLogger->DecLock();
 		pSightLogger->LogDec();
@@ -593,7 +593,7 @@ void RemoteLogger::LogLine(const Vector & begin, const Vector & end, SightLogger
 
 void RemoteLogger::LogCircle(const Vector & o, const double & r, SightLogger::Color color)
 {
-	if (RemotePlayerParam::SaveDecLog()){
+	if (m_playerParams->SaveDecLog()){
 		SightLogger *pSightLogger = GetSightLogger();
 		pSightLogger->DecLock();
 		pSightLogger->LogDec();
@@ -604,7 +604,7 @@ void RemoteLogger::LogCircle(const Vector & o, const double & r, SightLogger::Co
 
 void RemoteLogger::LogRectangular(const Rectangular & rect, SightLogger::Color color)
 {
-	if (RemotePlayerParam::SaveDecLog()){
+	if (m_playerParams->SaveDecLog()){
 		SightLogger *pSightLogger = GetSightLogger();
 		pSightLogger->DecLock();
 		pSightLogger->LogDec();
@@ -621,7 +621,7 @@ void RemoteLogger::LogRectangular(const Rectangular & rect, SightLogger::Color c
 
 void RemoteLogger::LogDribble(const Vector & start, const Vector & target, const char * comment, bool is_execute)
 {
-	if (RemotePlayerParam::SaveDecLog())
+	if (m_playerParams->SaveDecLog())
     {
 		SightLogger *pSightLogger = GetSightLogger();
 		pSightLogger->DecLock();
@@ -640,7 +640,7 @@ void RemoteLogger::LogDribble(const Vector & start, const Vector & target, const
 
 void RemoteLogger::LogPass(const bool reverse, const Vector & start, const Vector & target, const char * comment, bool is_execute)
 {
-    if (RemotePlayerParam::SaveDecLog())
+    if (m_playerParams->SaveDecLog())
     {
         SightLogger *pSightLogger = GetSightLogger();
         pSightLogger->DecLock();

@@ -63,7 +63,7 @@ bool BehaviorFormationExecuter::Execute(const ActiveBehavior & beh)
 {
 	RemoteLogger::instance(mAgent.GetPlayerParam())->LogGoToPoint(mSelfState.GetPos(), beh.mTarget, "@Formation");
 
-	return Dasher::instance().GoToPoint(mAgent, beh.mTarget, beh.mBuffer, beh.mPower, false, true);
+	return Dasher::instance(mAgent.GetPlayerParam()).GoToPoint(mAgent, beh.mTarget, beh.mBuffer, beh.mPower, false, true);
 }
 
 BehaviorFormationPlanner::BehaviorFormationPlanner(Agent & agent):
@@ -119,10 +119,10 @@ void BehaviorFormationPlanner::Plan(std::list<ActiveBehavior> & behavior_list)
 			}
 
 		}
-		formation.mEvaluation = Evaluation::instance().EvaluatePosition(formation.mTarget, true);
+		formation.mEvaluation = Evaluation::instance(mAgent.GetPlayerParam()).EvaluatePosition(formation.mTarget, true);
 	}
 
-	else formation.mEvaluation = Evaluation::instance().EvaluatePosition(formation.mTarget, false);
+	else formation.mEvaluation = Evaluation::instance(mAgent.GetPlayerParam()).EvaluatePosition(formation.mTarget, false);
 
 	behavior_list.push_back(formation);
 }

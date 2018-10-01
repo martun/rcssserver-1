@@ -117,6 +117,8 @@ public:
 	const RemotePlayerState & GetSelf() const;
 
 	RemotePlayerState & Self();
+	void CheckCommands(Observer *observer); 
+
 	/**
 	 * Get state information after queued actions are executed.
 	 */

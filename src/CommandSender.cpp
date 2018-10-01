@@ -52,13 +52,13 @@ void CommandSender::StartRoutine()
 
     while (mpObserver->WaitForCommandSend())
     {
-        NetworkTest::instance().AddCommandSendBegin();
+        NetworkTest::instance(mpObserver->GetPlayerParam()).AddCommandSendBegin();
 
         strcpy(msg, "record_cmd: ");
         Run(msg);
-        DynamicDebug::instance().AddMessage(msg, MT_Send);
+        DynamicDebug::instance(mpObserver->GetPlayerParam()).AddMessage(msg, MT_Send);
 
-        NetworkTest::instance().AddCommandSendEnd(mpObserver->CurrentTime());
+        NetworkTest::instance(mpObserver->GetPlayerParam()).AddCommandSendEnd(mpObserver->CurrentTime());
     }
 }
 

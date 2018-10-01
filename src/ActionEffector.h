@@ -42,9 +42,8 @@
 #include <ostream>
 
 class WorldState;
-class RemotePlayerState;
 class BallState;
-
+class RemotePlayerState;
 class Agent;
 
 
@@ -258,7 +257,7 @@ inline double GetDashDirRate(double dir)
  * @param dash_power
  * @param dash_dir
  */
-inline void TransformDash(double & dash_power, AngleDeg & dash_dir)
+inline void TransformDash(double & dash_power, AngleDeg & dash_dir, RemotePlayerParam* playerParams)
 {
     if (dash_power < 0.0) {
     	double anti_dash_power = -dash_power * GetDashDirRate(dash_dir) / GetDashDirRate(dash_dir + 180.0);

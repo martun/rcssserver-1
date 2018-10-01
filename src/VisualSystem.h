@@ -155,8 +155,8 @@ class VisualSystem {
 			Dump(file, left_most, right_most);
 			file.close();
 
-			Plotter::instance().GnuplotExecute("set xrange [%g:%g]", left_most, right_most);
-			Plotter::instance().GnuplotExecute("plot \"pp\" with steps");
+			Plotter::instance(/* TODO */ nullptr).GnuplotExecute("set xrange [%g:%g]", left_most, right_most);
+			Plotter::instance(/* TODO */ nullptr).GnuplotExecute("plot \"pp\" with steps");
 		}
 
 		void Clear() {

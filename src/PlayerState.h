@@ -33,10 +33,10 @@
 #ifndef __PLAYERSTATE_H__
 #define __PLAYERSTATE_H__
 
+// #include "Dasher.h"
 #include "BaseState.h"
 #include "PlayerParam.h"
 #include "BallState.h"
-#include "Dasher.h"
 
 class RemotePlayerState : public MobileState
 {
@@ -330,7 +330,7 @@ public:
 
 private:
     
-    Dasher dasher;
+    // Dasher dasher;
 
 	/**存储数个周期的体力*/
 	double mStamina;

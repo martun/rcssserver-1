@@ -38,8 +38,8 @@
 #include "Coach.h"
 #include "Player.h"
 #include "ServerParam.h"
-#include "PlayerParam.h"
 #include "Logger.h"
+#include "PlayerParam.h"
 #include "DynamicDebug.h"
 #include "Trainer.h"
 

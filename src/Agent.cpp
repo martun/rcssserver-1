@@ -149,7 +149,12 @@ void Agent::SetHistoryActiveBehaviors()
 /**
  * Check commands sent to server, based on ActionEffector::CheckCommands. Will update IsNewSight and BallSeenTime.
  */
-void Agent::CheckCommands(Observer *observer) { mIsNewSight = observer->IsNewSight();mBallSeenTime = observer->Ball().GetDist().time(); GetActionEffector().CheckCommands(observer); }
+void Agent::CheckCommands(Observer *observer) 
+{ 
+	mIsNewSight = observer->IsNewSight();
+	mBallSeenTime = observer->Ball().GetDist().time(); 
+	GetActionEffector().CheckCommands(observer); 
+}
 
 const RemotePlayerState & Agent::GetSelf() const {
 	if (!mSelfUnum || mSelfUnum == TRAINER_UNUM) {
@@ -180,3 +185,37 @@ RemotePlayerState & Agent::Self() {
 	return state;
 }
 
+/**
+ * Interface to create an agent which represents a team mate.
+ */
+Agent * Agent::CreateTeammateAgent(Unum unum, RemotePlayerParam* playerParam); ///反算队友
+
+/**
+ * Interface to create an agent which represents an opponent.
+ */
+Agent * Agent::CreateOpponentAgent(Unum unum/*no params*/); ///反算对手
+
+/**
+ * Interfaces to get the agent's world state.
+ */
+WorldState       & Agent::World() { return *mpWorldState; }
+const WorldState & Agent::GetWorldState() const { return *mpWorldState; }
+
+/**
+ * Interfaces to get the agent's info state.
+ */
+InfoState        & Agent::Info() {	return *mpInfoState; }
+const InfoState  & Agent::GetInfoState() const { return *mpInfoState; }
+
+/*
+ * 自己相关的接口
+ * Interfaces to get information about the agent it self.
+ */
+AgentID             Agent::GetAgentID() const { return AgentID(mSelfUnum, GetWorldState().CurrentTime(), mReverse); }
+Unum                Agent::GetSelfUnum() const { return mSelfUnum; }
+
+Vector Agent::GetSelfPosWithQueuedActions() { return GetActionEffector().GetSelfPosWithQueuedActions(); }
+Vector Agent::GetSelfVelWithQueuedActions() { return GetActionEffector().GetSelfVelWithQueuedActions(); }
+AngleDeg Agent::GetSelfBodyDirWithQueuedActions() { return GetActionEffector().GetSelfBodyDirWithQueuedActions(); }
+Vector Agent::GetBallPosWithQueuedActions() { return GetActionEffector().GetBallPosWithQueuedActions(); }
+Vector Agent::GetBallVelWithQueuedActions() { return GetActionEffector().GetBallVelWithQueuedActions(); }

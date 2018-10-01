@@ -36,7 +36,8 @@
 #include <cstdio>
 #include <cstdarg>
 
-Plotter::Plotter() :
+Plotter::Plotter(RemotePlayerParam* playerParam) :
+	m_playerParam(playerParam),
 	mIsDisplayOk(false),
 	mIsGnuplotOk(false),
 	mpGnupolot(0)
@@ -48,10 +49,14 @@ Plotter::~Plotter() {
 	Close();
 }
 
-Plotter& Plotter::instance()
+Plotter& Plotter::instance(RemotePlayerParam* playerParam)
 {
-	static Plotter instance;
-	return instance;
+	static std::map<RemotePlayerParam*, Plotter*> instances;
+	if(instances[playerParam] == 0)
+	{
+		instances[playerParam] = new Plotter(playerParam);	
+	}
+	return *instances[playerParam];
 }
 
 void Plotter::Init()
@@ -59,7 +64,7 @@ void Plotter::Init()
 #ifndef WIN32
 	mIsDisplayOk = getenv("DISPLAY") != 0;
 
-	if (RemotePlayerParam::UsePlotter()) {
+	if (m_playerParam->UsePlotter()) {
 		mpGnupolot = popen("gnuplot", "w");
 	}
 

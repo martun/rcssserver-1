@@ -34,8 +34,9 @@
 #include "DynamicDebug.h"
 
 //==============================================================================
-DynamicDebug::DynamicDebug() 
+DynamicDebug::DynamicDebug(RemotePlayerParam* playerParams) 
 {
+	m_playerParams      = playerParams;
 	mpObserver          = 0;
 	mInitialOK          = false;
 
@@ -82,10 +83,14 @@ DynamicDebug::~DynamicDebug()
 
 
 //==============================================================================
-DynamicDebug& DynamicDebug::instance()
+DynamicDebug& DynamicDebug::instance(RemotePlayerParam* playerParams)
 {
-	static DynamicDebug instance;
-	return instance;
+	static std::map<RemotePlayerParam*, DynamicDebug*> instances;
+	if(instances[playerParams] == 0)
+	{
+		instances[playerParams] = new DynamicDebug(playerParams);
+	}
+	return *instances[playerParams];
 }
 
 
@@ -105,7 +110,7 @@ void DynamicDebug::Initial(Observer *pObserver)
 
 	mpObserver = pObserver;
 
-	if (RemotePlayerParam::DynamicDebugMode() == true) // 动态调试
+	if (m_playerParams->DynamicDebugMode() == true) // 动态调试
 	{
 		mpFileStream = new std::ifstream("dynamicdebug.txt");
 		if (mpFileStream)
@@ -115,10 +120,10 @@ void DynamicDebug::Initial(Observer *pObserver)
 	}
 	else // 正常比赛时
 	{
-		if (RemotePlayerParam::SaveServerMessage() == true) // 需要保存server信息
+		if (m_playerParams->SaveServerMessage() == true) // 需要保存server信息
 		{
 			char file_name[64];
-			sprintf(file_name, "%s/%s-%d-msg.log", RemotePlayerParam::logDir().c_str(), "TODO: how we can write team here?"/*m_playerParams.teamName().c_str()*/, mpObserver->SelfUnum());
+			sprintf(file_name, "%s/%s-%d-msg.log", m_playerParams->logDir().c_str(), "TODO: how we can write team here?"/*m_playerParams.teamName().c_str()*/, mpObserver->SelfUnum());
 			mpFile = fopen(file_name, "wb");
 			if (mpFile){
 				if (setvbuf(mpFile, 0, _IOFBF, 1024 * 8192) != 0)
@@ -146,8 +151,8 @@ void DynamicDebug::Initial(Observer *pObserver)
 //==============================================================================
 void DynamicDebug::AddMessage(const char *msg, MessageType msg_type)
 {
-    if (RemotePlayerParam::SaveServerMessage() && 
-        !RemotePlayerParam::DynamicDebugMode())
+    if (m_playerParams->SaveServerMessage() && 
+        !m_playerParams->DynamicDebugMode())
     {
 	    if (!mInitialOK)
 	    {
@@ -187,8 +192,8 @@ void DynamicDebug::AddMessage(const char *msg, MessageType msg_type)
 //==============================================================================
 void DynamicDebug::AddTimeParser(timeval &time)
 {
-	if (RemotePlayerParam::SaveServerMessage() && 
-        !RemotePlayerParam::DynamicDebugMode())
+	if (m_playerParams->SaveServerMessage() && 
+        !m_playerParams->DynamicDebugMode())
     {
 		mParserTimeTable.push_back(time);
 	}
@@ -198,8 +203,8 @@ void DynamicDebug::AddTimeParser(timeval &time)
 //==============================================================================
 void DynamicDebug::AddTimeDecision(timeval &time)
 {
-	if (RemotePlayerParam::SaveServerMessage() && 
-        !RemotePlayerParam::DynamicDebugMode())
+	if (m_playerParams->SaveServerMessage() && 
+        !m_playerParams->DynamicDebugMode())
     {
 		mDecisionTimeTable.push_back(time);
 	}
@@ -209,8 +214,8 @@ void DynamicDebug::AddTimeDecision(timeval &time)
 //==============================================================================
 void DynamicDebug::AddTimeCommandSend(timeval &time)
 {
-	if (RemotePlayerParam::SaveServerMessage() && 
-        !RemotePlayerParam::DynamicDebugMode())
+	if (m_playerParams->SaveServerMessage() && 
+        !m_playerParams->DynamicDebugMode())
     {
 		mCommandSendTimeTable.push_back(time);
 	}
@@ -541,8 +546,8 @@ timeval DynamicDebug::GetTimeCommandSend()
 
 void DynamicDebug::Flush()
 {
-    if (RemotePlayerParam::SaveServerMessage() && 
-        !RemotePlayerParam::DynamicDebugMode())
+    if (m_playerParams->SaveServerMessage() && 
+        !m_playerParams->DynamicDebugMode())
     {
 	    if (mpFile != 0)
 	    {

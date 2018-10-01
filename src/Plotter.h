@@ -49,11 +49,14 @@
 #include <list>
 #include <string>
 
+class RemotePlayerParam;
+
 class Plotter {
-	Plotter();
+	RemotePlayerParam* m_playerParam;
+	Plotter(RemotePlayerParam* playerParam);
 public:
 	virtual ~Plotter();
-	static Plotter & instance();
+	static Plotter & instance(RemotePlayerParam* playerParam);
 
 	/**
 	@brief    Sets the x label of a gnuplot session.

@@ -286,10 +286,11 @@ inline double drand( double low, double high )
  * GetRealTimeDecision()用在Player::Decision()及其调用的所有函数中
  * GetRealTimeCommandSend()用在CommandSend::Run()及其调用的所有函数中
  */
+class RemotePlayerParam;
 timeval GetRealTime();
-timeval GetRealTimeParser();
-timeval GetRealTimeDecision();
-timeval GetRealTimeCommandSend();
+timeval GetRealTimeParser(RemotePlayerParam*);
+timeval GetRealTimeDecision(RemotePlayerParam*);
+timeval GetRealTimeCommandSend(RemotePlayerParam*);
 
 /**
  * 安全数组，Debug版本会检查越界访问
@@ -641,8 +642,6 @@ private:
 private:
 	Time mUpdateTime;
 };
-
-class RemotePlayerParam;
 
 class ServerPlayModeMap {
 public:

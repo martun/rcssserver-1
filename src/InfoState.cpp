@@ -41,7 +41,7 @@ InfoState::InfoState(WorldState *world_state)
 	mpInterceptInfo = new InterceptInfo( world_state, this );
 }
 
-void InfoState::Update() {
+void InfoStateBase::Update() {
 	UpdateAtTime(mpWorldState->CurrentTime());
 }
 

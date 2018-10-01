@@ -100,7 +100,7 @@ class BehaviorFactory {
 
 public:
 	typedef BehaviorExecutable * (*BehaviorCreator)(Agent & agent);
-	static BehaviorFactory & instance();
+	static BehaviorFactory & instance(RemotePlayerParam* playerParam);
 
 	/**
 	* 创建行为
@@ -283,7 +283,7 @@ public:
 		}
 #endif
 
-		return BehaviorFactory::instance().RegisterBehavior(
+		return BehaviorFactory::instance(/*TODO: playerParam*/nullptr).RegisterBehavior(
 				BehaviorDerived::BEHAVIOR_TYPE, Creator<BehaviorDerived>, behavior_name.c_str());
 	}
 };

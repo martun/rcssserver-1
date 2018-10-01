@@ -62,7 +62,7 @@ bool BehaviorMarkExecuter::Execute(const ActiveBehavior & beh)
 {
 	RemoteLogger::instance(mAgent.GetPlayerParam())->LogGoToPoint(mSelfState.GetPos(), beh.mTarget, "@Mark");
 
-	return Dasher::instance().GoToPoint(mAgent, beh.mTarget, beh.mBuffer, beh.mPower, false, false);
+	return Dasher::instance(mAgent.GetPlayerParam()).GoToPoint(mAgent, beh.mTarget, beh.mBuffer, beh.mPower, false, false);
 }
 
 BehaviorMarkPlanner::BehaviorMarkPlanner(Agent & agent):
@@ -87,9 +87,9 @@ void BehaviorMarkPlanner::Plan(std::list<ActiveBehavior> & behavior_list)
 		mark.mBuffer = mSelfState.GetKickableArea();
 		mark.mPower = mSelfState.CorrectDashPowerForStamina(RemoteServerParam::instance().maxDashPower());
 		mark.mTarget = mWorldState.GetOpponent(closest_opp).GetPos()  + Polar2Vector(mark.mBuffer , b2o);
-		mark.mEvaluation = Evaluation::instance().EvaluatePosition(mark.mTarget, false);
+		mark.mEvaluation = Evaluation::instance(mAgent.GetPlayerParam()).EvaluatePosition(mark.mTarget, false);
 		if( mAgent.GetFormation().GetMyRole().mLineType == LT_Defender){
-			mark.mEvaluation = Evaluation::instance().EvaluatePosition(mark.mTarget, true);
+			mark.mEvaluation = Evaluation::instance(mAgent.GetPlayerParam()).EvaluatePosition(mark.mTarget, true);
 		}
 
 		behavior_list.push_back(mark);

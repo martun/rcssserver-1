@@ -181,10 +181,11 @@ private:
 
 
 class NetworkTest{
-	NetworkTest();
+	RemotePlayerParam* m_playerParam;
+	NetworkTest(RemotePlayerParam* playerParam);
 public:
 	~NetworkTest();
-    static NetworkTest &instance();
+    static NetworkTest &instance(RemotePlayerParam* playerParam);
 
     void SetUnum(Unum unum) { mUnum = unum; }
     void Update(const Time& time);

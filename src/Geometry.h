@@ -511,8 +511,8 @@ public:
 	void Show(const char * title, double minx, double maxx) {
 		std::cerr << mA << " + " << mB << " / ( x + " << mC << " )" << std::endl;
 
-		Plotter::instance().GnuplotExecute("set xrange [%g:%g]", minx, maxx);
-		Plotter::instance().GnuplotExecute("plot %g + %g / (x + %g) title \"%s\"", mA, mB, mC, title);
+		Plotter::instance(nullptr).GnuplotExecute("set xrange [%g:%g]", minx, maxx);
+		Plotter::instance(nullptr).GnuplotExecute("plot %g + %g / (x + %g) title \"%s\"", mA, mB, mC, title);
 	}
 
 private:

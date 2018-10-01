@@ -312,8 +312,9 @@ void StatisticUnit::SetStatistic(long val, Time current)
 	InterValStacistic(val);
 }
 
-NetworkTest::NetworkTest()
+NetworkTest::NetworkTest(RemotePlayerParam* playerParam)
 {
+	m_playerParam = playerParam;
 	BeginTimelist.clear();
 	EndTimelist.clear();
 	StatUnit.clear();
@@ -358,15 +359,19 @@ NetworkTest::~NetworkTest()
     std::for_each(StatUnit.begin(), StatUnit.end(), std::mem_fun_ref(&StatisticUnit::Flush));
 }
 
-NetworkTest& NetworkTest::instance()
+NetworkTest& NetworkTest::instance(RemotePlayerParam* playerParam)
 {
-	static NetworkTest instance;
-	return instance;
+	static std::map<RemotePlayerParam*, NetworkTest*> instances;
+	if(instances[playerParam] == 0)
+	{
+		instances[playerParam] = new NetworkTest(playerParam);
+	}
+	return *instances[playerParam];
 }
 
 void NetworkTest::Begin(const std::string BeginName)
 {
-    if (RemotePlayerParam::NetworkTest())
+    if (m_playerParam->NetworkTest())
     {
 	    int i=0,size = BeginTimelist.size();
 	    for(;i<size;i++)
@@ -393,7 +398,7 @@ void NetworkTest::Begin(const std::string BeginName)
 
 void NetworkTest::End(const std::string BeginName, const std::string EndName)
 {
-    if (RemotePlayerParam::NetworkTest())
+    if (m_playerParam->NetworkTest())
     {
 	    int i=0,size = EndTimelist.size();
 	    for(;i<size;i++)
@@ -422,7 +427,7 @@ void NetworkTest::End(const std::string BeginName, const std::string EndName)
 
 long NetworkTest::getInterval(const std::string BeginName, const std::string EndName)
 {
-    if (RemotePlayerParam::NetworkTest())
+    if (m_playerParam->NetworkTest())
     {
 	    int i,Size = EndTimelist.size();
 	    for(i=0; i<Size; i++)
@@ -447,7 +452,7 @@ long NetworkTest::getInterval(const std::string BeginName, const std::string End
 
 void NetworkTest::Update(const Time& time)
 {
-    if (RemotePlayerParam::NetworkTest())
+    if (m_playerParam->NetworkTest())
     {
 	    if(time != CurrentTime)
 	    {
@@ -492,7 +497,7 @@ void NetworkTest::Update(const Time& time)
 }
 void NetworkTest::SetCommandSendCount(const CommandInfo& cmd)
 {
-    if (RemotePlayerParam::NetworkTest())
+    if (m_playerParam->NetworkTest())
     {
         if (cmd.mType != CT_None)
         {
@@ -541,7 +546,7 @@ void NetworkTest::SetCommandSendCount(const CommandInfo& cmd)
 
 void NetworkTest::SetCommandExecuteCount(int d,int k,int tu,int s,int tn,int c,int m, int cv,int pt,int tk, int fc)
 {
-    if (RemotePlayerParam::NetworkTest())
+    if (m_playerParam->NetworkTest())
     {
 	    CMDExecute.Dashs = d;
 	    CMDExecute.Kicks = k;
@@ -561,7 +566,7 @@ void NetworkTest::SetCommandExecuteCount(int d,int k,int tu,int s,int tn,int c,i
 //==============================================================================
 void NetworkTest::AddParserBegin()
 {
-    if (RemotePlayerParam::NetworkTest())
+    if (m_playerParam->NetworkTest())
     {
         mParserRecord.mBeginTime = GetRealTime();
     }
@@ -571,7 +576,7 @@ void NetworkTest::AddParserBegin()
 //==============================================================================
 void NetworkTest::AddParserEnd(Time current_time)
 {
-    if (RemotePlayerParam::NetworkTest())
+    if (m_playerParam->NetworkTest())
     {
         mParserRecord.mEndTime  = GetRealTime();
         mParserRecord.mCostTime = mParserRecord.mEndTime - mParserRecord.mBeginTime;
@@ -584,7 +589,7 @@ void NetworkTest::AddParserEnd(Time current_time)
 //==============================================================================
 void NetworkTest::AddDecisionBegin()
 {
-    if (RemotePlayerParam::NetworkTest())
+    if (m_playerParam->NetworkTest())
     {
         mDecisionRecord.mBeginTime = GetRealTime();
     }
@@ -594,7 +599,7 @@ void NetworkTest::AddDecisionBegin()
 //==============================================================================
 void NetworkTest::AddDecisionEnd(Time current_time)
 {
-    if (RemotePlayerParam::NetworkTest())
+    if (m_playerParam->NetworkTest())
     {
         mDecisionRecord.mEndTime    = GetRealTime();
         mDecisionRecord.mCostTime   = mDecisionRecord.mEndTime - mDecisionRecord.mBeginTime;
@@ -607,7 +612,7 @@ void NetworkTest::AddDecisionEnd(Time current_time)
 //==============================================================================
 void NetworkTest::AddCommandSendBegin()
 {
-    if (RemotePlayerParam::NetworkTest())
+    if (m_playerParam->NetworkTest())
     {
         mCommandSendRecord.mBeginTime = GetRealTime();
     }
@@ -617,7 +622,7 @@ void NetworkTest::AddCommandSendBegin()
 //==============================================================================
 void NetworkTest::AddCommandSendEnd(Time current_time)
 {
-    if (RemotePlayerParam::NetworkTest())
+    if (m_playerParam->NetworkTest())
     {
         mCommandSendRecord.mEndTime     = GetRealTime();
         mCommandSendRecord.mCostTime    = mCommandSendRecord.mEndTime - mCommandSendRecord.mBeginTime;
@@ -630,7 +635,7 @@ void NetworkTest::AddCommandSendEnd(Time current_time)
 //==============================================================================
 void NetworkTest::WriteRealTimeRecord()
 {
-    if (RemotePlayerParam::NetworkTest())
+    if (m_playerParam->NetworkTest())
     {
         if (mParserList.size() > 0)
         {

@@ -198,7 +198,7 @@ bool ActionEffector::SetDashAction(double power, AngleDeg dir)
         dir = RemoteServerParam::instance().dashAngleStep() * Rint(dir / RemoteServerParam::instance().dashAngleStep());
     }
 
-    TransformDash(power, dir);
+    TransformDash(power, dir, m_playerParams);
 
 	double max_stamina = mSelfState.GetStamina() + mSelfState.GetExtraStamina();
 	if (power < 0.0)
@@ -222,7 +222,7 @@ bool ActionEffector::SetDashAction(double power, AngleDeg dir)
 
     if (std::fabs(power) < FLOAT_EPS) return false;
 
-    TransformDash(power, dir);
+    TransformDash(power, dir, m_playerParams);
 
 	mDash.Plan(power, dir);
 	mDash.Execute(mCommandQueue);
@@ -1259,7 +1259,7 @@ void ActionEffector::SendCommands(char *msg)
 		{
 			if (it->mType != CT_None && it->mTime == mWorldState.CurrentTime()) //TODO: seg fault here
 			{
-				NetworkTest::instance().SetCommandSendCount((*it));
+				NetworkTest::instance(m_playerParams).SetCommandSendCount((*it));
 			}
 			if (!it->mString.empty())
 			{
@@ -1291,7 +1291,7 @@ void ActionEffector::SendCommands(char *msg)
 			if (it->mType != CT_None && it->mTime == mWorldState.CurrentTime())
 			{
 				strcat(command_msg, it->mString.c_str());
-	            NetworkTest::instance().SetCommandSendCount((*it));
+	            NetworkTest::instance(m_playerParams).SetCommandSendCount((*it));
 			}
 		}
 		ActionEffector::CMD_QUEUE_MUTEX.UnLock();

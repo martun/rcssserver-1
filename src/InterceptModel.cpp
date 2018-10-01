@@ -407,7 +407,7 @@ double InterceptModel::CalcGoingThroughSpeed(const RemotePlayerState & player, c
 	}
     else if (peak < distance)
     {
-        double cycletopoint = Dasher::instance().RealCycleNeedToPoint(player, ballcourse.GetPoint(peak));
+        double cycletopoint = Dasher::instance(/*mAgent.GetPlayerParam()*/ nullptr).RealCycleNeedToPoint(player, ballcourse.GetPoint(peak));
         gtspeed = RemoteServerParam::instance().GetBallSpeed((int)(cycletopoint), peak);
 
         if (player.IsGoalie() && player.GetUnum() > 0 && player.GetBodyDirConf() > player.GetPlayerParam()->minValidConf())
@@ -416,7 +416,7 @@ double InterceptModel::CalcGoingThroughSpeed(const RemotePlayerState & player, c
 			Vector pt;
 			if (ballcourse.Intersection(Line(ray), pt))
             {
-				double c2p = Dasher::instance().RealCycleNeedToPoint(player, pt);
+				double c2p = Dasher::instance(/*mAgent.GetPlayerParam()*/ nullptr).RealCycleNeedToPoint(player, pt);
 				double pk = pt.Dist(ballcourse.Origin());
                 double gtspd =  RemoteServerParam::instance().GetBallSpeed((int)ceil(c2p), pk);
                 gtspeed = Max(gtspeed, gtspd);
@@ -425,14 +425,14 @@ double InterceptModel::CalcGoingThroughSpeed(const RemotePlayerState & player, c
 
         if (gtspeed < RemoteServerParam::instance().ballSpeedMax())
         {
-    		double cycletopoint = Dasher::instance().RealCycleNeedToPoint(player, ballcourse.GetPoint(distance));
+    		double cycletopoint = Dasher::instance(/*mAgent.GetPlayerParam()*/ nullptr).RealCycleNeedToPoint(player, ballcourse.GetPoint(distance));
             double speed = RemoteServerParam::instance().GetBallSpeed((int)ceil(cycletopoint), distance);
     		gtspeed = Max(gtspeed, speed);
     	}
 	}
     else
     {
-		double cycletopoint = Dasher::instance().RealCycleNeedToPoint(player, ballcourse.GetPoint(distance));
+		double cycletopoint = Dasher::instance(/*mAgent.GetPlayerParam()*/ nullptr).RealCycleNeedToPoint(player, ballcourse.GetPoint(distance));
         gtspeed = RemoteServerParam::instance().GetBallSpeed((int)ceil(cycletopoint), distance);
 	}
 
@@ -441,21 +441,21 @@ double InterceptModel::CalcGoingThroughSpeed(const RemotePlayerState & player, c
 
 void InterceptModel::PlotInterceptCurve(double x0, double y0, double v0, double vp, double ka, double cd, double max_x)
 {
-	Plotter::instance().GnuplotExecute("alpha = 0.94");
-	Plotter::instance().GnuplotExecute("ln(x) = log(x)");
-	Plotter::instance().GnuplotExecute("bt(x) = ln(1 - x * (1 - alpha) / v0) / ln(alpha)");
-	Plotter::instance().GnuplotExecute("s(x) = sqrt((x - x0)**2 + y0**2)");
-	Plotter::instance().GnuplotExecute("pt(x) = (s(x) - ka) / vp - cd");
+	Plotter::instance(nullptr).GnuplotExecute("alpha = 0.94");
+	Plotter::instance(nullptr).GnuplotExecute("ln(x) = log(x)");
+	Plotter::instance(nullptr).GnuplotExecute("bt(x) = ln(1 - x * (1 - alpha) / v0) / ln(alpha)");
+	Plotter::instance(nullptr).GnuplotExecute("s(x) = sqrt((x - x0)**2 + y0**2)");
+	Plotter::instance(nullptr).GnuplotExecute("pt(x) = (s(x) - ka) / vp - cd");
 
-	Plotter::instance().GnuplotExecute("x0 = %g", x0);
-	Plotter::instance().GnuplotExecute("y0 = %g", y0);
-	Plotter::instance().GnuplotExecute("v0 = %g", v0);
-	Plotter::instance().GnuplotExecute("vp = %g", vp);
-	Plotter::instance().GnuplotExecute("ka = %g", ka);
-	Plotter::instance().GnuplotExecute("cd = %g", cd);
+	Plotter::instance(nullptr).GnuplotExecute("x0 = %g", x0);
+	Plotter::instance(nullptr).GnuplotExecute("y0 = %g", y0);
+	Plotter::instance(nullptr).GnuplotExecute("v0 = %g", v0);
+	Plotter::instance(nullptr).GnuplotExecute("vp = %g", vp);
+	Plotter::instance(nullptr).GnuplotExecute("ka = %g", ka);
+	Plotter::instance(nullptr).GnuplotExecute("cd = %g", cd);
 
-	Plotter::instance().GnuplotExecute("set xrange[0:%g]", max_x + 1.0);
-	Plotter::instance().GnuplotExecute("set yrange[0:]");
+	Plotter::instance(nullptr).GnuplotExecute("set xrange[0:%g]", max_x + 1.0);
+	Plotter::instance(nullptr).GnuplotExecute("set yrange[0:]");
 
-	Plotter::instance().GnuplotExecute("plot bt(x), pt(x)");
+	Plotter::instance(nullptr).GnuplotExecute("plot bt(x), pt(x)");
 }

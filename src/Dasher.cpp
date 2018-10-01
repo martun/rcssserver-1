@@ -37,6 +37,9 @@
 #include "Kicker.h"
 
 double Dasher::GETBALL_BUFFER = 0.1;
+Array<double, 8> Dasher::DASH_DIR;
+Array<int, 8> Dasher::ANTI_DIR_IDX;
+Array<double, 8> Dasher::DIR_RATE;
 
 Dasher::Dasher() 
 {
@@ -58,10 +61,14 @@ Dasher::~Dasher()
 }
 
 //==============================================================================
-Dasher& Dasher::instance()
+Dasher& Dasher::instance(RemotePlayerParam* playerParam)
 {
-	static Dasher instance;
-	return instance;
+	static std::map<RemotePlayerParam*, Dasher*> instances;
+	if(instances[playerParam] == 0)
+	{
+		instances[playerParam] = new Dasher;	
+	}
+	return *instances[playerParam];
 }
 
 

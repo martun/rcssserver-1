@@ -41,11 +41,16 @@ Simulator::Simulator()
 Simulator::~Simulator() {
 }
 
-Simulator& Simulator::instance()
+Simulator& Simulator::instance(RemotePlayerParam* playerParam)
 {
-	static Simulator instance;
-	return instance;
+	static std::map<RemotePlayerParam*, Simulator*> instances;
+	if(instances[playerParam] == 0)
+	{
+		instances[playerParam] = new Simulator;	
+	}
+	return *instances[playerParam];
 }
+
 
 void Simulator::Player::Dash(double power, int dir_idx)
 {

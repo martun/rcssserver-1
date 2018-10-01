@@ -84,10 +84,10 @@ bool BehaviorDribbleExecuter::Execute(const ActiveBehavior & dribble)
 
 
 		if ( mSelfState.GetStamina() < 2700){
-			Dasher::instance().GoToPoint(mAgent,act,dribble.mTarget,0.01,30);
+			Dasher::instance(mAgent.GetPlayerParam()).GoToPoint(mAgent,act,dribble.mTarget,0.01,30);
 		}
 		else {
-			Dasher::instance().GoToPoint(mAgent,act,dribble.mTarget, 0.01 ,100 );
+			Dasher::instance(mAgent.GetPlayerParam()).GoToPoint(mAgent,act,dribble.mTarget, 0.01 ,100 );
 		}
 
 		act.mDashPower = MinMax(-RemoteServerParam::instance().maxDashPower(), act.mDashPower, RemoteServerParam::instance().maxDashPower());
@@ -111,23 +111,23 @@ bool BehaviorDribbleExecuter::Execute(const ActiveBehavior & dribble)
 					(	agentpos + Polar2Vector(mSelfState.GetKickableArea(),agentang + p * 45) -mSelfState.GetPos()).Mod()) {
 				if ( mSelfState.GetStamina() < 2700)
 				{
-					return Dasher::instance().GoToPoint( mAgent , dribble.mTarget,0.01,30 ); // dash slow
+					return Dasher::instance(mAgent.GetPlayerParam()).GoToPoint( mAgent , dribble.mTarget,0.01,30 ); // dash slow
 				}
-				else return Dasher::instance().GoToPoint( mAgent , dribble.mTarget,0.01,100 );
+				else return Dasher::instance(mAgent.GetPlayerParam()).GoToPoint( mAgent , dribble.mTarget,0.01,100 );
 
 			}
-			return Kicker::instance().KickBall(mAgent ,agentpos + Polar2Vector(mSelfState.GetKickableArea(),agentang + p * 45) , outSpeed,KM_Hard);
+			return Kicker::instance(mAgent.GetPlayerParam()).KickBall(mAgent ,agentpos + Polar2Vector(mSelfState.GetKickableArea(),agentang + p * 45) , outSpeed,KM_Hard);
 		}
 		else {
 			if ( mSelfState.GetStamina() < 2700)
 			{
-				return Dasher::instance().GoToPoint( mAgent , dribble.mTarget,0.01,30 ); // dash slow
+				return Dasher::instance(mAgent.GetPlayerParam()).GoToPoint( mAgent , dribble.mTarget,0.01,30 ); // dash slow
 			}
-			else return Dasher::instance().GoToPoint( mAgent , dribble.mTarget,0.01,100 );
+			else return Dasher::instance(mAgent.GetPlayerParam()).GoToPoint( mAgent , dribble.mTarget,0.01,100 );
 		}
 	}
 	else /*if(dribble.mDetailType == BDT_Dribble_Fast)*/{
-		return Kicker::instance().KickBall(mAgent, dribble.mAngle, dribble.mKickSpeed, KM_Quick);
+		return Kicker::instance(mAgent.GetPlayerParam()).KickBall(mAgent, dribble.mAngle, dribble.mKickSpeed, KM_Quick);
 	}
 
 }
@@ -170,7 +170,7 @@ void BehaviorDribblePlanner::Plan(std::list<ActiveBehavior> & behavior_list)
 
 		dribble.mTarget= mSelfState.GetPos() + Polar2Vector( mSelfState.GetEffectiveSpeedMax(), dir);
 
-		dribble.mEvaluation = Evaluation::instance().EvaluatePosition(dribble.mTarget, true);
+		dribble.mEvaluation = Evaluation::instance(mAgent.GetPlayerParam()).EvaluatePosition(dribble.mTarget, true);
 
 		mActiveBehaviorList.push_back(dribble);
 	}
@@ -200,7 +200,7 @@ void BehaviorDribblePlanner::Plan(std::list<ActiveBehavior> & behavior_list)
 		}
 		dribble.mEvaluation = 0;
 		for (int i = 1; i <= 8; ++i) {
-			dribble.mEvaluation += Evaluation::instance().EvaluatePosition(mBallState.GetPos() + Polar2Vector(dribble.mKickSpeed * i, dribble.mAngle), true);
+			dribble.mEvaluation += Evaluation::instance(mAgent.GetPlayerParam()).EvaluatePosition(mBallState.GetPos() + Polar2Vector(dribble.mKickSpeed * i, dribble.mAngle), true);
 		}
 		dribble.mEvaluation /= 8;
 		dribble.mTarget = target;

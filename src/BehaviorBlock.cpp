@@ -62,7 +62,7 @@ bool BehaviorBlockExecuter::Execute(const ActiveBehavior & beh)
 {
 	RemoteLogger::instance(mAgent.GetPlayerParam())->LogGoToPoint(mSelfState.GetPos(), beh.mTarget, "@Block");
 
-	return Dasher::instance().GoToPoint(mAgent, beh.mTarget, beh.mBuffer, beh.mPower, true, false);
+	return Dasher::instance(mAgent.GetPlayerParam()).GoToPoint(mAgent, beh.mTarget, beh.mBuffer, beh.mPower, true, false);
 }
 
 BehaviorBlockPlanner::BehaviorBlockPlanner(Agent & agent):

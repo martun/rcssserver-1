@@ -33,8 +33,8 @@
 #ifndef __Dasher_H__
 #define __Dasher_H__
 
-#include "Geometry.h"
 #include "Agent.h"
+#include "Geometry.h"
 
 struct AtomicAction;
 class RemotePlayerState;
@@ -46,13 +46,13 @@ private:
 public:
     ~Dasher();
 
-    static Dasher & instance();
+    static Dasher & instance(RemotePlayerParam* playerParam);
 
-    Array<double, 8> DASH_DIR;
-    Array<int, 8> ANTI_DIR_IDX;
-    Array<double, 8> DIR_RATE;
+    static Array<double, 8> DASH_DIR;
+    static Array<int, 8> ANTI_DIR_IDX;
+    static Array<double, 8> DIR_RATE;
 
-    int GetDashDirIdx(const AngleDeg & dir) {
+    static int GetDashDirIdx(const AngleDeg & dir) {
     	for (int i = 0; i < 8; ++i) {
     		if (GetAngleDegDiffer(dir, DASH_DIR[i]) < FLOAT_EPS) return i;
     	}

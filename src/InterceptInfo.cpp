@@ -178,7 +178,7 @@ void InterceptInfo::CalcTightInterception(const BallState & ball, PlayerIntercep
 		int cycle_sup = pInfo->mInterCycle[0];
 		int cycle_inf = MobileState::Predictor::MAX_STEP;
 		for (int i = cycle_sup; i <= cycle_inf; ++i){
-			int n = Dasher::instance().CycleNeedToPoint(*(pInfo->mpPlayer), ball.GetPredictedPos(i), can_inverse) + idle_cycle;
+			int n = Dasher::instance(/*TODO: mAgent.GetPlayerParam()*/ nullptr).CycleNeedToPoint(*(pInfo->mpPlayer), ball.GetPredictedPos(i), can_inverse) + idle_cycle;
 			if (n <= i){ //n以后完全可截
 				break;
 			}
@@ -189,7 +189,7 @@ void InterceptInfo::CalcTightInterception(const BallState & ball, PlayerIntercep
 		int cycle_sup = pInfo->mInterCycle[0];
 		int cycle_inf = pInfo->mInterCycle[1];
 		for (int i = cycle_sup; i <= cycle_inf; ++i){
-			int n = Dasher::instance().CycleNeedToPoint(*(pInfo->mpPlayer), ball.GetPredictedPos(i), can_inverse) + idle_cycle;
+			int n = Dasher::instance(/*TODO: mAgent.GetPlayerParam()*/ nullptr).CycleNeedToPoint(*(pInfo->mpPlayer), ball.GetPredictedPos(i), can_inverse) + idle_cycle;
 			if (n <= i){
 				break;
 			}
@@ -199,7 +199,7 @@ void InterceptInfo::CalcTightInterception(const BallState & ball, PlayerIntercep
 			cycle_sup = pInfo->mInterCycle[0];
 			cycle_inf = pInfo->mInterCycle[1];
 			for (int i = cycle_inf; i >= cycle_sup; --i){
-				int n = Dasher::instance().CycleNeedToPoint(*(pInfo->mpPlayer), ball.GetPredictedPos(i), can_inverse) + idle_cycle;
+				int n = Dasher::instance(/*TODO: mAgent.GetPlayerParam()*/ nullptr).CycleNeedToPoint(*(pInfo->mpPlayer), ball.GetPredictedPos(i), can_inverse) + idle_cycle;
 				if (n <= i){
 					break;
 				}
@@ -216,7 +216,7 @@ void InterceptInfo::CalcTightInterception(const BallState & ball, PlayerIntercep
 		cycle_sup = pInfo->mInterCycle[2];
 		cycle_inf = MobileState::Predictor::MAX_STEP;
 		for (int i = cycle_sup; i <= cycle_inf; ++i){
-			int n = Dasher::instance().CycleNeedToPoint(*(pInfo->mpPlayer), ball.GetPredictedPos(i), can_inverse) + idle_cycle;
+			int n = Dasher::instance(/*TODO: mAgent.GetPlayerParam()*/ nullptr).CycleNeedToPoint(*(pInfo->mpPlayer), ball.GetPredictedPos(i), can_inverse) + idle_cycle;
 			if (n <= i){ //n以后完全可截
 				break;
 			}

@@ -41,6 +41,7 @@
 #include <vector>
 
 struct AtomicAction;
+class RemotePlayerParam;
 
 class Simulator {
 	Simulator();
@@ -48,7 +49,7 @@ class Simulator {
 public:
 	virtual ~Simulator();
 
-	static Simulator & instance();
+	static Simulator & instance(RemotePlayerParam* playerParam);
 
 public:
 	struct Ball {

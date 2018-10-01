@@ -144,6 +144,7 @@ struct TimeRecord
 /**
  * TimeTest.
  */
+class RemotePlayerParam;
 class TimeTest
 {
     TimeTest();
@@ -155,7 +156,7 @@ public:
      * 创建实例
      * Instacne.
      */
-    static TimeTest & instance();
+    static TimeTest & instance(RemotePlayerParam* playerParam);
 
     /**
      * 新的周期到来后进行更新，传入的current_time为更新前的那个周期

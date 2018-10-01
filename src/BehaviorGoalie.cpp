@@ -46,7 +46,7 @@ bool ret = BehaviorExecutable::AutoRegister<BehaviorGoalieExecuter>();
 bool BehaviorGoalieExecuter::Execute(const ActiveBehavior & act_bhv)
 {
 	if (act_bhv.mDetailType == BDT_Goalie_Position) {
-		return Dasher::instance().GoToPoint(mAgent, act_bhv.mTarget);
+		return Dasher::instance(mAgent.GetPlayerParam()).GoToPoint(mAgent, act_bhv.mTarget);
 	}
 	else if (act_bhv.mDetailType == BDT_Goalie_Catch) {
 		return mAgent.Catch(GetNormalizeAngleDeg((mBallState.GetPos() - mSelfState.GetPos()).Dir() - mSelfState.GetBodyDir()));
@@ -96,13 +96,13 @@ void BehaviorGoaliePlanner::Plan(std::list<ActiveBehavior>& behavior_list)
 
 		position.mTarget = target;
 		if(RemoteServerParam::instance().ourPenaltyArea().IsWithin(target)){
-		position.mEvaluation = Evaluation::instance().EvaluatePosition(position.mTarget, false);
+		position.mEvaluation = Evaluation::instance(mAgent.GetPlayerParam()).EvaluatePosition(position.mTarget, false);
 		}
 		else
 			{
 			Ray ball_ray(RemoteServerParam::instance().ourGoal(), (mBallState.GetPos() - RemoteServerParam::instance().ourGoal()).Dir());
 			RemoteServerParam::instance().ourGoalArea().Intersection(ball_ray, target);
-			position.mEvaluation = Evaluation::instance().EvaluatePosition(position.mTarget, false);
+			position.mEvaluation = Evaluation::instance(mAgent.GetPlayerParam()).EvaluatePosition(position.mTarget, false);
 			position.mTarget = target;
 		}
 		behavior_list.push_back(position);

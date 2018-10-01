@@ -74,14 +74,14 @@ bool BehaviorPassExecuter::Execute(const ActiveBehavior & pass)
 {
 	RemoteLogger::instance(mAgent.GetPlayerParam())->LogPass(false, mBallState.GetPos(), pass.mTarget, "@Pass", true);
 	if (pass.mDetailType == BDT_Pass_Direct)
-		return Kicker::instance().KickBall(mAgent, pass.mTarget, pass.mKickSpeed, KM_Quick);
+		return Kicker::instance(mAgent.GetPlayerParam()).KickBall(mAgent, pass.mTarget, pass.mKickSpeed, KM_Quick);
 	if(pass.mDetailType == BDT_Pass_Clear){
 		//		RemoteLogger::instance(nullptr)->GetTextLogger("Clear")<< mWorldState.CurrentTime().S() + "Clear";
-		if(	Tackler::instance().CanTackleToDir(mAgent, pass.mAngle)
-				&& Tackler::instance().GetBallVelAfterTackle(mAgent,pass.mAngle).Mod() > Kicker::instance().GetMaxSpeed(mAgent,pass.mTarget,1) - 0.08)
-			return Tackler::instance().TackleToDir(mAgent,pass.mAngle);
+		if(	Tackler::instance(mAgent.GetPlayerParam()).CanTackleToDir(mAgent, pass.mAngle)
+				&& Tackler::instance(mAgent.GetPlayerParam()).GetBallVelAfterTackle(mAgent,pass.mAngle).Mod() > Kicker::instance(mAgent.GetPlayerParam()).GetMaxSpeed(mAgent,pass.mTarget,1) - 0.08)
+			return Tackler::instance(mAgent.GetPlayerParam()).TackleToDir(mAgent,pass.mAngle);
 		else
-			return Kicker::instance().KickBall(mAgent, pass.mTarget, RemoteServerParam::instance().ballSpeedMax(), KM_Quick, 0);
+			return Kicker::instance(mAgent.GetPlayerParam()).KickBall(mAgent, pass.mTarget, RemoteServerParam::instance().ballSpeedMax(), KM_Quick, 0);
 	}
 	return false;
 
@@ -130,11 +130,11 @@ void BehaviorPassPlanner::Plan(std::list<ActiveBehavior> & behavior_list)
 
 		if (min_differ < 10.0) continue;
 
-		pass.mEvaluation = Evaluation::instance().EvaluatePosition(pass.mTarget, true);
+		pass.mEvaluation = Evaluation::instance(mAgent.GetPlayerParam()).EvaluatePosition(pass.mTarget, true);
 
 		pass.mAngle = (pass.mTarget - mSelfState.GetPos()).Dir();
 		pass.mKickSpeed = RemoteServerParam::instance().GetBallSpeed(5, pass.mTarget.Dist(mBallState.GetPos()));
-		pass.mKickSpeed = MinMax(2.0, pass.mKickSpeed, Kicker::instance().GetMaxSpeed(mAgent , pass.mAngle ,3 ));
+		pass.mKickSpeed = MinMax(2.0, pass.mKickSpeed, Kicker::instance(mAgent.GetPlayerParam()).GetMaxSpeed(mAgent , pass.mAngle ,3 ));
 		if(oppClose){//in oppnent control, clear it
 			pass.mDetailType = BDT_Pass_Clear;
 		}
@@ -152,7 +152,7 @@ void BehaviorPassPlanner::Plan(std::list<ActiveBehavior> & behavior_list)
 		if (mAgent.IsLastActiveBehaviorInActOf(BT_Pass)) {
 			ActiveBehavior pass(mAgent, BT_Pass, BDT_Pass_Direct);
 			pass.mTarget = mAgent.GetLastActiveBehaviorInAct()->mTarget; //行为保持
-			pass.mEvaluation = Evaluation::instance().EvaluatePosition(pass.mTarget, true);
+			pass.mEvaluation = Evaluation::instance(mAgent.GetPlayerParam()).EvaluatePosition(pass.mTarget, true);
 			pass.mKickSpeed = RemoteServerParam::instance().GetBallSpeed(5 + random() % 6, pass.mTarget.Dist(mBallState.GetPos()));
 			pass.mKickSpeed = MinMax(2.0, pass.mKickSpeed, RemoteServerParam::instance().ballSpeedMax());
 			behavior_list.push_back(pass);
@@ -163,11 +163,11 @@ void BehaviorPassPlanner::Plan(std::list<ActiveBehavior> & behavior_list)
 			int MinTmInter = HUGE_VALUE, MinOppInter = HUGE_VALUE, MinTm;
 			Vector MinTmPos;
 			for(AngleDeg dir = -45 ; dir <= 45  ; dir += 2.5){
-				if(!Tackler::instance().CanTackleToDir(mAgent,dir)){
-					SimBall.UpdateVel(Polar2Vector(Kicker::instance().GetMaxSpeed(mAgent,mSelfState.GetBodyDir() + dir,1),mSelfState.GetBodyDir() + dir),0,1.0);
+				if(!Tackler::instance(mAgent.GetPlayerParam()).CanTackleToDir(mAgent,dir)){
+					SimBall.UpdateVel(Polar2Vector(Kicker::instance(mAgent.GetPlayerParam()).GetMaxSpeed(mAgent,mSelfState.GetBodyDir() + dir,1),mSelfState.GetBodyDir() + dir),0,1.0);
 				}
 				else
-					SimBall.UpdateVel(Polar2Vector(Max(Tackler::instance().GetBallVelAfterTackle(mAgent,dir).Mod(), Kicker::instance().GetMaxSpeed(mAgent,mSelfState.GetBodyDir() + dir,1)),mSelfState.GetBodyDir() + dir),0,1.0);
+					SimBall.UpdateVel(Polar2Vector(Max(Tackler::instance(mAgent.GetPlayerParam()).GetBallVelAfterTackle(mAgent,dir).Mod(), Kicker::instance(mAgent.GetPlayerParam()).GetMaxSpeed(mAgent,mSelfState.GetBodyDir() + dir,1)),mSelfState.GetBodyDir() + dir),0,1.0);
 				for(int i = 2 ; i <= 11 ; i ++){
 					if(fabs((mWorldState.GetTeammate(i).GetPos() - mSelfState.GetPos()).Dir() - dir) > 45 ){
 						continue;

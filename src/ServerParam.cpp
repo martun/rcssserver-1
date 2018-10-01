@@ -226,6 +226,13 @@ RemoteServerParam& RemoteServerParam::instance()
 {
 	static RemoteServerParam instance;
 	return instance;
+
+    // static std::map<RemotePlayerParam*, RemoteServerParam*> instances;
+    // if(instances[playerParam] == 0)
+    // {
+    //     instances[playerParam] = new RemoteServerParam();
+    // }
+    // return instances[playerParam];
 }
 
 RemoteServerParam::RemoteServerParam() 

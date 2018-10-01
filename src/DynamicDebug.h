@@ -55,7 +55,8 @@ enum MessageType
 
 class DynamicDebug
 {
-	DynamicDebug();
+    RemotePlayerParam* m_playerParams;
+	DynamicDebug(RemotePlayerParam* playerParams);
 
 	struct MessageFileHead
 	{
@@ -114,7 +115,7 @@ public:
     /**
      * 创建实例，初始化函数
      */
-    static DynamicDebug & instance();
+    static DynamicDebug & instance(RemotePlayerParam* playerParams);
     void Initial(Observer *pObserver);
 
     /**

@@ -43,6 +43,8 @@ enum InterceptRes { //拦截结果
 	IR_Success
 };
 
+class BallState;
+
 //根据简化模型求解得到的截球信息
 class PlayerInterceptInfo
 {

@@ -101,15 +101,15 @@ void Parser::StartRoutine()
 	{
 		if (UDPSocket::instance(mpObserver->GetPlayerParam()).Receive(mBuf) > 0)
 		{
-			NetworkTest::instance().AddParserBegin();
+			NetworkTest::instance(mpObserver->GetPlayerParam()).AddParserBegin();
 
-			DynamicDebug::instance().AddMessage(mBuf, MT_Parse); // 动态调试记录Parser信息
+			DynamicDebug::instance(mpObserver->GetPlayerParam()).AddMessage(mBuf, MT_Parse); // 动态调试记录Parser信息
 
 			mpObserver->Lock(); //parse时禁止WorldState更新
 			Parse(mBuf);
 			mpObserver->UnLock();
 
-			NetworkTest::instance().AddParserEnd(mpObserver->CurrentTime());
+			NetworkTest::instance(mpObserver->GetPlayerParam()).AddParserEnd(mpObserver->CurrentTime());
 		}
 	}
 }
@@ -131,8 +131,8 @@ void Parser::ConnectToServer()
 	mOkMutex.UnLock();
 	std::cout << "ConnectToServer END" << std::endl;
 
-	DynamicDebug::instance().Initial(mpObserver); // 动态调试的初始化，知道自己是哪边了才能初始化，位置不能动
-	DynamicDebug::instance().AddMessage(mBuf, MT_Parse); // 动态调试记录Parse信息
+	DynamicDebug::instance(mpObserver->GetPlayerParam()).Initial(mpObserver); // 动态调试的初始化，知道自己是哪边了才能初始化，位置不能动
+	DynamicDebug::instance(mpObserver->GetPlayerParam()).AddMessage(mBuf, MT_Parse); // 动态调试记录Parse信息
 
 	//RemoteLogger::instance(nullptr)->GetTextLogger("msg-text") << mBuf << std::endl;
 }
@@ -216,8 +216,8 @@ bool Parser::ParseInitializeMsg(const char *msg)
 
 	mpObserver->Initialize(); //必须知道自己是哪边的才能初始化
 
-	TimeTest::instance().SetUnum(my_unum); // TimeTest的记录文件名会用到
-	NetworkTest::instance().SetUnum(my_unum);
+	TimeTest::instance(mpObserver->GetPlayerParam()).SetUnum(my_unum); // TimeTest的记录文件名会用到
+	NetworkTest::instance(mpObserver->GetPlayerParam()).SetUnum(my_unum);
 
 	return true;
 }
@@ -484,7 +484,7 @@ void Parser::ParseTime(char *msg, char **end_ptr, bool is_new_cycle)
 	*end_ptr = msg;
 	int time = parser::get_int(end_ptr);
 
-	RealTime real_time = GetRealTimeParser();
+	RealTime real_time = GetRealTimeParser(mpObserver->GetPlayerParam());
 
 	/* if (mpObserver->IsPlanned()) { // -- 决策完了，才收到信息
 		std::cerr << "# " << mpObserver->SelfUnum() << " @ " << mpObserver->CurrentTime() << " got a deprecated message" << std::endl;
@@ -575,9 +575,9 @@ void Parser::ParseChangePlayerType(char *msg)
 
 void Parser::ParseSight(char *msg)
 {
-	NetworkTest::instance().End("Sense", "Sight");
+	NetworkTest::instance(mpObserver->GetPlayerParam()).End("Sense", "Sight");
 
-	mpObserver->SetLastSightRealTime(GetRealTimeParser()); // set the last sight time
+	mpObserver->SetLastSightRealTime(GetRealTimeParser(mpObserver->GetPlayerParam())); // set the last sight time
 	mpObserver->SetLatestSightTime(mpObserver->CurrentTime());
 
 	msg = strstr(msg,"((");
@@ -1268,11 +1268,11 @@ void Parser::ParseSense(char *msg)
 {
 	if (!mpObserver->GetPlayerParam()->isCoach() || !mpObserver->GetPlayerParam()->isTrainer())
 	{
-		TimeTest::instance().Update(mpObserver->CurrentTime()); // player每周期都有sense
+		TimeTest::instance(mpObserver->GetPlayerParam()).Update(mpObserver->CurrentTime()); // player每周期都有sense
 	}
 
-	NetworkTest::instance().Update(mpObserver->CurrentTime());
-	NetworkTest::instance().Begin("Sense");
+	NetworkTest::instance(mpObserver->GetPlayerParam()).Update(mpObserver->CurrentTime());
+	NetworkTest::instance(mpObserver->GetPlayerParam()).Begin("Sense");
 
 	parser::get_word(&msg);
 	parser::get_next_word(&msg); //skip 'view'
@@ -1392,7 +1392,7 @@ void Parser::ParseSense(char *msg)
 			mpObserver->CurrentTime()
 	);
 
-	NetworkTest::instance().SetCommandExecuteCount(
+	NetworkTest::instance(mpObserver->GetPlayerParam()).SetCommandExecuteCount(
 			dashes, kicks, turns, says, turn_necks, catchs, moves, change_views, points, tackles, focuses);
 }
 
@@ -1824,7 +1824,7 @@ void Parser::ParseCard(char *msg)
 void Parser::ParseSight_Coach(char *msg)
 {
 	if (mpObserver->GetPlayerParam()->isCoach() || mpObserver->GetPlayerParam()->isTrainer()) {
-		TimeTest::instance().Update(mpObserver->CurrentTime()); // coach每周期都有sight
+		TimeTest::instance(mpObserver->GetPlayerParam()).Update(mpObserver->CurrentTime()); // coach每周期都有sight
 	}
 
 	for (int i = 1; i <= TEAMSIZE; ++i) {

@@ -48,7 +48,7 @@ class Kicker
 public:
     ~Kicker();
 
-    static Kicker & instance();
+    static Kicker & instance(RemotePlayerParam* playerParam);
 
     /**
      * 计算mKickerValue表

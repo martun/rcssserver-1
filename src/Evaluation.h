@@ -35,6 +35,8 @@
 
 #include "Geometry.h"
 class Net;
+class RemotePlayerParam;
+
 
 class Evaluation
 {
@@ -43,7 +45,7 @@ class Evaluation
 public:
 	~Evaluation();
 
-	static Evaluation& instance();
+	static Evaluation& instance(RemotePlayerParam* playerParams);
 
 	double EvaluatePosition(const Vector & pos, bool ourside);
 

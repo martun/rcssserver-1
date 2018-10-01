@@ -632,7 +632,7 @@ bool Observer::WaitForNewInfo()
 
 bool Observer::WaitForNewThink()
 {
-	int max_time = RemotePlayerParam::WaitTimeOut() * 1000 * RemoteServerParam::instance().slowDownFactor();
+	int max_time = m_playerParams->WaitTimeOut() * 1000 * RemoteServerParam::instance().slowDownFactor();
 
 	bool ret = true;
 	if (mThinkArrived == false) {
@@ -651,7 +651,7 @@ bool Observer::WaitForNewSense()
 {
 	bool ret = true;
 	if (mSenseArrived == false || mIsBeginDecision == false){
-		bool timeout = mCondNewSense.Wait(RemotePlayerParam::WaitTimeOut() * 1000 * RemoteServerParam::instance().slowDownFactor());
+		bool timeout = mCondNewSense.Wait(m_playerParams->WaitTimeOut() * 1000 * RemoteServerParam::instance().slowDownFactor());
 		if (timeout){
 			ret = false;
 		}
@@ -672,7 +672,7 @@ bool Observer::WaitForNewSight()
 
 	if (m_playerParams->isCoach() || m_playerParams->isTrainer())
 	{
-		max_time = RemotePlayerParam::WaitTimeOut() * 1000 * RemoteServerParam::instance().slowDownFactor();
+		max_time = m_playerParams->WaitTimeOut() * 1000 * RemoteServerParam::instance().slowDownFactor();
 	}
 	else
 	{
@@ -706,7 +706,7 @@ bool Observer::WaitForCommandSend()
 	bool flag = true;
 	if (mIsCommandSend == false)
 	{
-		bool is_timeout = mCondCommandSend.Wait(RemotePlayerParam::WaitTimeOut() * 1000);
+		bool is_timeout = mCondCommandSend.Wait(m_playerParams->WaitTimeOut() * 1000);
 		if (is_timeout == true)
 		{
 			flag = false;
